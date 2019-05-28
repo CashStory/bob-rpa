@@ -31,7 +31,9 @@
     function needLogin() {
         if (window.location.href.indexOf('sign-in') > -1) {
             sendToParent('need-login', {});
-            setTimeout(needLogin, 300);
+            setTimeout(needLogin, 1000);
+        } else {
+            console.log('no need login');
         }
     }
 
@@ -62,7 +64,7 @@
             }
         });
         sendToParent('inited', {});
-        needLogin();
+        window.onhashchange = needLogin;
     }
 
     $(document).ready(function () {
