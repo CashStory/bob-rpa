@@ -1,8 +1,12 @@
 <script type="text/javascript">
     function decodeMessage(eventHandler) {
         return function (e) {
-            const decoded = JSON.parse(e.data);
-            eventHandler(decoded);
+            try {
+                const decoded = JSON.parse(e.data);
+                eventHandler(decoded);
+            } catch (err) {
+                eventHandler({ action: 'error', agrs: {} });
+            }
         };
     }
 
