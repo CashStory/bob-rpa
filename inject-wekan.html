@@ -77,10 +77,13 @@
                 loginAction(data);
             }
         });
-        bindEvent(window, 'hashchange', function (data) {
-            console.log('hashchange', data);
+        if (FlowRouter) {
             hashChanged();
-        });
+            FlowRouter.subscriptions = function () {
+                console.log('routeee');
+                hashChanged();
+            };
+        }
         sendToParent('inited', {});
         needLogin();
     }
