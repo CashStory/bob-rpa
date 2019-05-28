@@ -18,17 +18,24 @@
         }
     }
 
-    function initMessagesIframe() {
+    // Send a message to the parent
+    function sendToParent(action, data) {
+        const encoded = JSON.stringify({
+            action,
+            agrs: data,
+        });
+        // Make sure you are sending a string, and to stringify JSON
+        window.parent.postMessage(encoded, '*');
+    };
 
-        // Send a message to the parent
-        const sendToParent = function (action, data) {
-            const encoded = JSON.stringify({
-                action,
-                agrs: data,
-            });
-            // Make sure you are sending a string, and to stringify JSON
-            window.parent.postMessage(encoded, '*');
-        };
+    function needLogin() {
+        if (window.location.href.indexOf('sign-in') > -1) {
+            sendToParent('need-login', {});
+            setTimeout(needLogin, 300);
+        }
+    }
+
+    function initMessagesIframe() {
 
         // Listen to messages from parent window
         bindEvent(window, 'message', function (data) {
@@ -55,6 +62,7 @@
             }
         });
         sendToParent('inited', {});
+        needLogin();
     }
 
     $(document).ready(function () {
