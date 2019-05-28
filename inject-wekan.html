@@ -25,6 +25,7 @@
             agrs: data,
         });
         // Make sure you are sending a string, and to stringify JSON
+        console.log('sendToParent', action, data);
         window.parent.postMessage(encoded, '*');
     };
 
