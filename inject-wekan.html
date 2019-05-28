@@ -5,7 +5,7 @@
                 const decoded = JSON.parse(e.data);
                 eventHandler(decoded);
             } catch (err) {
-                eventHandler({ action: 'error', agrs: {} });
+                eventHandler({ action: 'error', agrs: { err, eventHandler: eventHandler } });
             }
         };
     }
@@ -69,9 +69,6 @@
     }
 
     function initMessagesIframe() {
-        window.onhashchange = function () {
-            hashChanged();
-        }
         // Listen to messages from parent window
         bindEvent(window, 'message', function (data) {
             console.log('message in iframe', data);
@@ -79,6 +76,10 @@
             if (data.action === 'login') {
                 loginAction(data);
             }
+        });
+        bindEvent(window, 'hashchange', function (data) {
+            console.log('hashchange', data);
+            hashChanged();
         });
         sendToParent('inited', {});
         needLogin();
