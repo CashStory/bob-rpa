@@ -27,7 +27,7 @@
         };
 
         // Listen to messages from parent window
-        bindEvent(this.contentWindow, 'message', function (data) {
+        bindEvent(window, 'message', function (data) {
             // tslint:disable-next-line:no-console
             console.log('message in iframe', data);
             // if (e.data ===)
