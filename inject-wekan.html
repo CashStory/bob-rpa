@@ -32,15 +32,14 @@
 
         // Listen to messages from parent window
         bindEvent(window, 'message', function (data) {
-            // tslint:disable-next-line:no-console
             console.log('message in iframe', data);
             // if (e.data ===)
-            if (data.action === 'login') {
+            if (data.action === 'login' && window.location.href.indexOf('sign-in') > -1) {
+                console.log('at login page');
                 const email = document.getElementById('at-field-username_and_email');
                 const pwd = document.getElementById('at-field-password');
                 const form = document.getElementById('at-pwd-form');
                 if (form && email && pwd) {
-                    // tslint:disable-next-line:no-console
                     console.log('login detected');
                     email.value = data.email;
                     pwd.value = data.pwd;
@@ -58,6 +57,8 @@
         sendToParent('inited', {});
     }
 
-    initMessagesIframe();
+    $(document).ready(function () {
+        initMessagesIframe();
+    });
 </script>
 </body>
