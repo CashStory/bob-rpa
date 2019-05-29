@@ -1,88 +1,33 @@
 <script type="text/javascript">
-    /**
-      postmate - A powerful, simple, promise-based postMessage library
-      @version v1.5.0
-      @link https://github.com/dollarshaveclub/postmate
-      @author Jacob Kelley <jakie8@gmail.com>
-      @license MIT
-    **/
-    !function (e, t) { "object" == typeof exports && "undefined" != typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define(t) : e.Postmate = t() }("undefined" != typeof self ? self : this, function () { "use strict"; var l = "application/x-postmate-v1+json", r = 0, n = { handshake: 1, "handshake-reply": 1, call: 1, emit: 1, reply: 1, request: 1 }, h = function (e, t) { return ("string" != typeof t || e.origin === t) && (!!e.data && (("object" != typeof e.data || "postmate" in e.data) && (e.data.type === l && !!n[e.data.postmate]))) }, p = function () { function e(e) { var a = this; this.parent = e.parent, this.frame = e.frame, this.child = e.child, this.childOrigin = e.childOrigin, this.events = {}, this.listener = function (e) { if (!h(e, a.childOrigin)) return !1; var t = ((e || {}).data || {}).value || {}, n = t.data, i = t.name; "emit" === e.data.postmate && i in a.events && a.events[i].call(a, n) }, this.parent.addEventListener("message", this.listener, !1) } var t = e.prototype; return t.get = function (e) { var a = this; return new c.Promise(function (n) { var i = ++r; a.parent.addEventListener("message", function e(t) { t.data.uid === i && "reply" === t.data.postmate && (a.parent.removeEventListener("message", e, !1), n(t.data.value)) }, !1), a.child.postMessage({ postmate: "request", type: l, property: e, uid: i }, a.childOrigin) }) }, t.call = function (e, t) { this.child.postMessage({ postmate: "call", type: l, property: e, data: t }, this.childOrigin) }, t.on = function (e, t) { this.events[e] = t }, t.destroy = function () { window.removeEventListener("message", this.listener, !1), this.frame.parentNode.removeChild(this.frame) }, e }(), o = function () { function e(e) { var d = this; this.model = e.model, this.parent = e.parent, this.parentOrigin = e.parentOrigin, this.child = e.child, this.child.addEventListener("message", function (t) { if (h(t, d.parentOrigin)) { var e, n, i, a = t.data, r = a.property, o = a.uid, s = a.data; if ("call" !== t.data.postmate) (e = d.model, n = r, i = "function" == typeof e[n] ? e[n]() : e[n], c.Promise.resolve(i)).then(function (e) { return t.source.postMessage({ property: r, postmate: "reply", type: l, uid: o, value: e }, t.origin) }); else r in d.model && "function" == typeof d.model[r] && d.model[r].call(d, s) } }) } return e.prototype.emit = function (e, t) { this.parent.postMessage({ postmate: "emit", type: l, value: { name: e, data: t } }, this.parentOrigin) }, e }(), c = function () { function e(e) { var t = e.container, n = void 0 === t ? void 0 !== n ? n : document.body : t, i = e.model, a = e.url, r = e.classListArray, o = void 0 === r ? [] : r; return this.parent = window, this.frame = document.createElement("iframe"), this.frame.classList.add.apply(this.frame.classList, o), n.appendChild(this.frame), this.child = this.frame.contentWindow || this.frame.contentDocument.parentWindow, this.model = i || {}, this.sendHandshake(a) } return e.prototype.sendHandshake = function (a) { var r, o = this, s = function (e) { var t = document.createElement("a"); t.href = e; var n = 4 < t.protocol.length ? t.protocol : window.location.protocol, i = t.host.length ? "80" === t.port || "443" === t.port ? t.hostname : t.host : window.location.host; return t.origin || n + "//" + i }(a), d = 0; return new e.Promise(function (n, i) { o.parent.addEventListener("message", function e(t) { return !!h(t, s) && ("handshake-reply" === t.data.postmate ? (clearInterval(r), o.parent.removeEventListener("message", e, !1), o.childOrigin = t.origin, n(new p(o))) : i("Failed handshake")) }, !1); var e = function () { d++ , o.child.postMessage({ postmate: "handshake", type: l, model: o.model }, s), 5 === d && clearInterval(r) }, t = function () { e(), r = setInterval(e, 500) }; o.frame.attachEvent ? o.frame.attachEvent("onload", t) : o.frame.onload = t, o.frame.src = a }) }, e }(); return c.debug = !1, c.Promise = function () { try { return window ? window.Promise : Promise } catch (e) { return null } }(), c.Model = function () { function e(e) { return this.child = window, this.model = e, this.parent = this.child.parent, this.sendHandshakeReply() } return e.prototype.sendHandshakeReply = function () { var r = this; return new c.Promise(function (i, a) { r.child.addEventListener("message", function e(t) { if (t.data.postmate) { if ("handshake" !== t.data.postmate) return a("Handshake Reply Failed"); r.child.removeEventListener("message", e, !1), t.source.postMessage({ postmate: "handshake-reply", type: l }, t.origin), r.parentOrigin = t.origin; var n = t.data.model; return n && Object.keys(n).forEach(function (e) { r.model[e] = n[e] }), i(new o(r)) } }, !1) }) }, e }(), c });
-
-
-    function decodeMessage(e) {
-        let decoded;
-        try {
-            decoded = JSON.parse(e.data);
-        } catch (err) {
-            decoded = { err, eventHandler: e.data };
-        }
-        return decoded;
-    }
-
-    function sendToParent(parent, action, data) {
-        const encoded = JSON.stringify(data);
-        // Make sure you are sending a string, and to stringify JSON
-        console.log('sendToParent', action, data);
-        parent.emit(action, encoded);
-    };
+    var Penpal = function () { "use strict"; const e = "handshake"; const n = "handshake-reply"; const t = "call"; const r = "reply"; const o = "fulfilled"; const i = "rejected"; const c = "message"; const s = "DataCloneError"; const a = "ConnectionDestroyed"; const d = "ConnectionTimeout"; const l = "NotInIframe"; const u = "NoIframeSrc"; var m = () => { const e = []; let n = false; return { destroy() { n = true; e.forEach(e => { e() }) }, onDestroy(t) { n ? t() : e.push(t) } } }; const h = { "http:": "80", "https:": "443" }; const f = /^(https?:|file:)?\/\/([^\/:]+)?(:(\d+))?/; const g = ["file:", "data:"]; var p = e => { if (e && g.find(n => e.startsWith(n))) { return "null" } const n = document.location; const t = f.exec(e); let r; let o; let i; if (t) { r = t[1] ? t[1] : n.protocol; o = t[2]; i = t[4] } else { r = n.protocol; o = n.hostname; i = n.port } const c = i && i !== h[r] ? `:${i}` : ""; return `${r}//${o}${c}` }; var v = e => { return function () { if (e) { for (var n = arguments.length, t = new Array(n), r = 0; r < n; r++) { t[r] = arguments[r] } console.log("[Penpal]", ...t) } } }; const E = e => { let n = e.name, t = e.message, r = e.stack; return { name: n, message: t, stack: r } }; const w = e => { const n = new Error; Object.keys(e).forEach(t => n[t] = e[t]); return n }; var y = (e, n, a) => { const d = e.localName, l = e.local, u = e.remote, m = e.originForSending, h = e.originForReceiving; let f = false; a(`${d}: Connecting call receiver`); const g = e => { if (e.source !== u || e.data.penpal !== t) { return } if (e.origin !== h) { a(`${d} received message from origin ${e.origin} which did not match expected origin ${h}`); return } const c = e.data, l = c.methodName, g = c.args, p = c.id; a(`${d}: Received ${l}() call`); const v = e => { return n => { a(`${d}: Sending ${l}() reply`); if (f) { a(`${d}: Unable to send ${l}() reply due to destroyed connection`); return } const t = { penpal: r, id: p, resolution: e, returnValue: n }; if (e === i && n instanceof Error) { t.returnValue = E(n); t.returnValueIsError = true } try { u.postMessage(t, m) } catch (e) { if (e.name === s) { u.postMessage({ penpal: r, id: p, resolution: i, returnValue: E(e), returnValueIsError: true }, m) } throw e } } }; new Promise(e => e(n[l].apply(n, g))).then(v(o), v(i)) }; l.addEventListener(c, g); return () => { f = true; l.removeEventListener(c, g) } }; let $ = 0; var N = () => ++$; var C = (e, n, i, s, d) => { const l = n.localName, u = n.local, m = n.remote, h = n.originForSending, f = n.originForReceiving; let g = false; d(`${l}: Connecting call sender`); const p = e => { return function () { for (var n = arguments.length, i = new Array(n), p = 0; p < n; p++) { i[p] = arguments[p] } d(`${l}: Sending ${e}() call`); let v; try { if (m.closed) { v = true } } catch (e) { v = true } if (v) { s() } if (g) { const n = new Error(`Unable to send ${e}() call due ` + `to destroyed connection`); n.code = a; throw n } return new Promise((n, s) => { const a = N(); const g = t => { if (t.source !== m || t.data.penpal !== r || t.data.id !== a) { return } if (t.origin !== f) { d(`${l} received message from origin ${t.origin} which did not match expected origin ${f}`); return } d(`${l}: Received ${e}() reply`); u.removeEventListener(c, g); let i = t.data.returnValue; if (t.data.returnValueIsError) { i = w(i) } (t.data.resolution === o ? n : s)(i) }; u.addEventListener(c, g); m.postMessage({ penpal: t, id: a, methodName: e, args: i }, h) }) } }; i.reduce((e, n) => { e[n] = p(n); return e }, e); return () => { g = true } }; const I = 6e4; var T = t => { let r = t.iframe, o = t.methods, i = o === void 0 ? {} : o, s = t.timeout, l = t.debug; const h = v(l); const f = window; const g = m(), E = g.destroy, w = g.onDestroy; if (!r.src && !r.srcdoc) { const e = new Error("Iframe must have src or srcdoc property defined."); e.code = u; throw e } const $ = p(r.src); const N = $ === "null" ? "*" : $; const T = new Promise((t, o) => { let l; if (s !== undefined) { l = setTimeout(() => { const e = new Error(`Connection to child timed out after ${s}ms`); e.code = d; o(e); E() }, s) } const u = {}; let m; let g; const p = o => { const c = r.contentWindow; if (o.source !== c || o.data.penpal !== e) { return } if (o.origin !== $) { h(`Parent received handshake from origin ${o.origin} which did not match expected origin ${$}`); return } h("Parent: Received handshake, sending reply"); o.source.postMessage({ penpal: n, methodNames: Object.keys(i) }, N); const s = { localName: "Parent", local: f, remote: c, originForSending: N, originForReceiving: $ }; if (g) { g() } g = y(s, i, h); w(g); if (m) { m.forEach(e => { delete u[e] }) } m = o.data.methodNames; const a = C(u, s, m, E, h); w(a); clearTimeout(l); t(u) }; f.addEventListener(c, p); h("Parent: Awaiting handshake"); var v = setInterval(() => { if (!document.contains(r)) { clearInterval(v); E() } }, I); w(() => { f.removeEventListener(c, p); clearInterval(v); const e = new Error("Connection destroyed"); e.code = a; o(e) }) }); return { promise: T, destroy: E } }; var k = function () { let t = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {}, r = t.parentOrigin, o = r === void 0 ? "*" : r, i = t.methods, s = i === void 0 ? {} : i, u = t.timeout, h = t.debug; const f = v(h); if (window === window.top) { const e = new Error("connectToParent() must be called within an iframe"); e.code = l; throw e } const g = m(), p = g.destroy, E = g.onDestroy; const w = window; const $ = w.parent; const N = new Promise((t, r) => { let i; if (u !== undefined) { i = setTimeout(() => { const e = new Error(`Connection to parent timed out after ${u}ms`); e.code = d; r(e); p() }, u) } const l = e => { try { clearTimeout() } catch (e) { return } if (e.source !== $ || e.data.penpal !== n) { return } if (o !== "*" && o !== e.origin) { f(`Child received handshake reply from origin ${e.origin} which did not match expected origin ${o}`); return } f("Child: Received handshake reply"); w.removeEventListener(c, l); const r = { localName: "Child", local: w, remote: $, originForSending: e.origin === "null" ? "*" : e.origin, originForReceiving: e.origin }; const a = {}; const d = y(r, s, f); E(d); const u = C(a, r, e.data.methodNames, p, f); E(u); clearTimeout(i); t(a) }; w.addEventListener(c, l); E(() => { w.removeEventListener(c, l); const e = new Error("Connection destroyed"); e.code = a; r(e) }); f("Child: Sending handshake"); $.postMessage({ penpal: e, methodNames: Object.keys(s) }, o) }); return { promise: N, destroy: p } }; var O = { ERR_CONNECTION_DESTROYED: a, ERR_CONNECTION_TIMEOUT: d, ERR_NOT_IN_IFRAME: l, ERR_NO_IFRAME_SRC: u, connectToChild: T, connectToParent: k }; return O }();
 
     $(document).ready(function () {
-        const handshake = new Postmate.Model({
-            // Expose your model to the Parent. Property values may be functions, promises, or regular values
-            height: () => document.height || document.body.offsetHeight
+        const connection = connectToParent({
+            // Methods child is exposing to parent
+            methods: {
+                multiply(num1, num2) {
+                    return num1 * num2;
+                },
+            }
         });
 
-        // When parent <-> child handshake is complete, events may be emitted to the parent
-        handshake.then((parent) => {
-            sendToParent(parent, 'inited', { hello: 'Hello, World!' })
-            parent.on('login', data => {
-                loginAction(decodeMessage(data));
-            });
+        connection.promise.then(parent => {
+            parent.add(3, 1).then(total => console.log(total));
             if (FlowRouter) {
                 FlowRouter.subscriptions = function () {
                     console.log('routeee');
                     hashChanged(parent);
                 };
             }
-            sendToParent(parent, 'inited', {});
         });
     });
 
-
-
-    // function decodeMessage(eventHandler) {
-    //     return function (e) {
-    //         try {
-    //             const decoded = JSON.parse(e.data);
-    //             eventHandler(decoded);
-    //         } catch (err) {
-    //             eventHandler({ action: 'error', agrs: { err, eventHandler: eventHandler } });
-    //         }
-    //     };
-    // }
-
-    // function bindEvent(element, eventName, eventHandler) {
-    //     if (element.addEventListener) {
-    //         element.addEventListener(eventName, decodeMessage(eventHandler), false);
-    //     } else if (element.attachEvent) {
-    //         element.attachEvent(`on${eventName}`, decodeMessage(eventHandler));
-    //     }
-    // }
-
-    // Send a message to the parent
-    // function sendToParent(action, data) {
-    //     const encoded = JSON.stringify({
-    //         action,
-    //         agrs: data,
-    //     });
-    //     // Make sure you are sending a string, and to stringify JSON
-    //     console.log('sendToParent', action, data);
-    //     window.parent.postMessage(encoded, '*');
-    // };
-
     function needLogin(parent) {
         if (window.location.href.indexOf('sign-in') > -1) {
-            sendToParent(parent, 'need-login', {});
+            parent.login().then((data) => {
+                console.log(data);
+                loginAction(data);
+            });
             setTimeout(needLogin, 1000);
         } else {
             console.log('no need login');
@@ -119,27 +64,5 @@
         }
     }
 
-    // function initMessagesIframe() {
-    //     // Listen to messages from parent window
-    //     bindEvent(window, 'message', function (data) {
-    //         console.log('message in iframe', data);
-    //         // if (e.data ===)
-    //         if (data.action === 'login') {
-    //             loginAction(data);
-    //         }
-    //     });
-    //     if (FlowRouter) {
-    //         FlowRouter.subscriptions = function () {
-    //             console.log('routeee');
-    //             hashChanged();
-    //         };
-    //     }
-    //     sendToParent('inited', {});
-    //     needLogin();
-    // }
-
-    // $(document).ready(function () {
-    //     initMessagesIframe();
-    // });
 </script>
 </body>
