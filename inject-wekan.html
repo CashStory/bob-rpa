@@ -13,6 +13,8 @@
         });
 
         connection.promise.then(parent => {
+            console.log('conected !!');
+
             // parent.add(3, 1).then(total => console.log(total));
             if (FlowRouter) {
                 FlowRouter.subscriptions = function () {
