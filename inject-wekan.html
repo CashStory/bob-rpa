@@ -17,6 +17,7 @@
 
             // parent.add(3, 1).then(total => console.log(total));
             if (FlowRouter) {
+                hashChanged(parent);
                 FlowRouter.subscriptions = function () {
                     console.log('routeee');
                     hashChanged(parent);
