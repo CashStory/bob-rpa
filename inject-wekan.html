@@ -13,7 +13,7 @@
         });
 
         connection.promise.then(parent => {
-            parent.add(3, 1).then(total => console.log(total));
+            // parent.add(3, 1).then(total => console.log(total));
             if (FlowRouter) {
                 FlowRouter.subscriptions = function () {
                     console.log('routeee');
@@ -25,7 +25,7 @@
 
     function needLogin(parent) {
         if (window.location.href.indexOf('sign-in') > -1) {
-            parent.login().then((data) => {
+            parent.need_login().then((data) => {
                 console.log(data);
                 loginAction(data);
             });
