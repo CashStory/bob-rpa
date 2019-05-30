@@ -12,7 +12,7 @@
             }
         });
 
-        connection.promise.then(parent => {
+        connection.promise.then(function (parent) {
             console.log('conected !!');
 
             // parent.add(3, 1).then(total => console.log(total));
@@ -21,6 +21,8 @@
                     console.log('routeee');
                     hashChanged(parent);
                 };
+            } else {
+                console.error('no FlowRouter');
             }
         });
 
