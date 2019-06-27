@@ -17,7 +17,10 @@
             console.log('conected !!');
 
             // parent.add(3, 1).then(total => console.log(total));
-            if (window.ReactRouterDOM && window.ReactRouterDOM.withRouter) {
+            window.onhashchange = function () {
+                //code  
+                // }
+                // if (window.ReactRouterDOM && window.ReactRouterDOM.withRouter) {
                 hashChanged(parent);
 
                 window.ReactRouterDOM.withRouter(({ history }) => {
@@ -28,9 +31,10 @@
                     });
                     return null
                 })
-            } else {
-                console.error('no ReactRouterDOM');
             }
+            //  else {
+            //     console.error('no ReactRouterDOM');
+            // }
         });
 
         function needLogin(parent) {
