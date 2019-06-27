@@ -24,14 +24,14 @@
                 // if (window.ReactRouterDOM && window.ReactRouterDOM.withRouter) {
                 hashChanged(parent);
 
-                window.ReactRouterDOM.withRouter(({ history }) => {
-                    history.listen((location, action) => {
-                        // location is an object like window.location
-                        console.log(action, location.pathname, location.state);
-                        hashChanged(parent);
-                    });
-                    return null
-                })
+                // window.ReactRouterDOM.withRouter(({ history }) => {
+                //     history.listen((location, action) => {
+                //         // location is an object like window.location
+                //         console.log(action, location.pathname, location.state);
+                //         hashChanged(parent);
+                //     });
+                //     return null
+                // })
             }
             //  else {
             //     console.error('no ReactRouterDOM');
