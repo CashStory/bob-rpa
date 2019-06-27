@@ -51,27 +51,63 @@
             }
         }
 
+        function findButton(searchText) {
+            var aTags = document.getElementsByTagName('button');
+            var found;
+            for (var i = 0; i < aTags.length; i++) {
+                if (aTags[i].textContent == searchText) {
+                    found = aTags[i];
+                    break;
+                }
+            }
+            return found;
+        }
+
+
+        function changeTab(name) {
+            const buttonTab = findButton(name);
+            if (buttonTab) {
+                buttonTab.click();
+            }
+        }
+
+        function checkAdvancedBox() {
+            var inputs = document.getElementsByTagName('input');
+            var found;
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i].type.toLowerCase() == 'checkbox') {
+                    found = inputs[i];
+                    break;
+                }
+            }
+            if (found) {
+                found.checked = true;
+            }
+            return found;
+        }
+
         function ftpLogin(host, port, login, pwd) {
-            const hostInput = document.getElementById('at-field-username_and_email');
-            const portInput = document.getElementById('at-field-username_and_email');
-            const loginInput = document.getElementById('at-field-username_and_email');
-            const pwdInput = document.getElementById('at-field-password');
-            // const form = document.getElementById('at-pwd-form');
-            const button = document.getElementById('at-btn');
-            if (button && loginInput && pwdInput && hostInput && portInput) {
+            changeTab('FTP');
+            checkAdvancedBox();
+
+            const hostInput = document.getElementsByName('hostname')[0];
+            const portInput = document.getElementById('port')[0];
+            const loginInput = document.getElementsByName('username')[0];
+            const pwdInput = document.getElementsByName('hostname')[0];
+            const buttonConnect = findButton('CONNECT');
+            if (buttonConnect && loginInput && pwdInput && hostInput && portInput) {
                 console.log('login detected');
                 loginInput.value = login;
                 hostInput.value = host;
                 portInput.value = port;
                 pwdInput.value = pwd;
                 try {
-                    // form.submit();
                     button.click();
                 } catch (err) {
                     sendToParent('error', { message: 'fail submit' });
                 }
             } else {
-                console.error('fail to get form, button, loginInput, pwdInput, hostInput or portInput', form, button, loginInput, pwdInput, hostInput, portInput);
+                console.error('fail to get form, button, loginInput, pwdInput, hostInput or portInput', form, buttonConnect, loginInput, pwdInput, hostInput, portInput);
                 sendToParent('error', { message: 'fail to get form, pwd or email' });
             }
         }
