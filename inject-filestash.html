@@ -6,15 +6,6 @@
 
     document.addEventListener("DOMContentLoaded", () => {
         // Handler when the DOM is fully loaded
-        const connection = Penpal.connectToParent({
-            // Methods child is exposing to parent
-            debug: true,
-            methods: {
-                // multiply(num1, num2) {
-                //     return num1 * num2;
-                // },
-            }
-        });
 
         // window.FindReact = function (dom) {
         //     let key = Object.keys(dom).find(key => key.startsWith("__reactInternalInstance$"));
@@ -79,7 +70,18 @@
         })
         console.log('test required');
 
-
+        if (!window.frameElement) {
+            console.log('iframe');
+        }
+        const connection = Penpal.connectToParent({
+            // Methods child is exposing to parent
+            debug: true,
+            methods: {
+                // multiply(num1, num2) {
+                //     return num1 * num2;
+                // },
+            }
+        });
         connection.promise.then((parent) => {
             console.log('conected !!');
 
