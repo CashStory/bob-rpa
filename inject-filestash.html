@@ -14,8 +14,10 @@
                 mutations.forEach(function (mutation) {
                     if (oldHref != document.location.href) {
                         oldHref = document.location.href;
-                        console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
+                        console.log("location: " + document.location.href);
                         /* Changed ! your code here */
+                    } else {
+                        console.log('mutation bit not change');
                     }
 
                 });
