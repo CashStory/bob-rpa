@@ -72,162 +72,162 @@
 
         var iFrameDetection = (window === window.parent) ? false : true;
         if (iFrameDetection) {
-            console.log('iframe');
-        }
-        const connection = Penpal.connectToParent({
-            // Methods child is exposing to parent
-            debug: true,
-            methods: {
-                // multiply(num1, num2) {
-                //     return num1 * num2;
-                // },
-            }
-        });
-        connection.promise.then((parent) => {
-            console.log('conected !!');
+            console.log('iframe detected');
+            const connection = Penpal.connectToParent({
+                // Methods child is exposing to parent
+                debug: true,
+                methods: {
+                    // multiply(num1, num2) {
+                    //     return num1 * num2;
+                    // },
+                }
+            });
+            connection.promise.then((parent) => {
+                console.log('conected !!');
 
-            // parent.add(3, 1).then(total => console.log(total));
-            hashChanged(parent);
-            window.onhashchange = () => {
-                //code  
-                // }
-                // if (window.ReactRouterDOM && window.ReactRouterDOM.withRouter) {
+                // parent.add(3, 1).then(total => console.log(total));
                 hashChanged(parent);
+                window.onhashchange = () => {
+                    //code  
+                    // }
+                    // if (window.ReactRouterDOM && window.ReactRouterDOM.withRouter) {
+                    hashChanged(parent);
 
-                // window.ReactRouterDOM.withRouter(({ history }) => {
-                //     history.listen((location, action) => {
-                //         // location is an object like window.location
-                //         console.log(action, location.pathname, location.state);
-                //         hashChanged(parent);
-                //     });
-                //     return null
-                // })
-            }
-            //  else {
-            //     console.error('no ReactRouterDOM');
-            // }
-        });
+                    // window.ReactRouterDOM.withRouter(({ history }) => {
+                    //     history.listen((location, action) => {
+                    //         // location is an object like window.location
+                    //         console.log(action, location.pathname, location.state);
+                    //         hashChanged(parent);
+                    //     });
+                    //     return null
+                    // })
+                }
+                //  else {
+                //     console.error('no ReactRouterDOM');
+                // }
+            });
 
-        function needLogin(parent) {
-            console.log('hashChanged !!');
-            if (window.location.href.indexOf('login') > -1) {
-                parent.need_login().then((data) => {
-                    console.log(data);
-                    loginAction(data);
-                });
-                setTimeout(needLogin, 5000);
-            } else {
-                console.log('no need login');
-            }
-        }
-
-        function hashChanged(parent) {
-            console.log('hashChanged !!');
-            if (window.location.href.indexOf('login') > -1) {
-                needLogin(parent);
-            } else {
-                console.log('hash nothing to do with', window.location.href);
-            }
-        }
-
-        function findButton(searchText) {
-            var aTags = document.getElementsByTagName('button');
-            var found;
-            for (var i = 0; i < aTags.length; i++) {
-                if (aTags[i].textContent == searchText) {
-                    found = aTags[i];
-                    break;
+            function needLogin(parent) {
+                console.log('hashChanged !!');
+                if (window.location.href.indexOf('login') > -1) {
+                    parent.need_login().then((data) => {
+                        console.log(data);
+                        loginAction(data);
+                    });
+                    setTimeout(needLogin, 5000);
+                } else {
+                    console.log('no need login');
                 }
             }
-            return found;
-        }
 
-
-        function changeTab(name) {
-            const buttonTab = findButton(name);
-            if (buttonTab) {
-                buttonTab.click();
-            }
-        }
-
-        function checkAdvancedBox() {
-            var inputs = document.getElementsByTagName('input');
-            var found;
-            for (var i = 0; i < inputs.length; i++) {
-                if (inputs[i].type.toLowerCase() == 'checkbox') {
-                    found = inputs[i];
-                    break;
+            function hashChanged(parent) {
+                console.log('hashChanged !!');
+                if (window.location.href.indexOf('login') > -1) {
+                    needLogin(parent);
+                } else {
+                    console.log('hash nothing to do with', window.location.href);
                 }
             }
-            if (found) {
-                found.checked = true;
-            }
-            return found;
-        }
 
-        function ftpLogin(host, port, login, pwd) {
-            changeTab('FTP');
-            checkAdvancedBox();
-
-            const hostInput = document.getElementsByName('hostname')[0];
-            const portInput = document.getElementById('port')[0];
-            const loginInput = document.getElementsByName('username')[0];
-            const pwdInput = document.getElementsByName('password')[0];
-
-            const buttonConnect = findButton('CONNECT');
-            if (buttonConnect && loginInput && pwdInput && hostInput && portInput) {
-                console.log('login detected');
-                loginInput.value = login;
-                hostInput.value = host;
-                portInput.value = port;
-                pwdInput.value = pwd;
-                try {
-                    button.click();
-                } catch (err) {
-                    sendToParent('error', { message: 'fail submit' });
+            function findButton(searchText) {
+                var aTags = document.getElementsByTagName('button');
+                var found;
+                for (var i = 0; i < aTags.length; i++) {
+                    if (aTags[i].textContent == searchText) {
+                        found = aTags[i];
+                        break;
+                    }
                 }
-            } else {
-                console.error('fail to get form, button, loginInput, pwdInput, hostInput or portInput', form, buttonConnect, loginInput, pwdInput, hostInput, portInput);
-                sendToParent('error', { message: 'fail to get form, pwd or email' });
+                return found;
             }
-        }
 
-        function gitLogin(repo, login, pwd) {
-            changeTab('GIT');
-            checkAdvancedBox();
 
-            const repoInput = document.getElementsByName('repo')[0];
-            const loginInput = document.getElementsByName('username')[0];
-            const pwdInput = document.getElementsByName('password')[0];
-
-            const buttonConnect = findButton('CONNECT');
-            if (buttonConnect && loginInput && pwdInput && repoInput) {
-                console.log('login detected');
-                loginInput.value = login;
-                repoInput.value = repo;
-                pwdInput.value = pwd;
-                try {
-                    button.click();
-                } catch (err) {
-                    sendToParent('error', { message: 'fail submit' });
+            function changeTab(name) {
+                const buttonTab = findButton(name);
+                if (buttonTab) {
+                    buttonTab.click();
                 }
-            } else {
-                console.error('fail to get form, button, loginInput, pwdInput, hostInput or portInput', form, buttonConnect, loginInput, pwdInput, hostInput, portInput);
-                sendToParent('error', { message: 'fail to get form, pwd or email' });
             }
-        }
 
-        function loginAction(data) {
-            if (window.location.href.indexOf('login') > -1) {
-                console.log('at login page');
-                const selectedTab = data.tab;
-                if (selectedTab === 'FTP') {
-                    ftpLogin(data.host, data.port, data.login, data.pwd);
-                } else if (selectedTab === 'GIT') {
-                    gitLogin(data.repo, data.login, data.pwd);
+            function checkAdvancedBox() {
+                var inputs = document.getElementsByTagName('input');
+                var found;
+                for (var i = 0; i < inputs.length; i++) {
+                    if (inputs[i].type.toLowerCase() == 'checkbox') {
+                        found = inputs[i];
+                        break;
+                    }
                 }
-            } else {
-                console.error('not on login page');
+                if (found) {
+                    found.checked = true;
+                }
+                return found;
+            }
+
+            function ftpLogin(host, port, login, pwd) {
+                changeTab('FTP');
+                checkAdvancedBox();
+
+                const hostInput = document.getElementsByName('hostname')[0];
+                const portInput = document.getElementById('port')[0];
+                const loginInput = document.getElementsByName('username')[0];
+                const pwdInput = document.getElementsByName('password')[0];
+
+                const buttonConnect = findButton('CONNECT');
+                if (buttonConnect && loginInput && pwdInput && hostInput && portInput) {
+                    console.log('login detected');
+                    loginInput.value = login;
+                    hostInput.value = host;
+                    portInput.value = port;
+                    pwdInput.value = pwd;
+                    try {
+                        button.click();
+                    } catch (err) {
+                        sendToParent('error', { message: 'fail submit' });
+                    }
+                } else {
+                    console.error('fail to get form, button, loginInput, pwdInput, hostInput or portInput', form, buttonConnect, loginInput, pwdInput, hostInput, portInput);
+                    sendToParent('error', { message: 'fail to get form, pwd or email' });
+                }
+            }
+
+            function gitLogin(repo, login, pwd) {
+                changeTab('GIT');
+                checkAdvancedBox();
+
+                const repoInput = document.getElementsByName('repo')[0];
+                const loginInput = document.getElementsByName('username')[0];
+                const pwdInput = document.getElementsByName('password')[0];
+
+                const buttonConnect = findButton('CONNECT');
+                if (buttonConnect && loginInput && pwdInput && repoInput) {
+                    console.log('login detected');
+                    loginInput.value = login;
+                    repoInput.value = repo;
+                    pwdInput.value = pwd;
+                    try {
+                        button.click();
+                    } catch (err) {
+                        sendToParent('error', { message: 'fail submit' });
+                    }
+                } else {
+                    console.error('fail to get form, button, loginInput, pwdInput, hostInput or portInput', form, buttonConnect, loginInput, pwdInput, hostInput, portInput);
+                    sendToParent('error', { message: 'fail to get form, pwd or email' });
+                }
+            }
+
+            function loginAction(data) {
+                if (window.location.href.indexOf('login') > -1) {
+                    console.log('at login page');
+                    const selectedTab = data.tab;
+                    if (selectedTab === 'FTP') {
+                        ftpLogin(data.host, data.port, data.login, data.pwd);
+                    } else if (selectedTab === 'GIT') {
+                        gitLogin(data.repo, data.login, data.pwd);
+                    }
+                } else {
+                    console.error('not on login page');
+                }
             }
         }
     });
