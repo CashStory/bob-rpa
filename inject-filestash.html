@@ -46,6 +46,7 @@
 
         window['_requireByName'] = (name, makeGlobal) => getAllModules()
             .then((modules) => {
+                console.log('modules', modules);
                 let returnMember;
                 let module = _.find(modules, (module) => {
                     if (_.isObject(module.exports) && name in module.exports) {
