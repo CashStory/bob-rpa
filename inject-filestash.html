@@ -44,36 +44,38 @@
             });
         }
 
-        window['_requireByName'] = (name, makeGlobal) =>
-            getAllModules()
-                .then((modules) => {
-                    let returnMember;
-                    let module = _.find(modules, (module) => {
-                        if (_.isObject(module.exports) && name in module.exports) {
-                            returnMember = true;
-                            return true;
-                        } else if (_.isFunction(module.exports) &&
-                            module.exports.name === name) {
-                            return true;
-                        }
-                    });
-                    if (module) {
-                        module = returnMember ? module.exports[name] : module.exports;
-                        if (makeGlobal) {
-                            const moduleName = makeGlobal === true ? name : makeGlobal;
-                            window[moduleName] = module;
-                            console.log(`Module or module export saved as 'window.${moduleName}':`,
-                                module);
-                        } else {
-                            console.log(`Module or module export 'name' found:`, module);
-                        }
-                        return module;
+        window['_requireByName'] = (name, makeGlobal) => getAllModules()
+            .then((modules) => {
+                let returnMember;
+                let module = _.find(modules, (module) => {
+                    if (_.isObject(module.exports) && name in module.exports) {
+                        returnMember = true;
+                        return true;
+                    } else if (_.isFunction(module.exports) &&
+                        module.exports.name === name) {
+                        return true;
                     }
-                    console.warn(`Module or module export '${name}'' could not be found`);
-                    return null;
                 });
+                if (module) {
+                    module = returnMember ? module.exports[name] : module.exports;
+                    if (makeGlobal) {
+                        const moduleName = makeGlobal === true ? name : makeGlobal;
+                        window[moduleName] = module;
+                        console.log(`Module or module export saved as 'window.${moduleName}':`,
+                            module);
+                    } else {
+                        console.log(`Module or module export 'name' found:`, module);
+                    }
+                    return module;
+                }
+                console.warn(`Module or module export '${name}'' could not be found`);
+                return null;
+            });
 
-        _requireByName('react-router-dom', true);
+        console.log('test require');
+        console.log(_requireByName('react-router-dom', true));
+        console.log('test required');
+
 
         connection.promise.then((parent) => {
             console.log('conected !!');
