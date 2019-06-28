@@ -73,7 +73,9 @@
             });
 
         console.log('test require');
-        console.log(_requireByName('react-router-dom', true));
+        _requireByName('react-router-dom', false).then((mod) => {
+            console.log('mod', mod);
+        })
         console.log('test required');
 
 
