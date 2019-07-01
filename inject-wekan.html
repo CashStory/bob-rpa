@@ -63,14 +63,12 @@
                         email.value = data.email;
                         pwd.value = data.pwd;
                         try {
-                            // form.submit();
                             button.click();
                         } catch (err) {
-                            sendToParent('error', { message: 'fail submit' });
+                            console.error('fail submit', button);
                         }
                     } else {
                         console.error('fail to get form, pwd or email', form, email, pwd);
-                        sendToParent('error', { message: 'fail to get form, pwd or email' });
                     }
                 } else {
                     console.error('not on login page');

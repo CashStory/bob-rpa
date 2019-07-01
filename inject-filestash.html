@@ -141,13 +141,12 @@
                         portInput.value = port;
                         pwdInput.value = pwd;
                         try {
-                            button.click();
+                            buttonConnect.click();
                         } catch (err) {
-                            sendToParent('error', { message: 'fail submit' });
+                            console.error('fail submit', buttonConnect);
                         }
                     } else {
                         console.error('fail to get form, button, loginInput, pwdInput, hostInput or portInput', form, buttonConnect, loginInput, pwdInput, hostInput, portInput);
-                        sendToParent('error', { message: 'fail to get form, pwd or email' });
                     }
                 }).catch((err) => {
                     console.error(err);
@@ -170,13 +169,12 @@
                         repoInput.value = repo;
                         pwdInput.value = pwd;
                         try {
-                            button.click();
+                            buttonConnect.click();
                         } catch (err) {
-                            sendToParent('error', { message: 'fail submit' });
+                            console.error('fail submit', buttonConnect);
                         }
                     } else {
                         console.error('fail to get buttonConnect, loginInput, pwdInput, repoInput', buttonConnect, loginInput, pwdInput, repoInput);
-                        sendToParent('error', { message: 'fail to get form, pwd or email' });
                     }
                 }).catch((err) => {
                     console.error(err);
