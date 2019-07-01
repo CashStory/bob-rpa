@@ -84,77 +84,93 @@
 
 
         function changeTab(name) {
-            const buttonTab = findButton(name);
-            if (buttonTab) {
-                buttonTab.click();
-            }
+            return new Promise((resolve, reject) => {
+                const buttonTab = findButton(name);
+                if (buttonTab) {
+                    buttonTab.click();
+                    setTimeout(400, resolve());
+                } else {
+                    reject('tab not found');
+                }
+            });
         }
 
         function checkAdvancedBox() {
-            var inputs = document.getElementsByTagName('input');
-            var found;
-            for (var i = 0; i < inputs.length; i++) {
-                if (inputs[i].type.toLowerCase() == 'checkbox') {
-                    found = inputs[i];
-                    break;
+            return new Promise((resolve, reject) => {
+                var inputs = document.getElementsByTagName('input');
+                var found;
+                for (var i = 0; i < inputs.length; i++) {
+                    if (inputs[i].type.toLowerCase() == 'checkbox') {
+                        found = inputs[i];
+                        break;
+                    }
                 }
-            }
-            if (found) {
-                found.checked = true;
-            }
-            return found;
+                if (found) {
+                    found.checked = true;
+                    setTimeout(400, resolve(found));
+                } else {
+                    reject('button not found');
+                }
+            });
         }
 
         function ftpLogin(host, port, login, pwd) {
-            changeTab('FTP');
-            checkAdvancedBox();
+            changeTab('FTP')
+                .then(checkAdvancedBox)
+                .then(() => {
+                    const hostInput = document.getElementsByName('hostname')[0];
+                    const portInput = document.getElementById('port')[0];
+                    const loginInput = document.getElementsByName('username')[0];
+                    const pwdInput = document.getElementsByName('password')[0];
 
-            const hostInput = document.getElementsByName('hostname')[0];
-            const portInput = document.getElementById('port')[0];
-            const loginInput = document.getElementsByName('username')[0];
-            const pwdInput = document.getElementsByName('password')[0];
-
-            const buttonConnect = findButton('CONNECT');
-            if (buttonConnect && loginInput && pwdInput && hostInput && portInput) {
-                console.log('login detected');
-                loginInput.value = login;
-                hostInput.value = host;
-                portInput.value = port;
-                pwdInput.value = pwd;
-                try {
-                    button.click();
-                } catch (err) {
-                    sendToParent('error', { message: 'fail submit' });
-                }
-            } else {
-                console.error('fail to get form, button, loginInput, pwdInput, hostInput or portInput', form, buttonConnect, loginInput, pwdInput, hostInput, portInput);
-                sendToParent('error', { message: 'fail to get form, pwd or email' });
-            }
+                    const buttonConnect = findButton('CONNECT');
+                    if (buttonConnect && loginInput && pwdInput && hostInput && portInput) {
+                        console.log('login detected');
+                        loginInput.value = login;
+                        hostInput.value = host;
+                        portInput.value = port;
+                        pwdInput.value = pwd;
+                        try {
+                            button.click();
+                        } catch (err) {
+                            sendToParent('error', { message: 'fail submit' });
+                        }
+                    } else {
+                        console.error('fail to get form, button, loginInput, pwdInput, hostInput or portInput', form, buttonConnect, loginInput, pwdInput, hostInput, portInput);
+                        sendToParent('error', { message: 'fail to get form, pwd or email' });
+                    }
+                }).catch((err) => {
+                    console.error(err);
+                });
         }
 
         function gitLogin(repo, login, pwd) {
-            changeTab('GIT');
             checkAdvancedBox();
+            changeTab('GIT')
+                .then(checkAdvancedBox)
+                .then(() => {
+                    const repoInput = document.getElementsByName('repo')[0];
+                    const loginInput = document.getElementsByName('username')[0];
+                    const pwdInput = document.getElementsByName('password')[0];
 
-            const repoInput = document.getElementsByName('repo')[0];
-            const loginInput = document.getElementsByName('username')[0];
-            const pwdInput = document.getElementsByName('password')[0];
-
-            const buttonConnect = findButton('CONNECT');
-            if (buttonConnect && loginInput && pwdInput && repoInput) {
-                console.log('login detected');
-                loginInput.value = login;
-                repoInput.value = repo;
-                pwdInput.value = pwd;
-                try {
-                    button.click();
-                } catch (err) {
-                    sendToParent('error', { message: 'fail submit' });
-                }
-            } else {
-                console.error('fail to get buttonConnect, loginInput, pwdInput, repoInput', buttonConnect, loginInput, pwdInput, repoInput);
-                sendToParent('error', { message: 'fail to get form, pwd or email' });
-            }
+                    const buttonConnect = findButton('CONNECT');
+                    if (buttonConnect && loginInput && pwdInput && repoInput) {
+                        console.log('login detected');
+                        loginInput.value = login;
+                        repoInput.value = repo;
+                        pwdInput.value = pwd;
+                        try {
+                            button.click();
+                        } catch (err) {
+                            sendToParent('error', { message: 'fail submit' });
+                        }
+                    } else {
+                        console.error('fail to get buttonConnect, loginInput, pwdInput, repoInput', buttonConnect, loginInput, pwdInput, repoInput);
+                        sendToParent('error', { message: 'fail to get form, pwd or email' });
+                    }
+                }).catch((err) => {
+                    console.error(err);
+                });
         }
 
         function loginAction(data) {
