@@ -152,7 +152,7 @@
                     sendToParent('error', { message: 'fail submit' });
                 }
             } else {
-                console.error('fail to get form, button, loginInput, pwdInput, hostInput or portInput', form, buttonConnect, loginInput, pwdInput, hostInput, portInput);
+                console.error('fail to get button, loginInput, pwdInput, hostInput or portInput', buttonConnect, loginInput, pwdInput, hostInput, portInput);
                 sendToParent('error', { message: 'fail to get form, pwd or email' });
             }
         }
