@@ -22,39 +22,39 @@
             }
         }); //3aa251610dea
         connection.promise.then((parent) => {
-            console.log('conected !!');
+            console.log('connected !!');
 
             // parent.add(3, 1).then(total => console.log(total));
-            document.addEventListener("DOMContentLoaded", () => {
-                console.log("DOMContentLoaded");
+            // document.addEventListener("DOMContentLoaded", () => {
+            // console.log("DOMContentLoaded");
 
-                const bodyList = document.querySelector("html")
-                    , observer = new MutationObserver((mutations) => {
-                        mutations.forEach((mutation) => {
-                            if (oldHref != document.location.href) {
-                                oldHref = '' + document.location.href;
-                                console.log("location: " + document.location.href);
-                                /* Changed ! your code here */
-                                hashChanged(parent);
-                            } else {
-                                console.log('mutation but not change', oldHref, document.location.href);
-                            }
-                        });
-
+            const bodyList = document.querySelector("html")
+                , observer = new MutationObserver((mutations) => {
+                    mutations.forEach((mutation) => {
+                        if (oldHref != document.location.href) {
+                            oldHref = '' + document.location.href;
+                            console.log("location: " + document.location.href);
+                            /* Changed ! your code here */
+                            hashChanged(parent);
+                        } else {
+                            console.log('mutation but not change', oldHref, document.location.href);
+                        }
                     });
 
-                var config = {
-                    childList: true,
-                    subtree: true
-                };
+                });
 
-                observer.observe(bodyList, config);
-                if (oldHref != document.location.href) {
-                    hashChanged(parent);
-                }
-            });
+            var config = {
+                childList: true,
+                subtree: true
+            };
 
+            observer.observe(bodyList, config);
+            if (oldHref != document.location.href) {
+                hashChanged(parent);
+            }
         });
+
+        // });
 
         function needLogin(parent) {
             console.log('hashChanged !!');
