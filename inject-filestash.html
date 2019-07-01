@@ -48,6 +48,9 @@
                 };
 
                 observer.observe(bodyList, config);
+                if (oldHref != document.location.href) {
+                    hashChanged(parent);
+                }
             });
 
         });
