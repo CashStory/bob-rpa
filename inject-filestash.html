@@ -30,17 +30,14 @@
 
             const bodyList = document.querySelector("html")
                 , observer = new MutationObserver((mutations) => {
-                    mutations.forEach((mutation) => {
-                        if (oldHref != document.location.href) {
-                            oldHref = '' + document.location.href;
-                            console.log("location: " + document.location.href);
-                            /* Changed ! your code here */
-                            hashChanged(parent);
-                        } else {
-                            console.log('mutation but not change', oldHref, document.location.href);
-                        }
-                    });
-
+                    if (oldHref != document.location.href) {
+                        oldHref = '' + document.location.href;
+                        console.log("location: " + document.location.href);
+                        /* Changed ! your code here */
+                        hashChanged(parent);
+                    } else {
+                        console.log('mutation but not change', oldHref, document.location.href);
+                    }
                 });
 
             var config = {
