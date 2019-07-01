@@ -25,29 +25,31 @@
             console.log('conected !!');
 
             // parent.add(3, 1).then(total => console.log(total));
-            const bodyList = document.querySelector("html")
-                , observer = new MutationObserver((mutations) => {
-                    mutations.forEach((mutation) => {
-                        if (oldHref != document.location.href) {
-                            oldHref = '' + document.location.href;
-                            console.log("location: " + document.location.href);
-                            /* Changed ! your code here */
-                            document.addEventListener("DOMContentLoaded", () => {
+            document.addEventListener("DOMContentLoaded", () => {
+
+                const bodyList = document.querySelector("html")
+                    , observer = new MutationObserver((mutations) => {
+                        mutations.forEach((mutation) => {
+                            if (oldHref != document.location.href) {
+                                oldHref = '' + document.location.href;
+                                console.log("location: " + document.location.href);
+                                /* Changed ! your code here */
                                 hashChanged(parent);
-                            });
-                        } else {
-                            console.log('mutation but not change', oldHref, document.location.href);
-                        }
+                            } else {
+                                console.log('mutation but not change', oldHref, document.location.href);
+                            }
+                        });
+
                     });
 
-                });
+                var config = {
+                    childList: true,
+                    subtree: true
+                };
 
-            var config = {
-                childList: true,
-                subtree: true
-            };
+                observer.observe(bodyList, config);
+            });
 
-            observer.observe(bodyList, config);
         });
 
         function needLogin(parent) {
