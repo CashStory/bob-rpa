@@ -32,7 +32,9 @@
                             oldHref = '' + document.location.href;
                             console.log("location: " + document.location.href);
                             /* Changed ! your code here */
-                            hashChanged(parent);
+                            document.addEventListener("DOMContentLoaded", () => {
+                                hashChanged(parent);
+                            });
                         } else {
                             console.log('mutation but not change', oldHref, document.location.href);
                         }
