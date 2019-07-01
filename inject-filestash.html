@@ -9,17 +9,17 @@
         // Handler when the DOM is fully loaded
 
         let oldHref = document.location.href;
-        const bodyList = document.querySelector("body")
-            , observer = new MutationObserver(function (mutations) {
-                mutations.forEach(function (mutation) {
+
+        const bodyList = document.querySelector("html")
+            , observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
                     if (oldHref != document.location.href) {
                         oldHref = document.location.href;
                         console.log("location: " + document.location.href);
                         /* Changed ! your code here */
                     } else {
-                        console.log('mutation bit not change');
+                        console.log('mutation but not change');
                     }
-
                 });
 
             });
@@ -52,21 +52,26 @@
 
                 // parent.add(3, 1).then(total => console.log(total));
                 hashChanged(parent);
-                window.onhashchange = () => {
-                    //code  
-                    // }
-                    // if (window.ReactRouterDOM && window.ReactRouterDOM.withRouter) {
-                    hashChanged(parent);
+                var prevHash;
 
-                    // window.ReactRouterDOM.withRouter(({ history }) => {
-                    //     history.listen((location, action) => {
-                    //         // location is an object like window.location
-                    //         console.log(action, location.pathname, location.state);
-                    //         hashChanged(parent);
-                    //     });
-                    //     return null
-                    // })
-                }
+                // setTimeout(() => {
+
+                // }, 1000);
+                // window.onhashchange = () => {
+                //code  
+                // }
+                // if (window.ReactRouterDOM && window.ReactRouterDOM.withRouter) {
+                // hashChanged(parent);
+
+                // window.ReactRouterDOM.withRouter(({ history }) => {
+                //     history.listen((location, action) => {
+                //         // location is an object like window.location
+                //         console.log(action, location.pathname, location.state);
+                //         hashChanged(parent);
+                //     });
+                //     return null
+                // })
+                // }
                 //  else {
                 //     console.error('no ReactRouterDOM');
                 // }
