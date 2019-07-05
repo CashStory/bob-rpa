@@ -30,6 +30,8 @@
             connection.promise.then((parent) => {
                 console.log('connected !!');
 
+                hashChanged(parent);
+
                 var $rootScope = angular.element(document.querySelectorAll("[ui-view]")[0]).injector().get('$rootScope');
 
                 $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
@@ -61,17 +63,17 @@
             // });
 
             function needLogin(parent) {
-                console.log('hashChanged !!');
                 if (document.getElementsByClassName("login-wrapper")) {
-                    parent.need_login().then((data) => {
-                        console.log(data);
-                        loginAction(data);
-                    });
                     setTimeout(() => {
                         needLogin(parent);
                     }, 5000);
+                    return parent.need_login().then((data) => {
+                        console.log(data);
+                        loginAction(data);
+                    });
                 } else {
                     console.log('no need login');
+                    return Promise.resolve();
                 }
             }
 

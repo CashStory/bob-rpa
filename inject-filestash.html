@@ -54,7 +54,6 @@
         // });
 
         function needLogin(parent) {
-            console.log('hashChanged !!');
             if (window.location.href.indexOf('login') > -1) {
                 parent.need_login().then((data) => {
                     console.log(data);
