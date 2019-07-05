@@ -93,7 +93,9 @@
                 const buttonTab = findButton(name);
                 if (buttonTab) {
                     buttonTab.click();
-                    setTimeout(500, resolve());
+                    setTimeout(() => {
+                        resolve();
+                    }, 500);
                 } else {
                     reject('tab not found');
                 }
@@ -112,7 +114,9 @@
                 }
                 if (found) {
                     found.click();
-                    setTimeout(500, resolve(found));
+                    setTimeout(() => {
+                        resolve();
+                    }, 500);
                 } else {
                     reject('button not found');
                 }
@@ -142,9 +146,9 @@
                     }
                     pwdInput.value = pwd;
                     try {
-                        setTimeout(500, () => {
+                        setTimeout(() => {
                             buttonConnect.click();
-                        });
+                        }, 500);
                     } catch (err) {
                         console.error('fail submit', buttonConnect);
                     }
