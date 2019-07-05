@@ -129,12 +129,12 @@
                 const hostInput = document.getElementsByName('hostname')[0];
                 const loginInput = document.getElementsByName('username')[0];
                 const pwdInput = document.getElementsByName('password')[0];
-
+                let portInput;
                 if (port) {
-                    const portInput = document.getElementsByName('port')[0];
+                    portInput = document.getElementsByName('port')[0];
                 }
                 const buttonConnect = findButton('CONNECT');
-                if (buttonConnect && loginInput && pwdInput && hostInput && portInput) {
+                if (buttonConnect && loginInput && pwdInput && hostInput) {
                     console.log('login detected');
                     loginInput.value = login;
                     hostInput.value = host;
