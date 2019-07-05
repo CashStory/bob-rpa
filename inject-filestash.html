@@ -120,8 +120,8 @@
             });
         }
 
-        function ftpLogin(host, port, login, pwd) {
-            changeTab('FTPS')
+        function ftpLogin(tab, host, port, login, pwd) {
+            changeTab(tab)
                 .then(checkAdvancedBox)
                 .then(() => {
                     const hostInput = document.getElementsByName('hostname')[0];
@@ -181,8 +181,8 @@
             if (window.location.href.indexOf('login') > -1) {
                 console.log('at login page');
                 const selectedTab = data.tab;
-                if (selectedTab === 'FTP') {
-                    ftpLogin(data.host, data.port, data.login, data.pwd);
+                if (selectedTab === 'FTPS' || selectedTab === 'FTP') {
+                    ftpLogin(selectedTab, data.host, data.port, data.login, data.pwd);
                 } else if (selectedTab === 'GIT') {
                     gitLogin(data.repo, data.login, data.pwd);
                 }
