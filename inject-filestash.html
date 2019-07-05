@@ -121,32 +121,38 @@
         }
 
         function ftpLogin(tab, host, port, login, pwd) {
-            changeTab(tab)
-                .then(checkAdvancedBox)
-                .then(() => {
-                    const hostInput = document.getElementsByName('hostname')[0];
-                    const portInput = document.getElementById('port')[0];
-                    const loginInput = document.getElementsByName('username')[0];
-                    const pwdInput = document.getElementsByName('password')[0];
+            let chTab = changeTab(tab);
+            if (port) {
+                chTab.then(checkAdvancedBox);
+            }
+            chTab.then(() => {
+                const hostInput = document.getElementsByName('hostname')[0];
+                const loginInput = document.getElementsByName('username')[0];
+                const pwdInput = document.getElementsByName('password')[0];
 
-                    const buttonConnect = findButton('CONNECT');
-                    if (buttonConnect && loginInput && pwdInput && hostInput && portInput) {
-                        console.log('login detected');
-                        loginInput.value = login;
-                        hostInput.value = host;
+                if (port) {
+                    const portInput = document.getElementById('port')[0];
+                }
+                const buttonConnect = findButton('CONNECT');
+                if (buttonConnect && loginInput && pwdInput && hostInput && portInput) {
+                    console.log('login detected');
+                    loginInput.value = login;
+                    hostInput.value = host;
+                    if (port) {
                         portInput.value = port;
-                        pwdInput.value = pwd;
-                        try {
-                            buttonConnect.click();
-                        } catch (err) {
-                            console.error('fail submit', buttonConnect);
-                        }
-                    } else {
-                        console.error('fail to get buttonConnect, loginInput, pwdInput, hostInput or portInput', buttonConnect, loginInput, pwdInput, hostInput, portInput);
                     }
-                }).catch((err) => {
-                    console.error(err);
-                });
+                    pwdInput.value = pwd;
+                    try {
+                        buttonConnect.click();
+                    } catch (err) {
+                        console.error('fail submit', buttonConnect);
+                    }
+                } else {
+                    console.error('fail to get buttonConnect, loginInput, pwdInput, hostInput or portInput', buttonConnect, loginInput, pwdInput, hostInput, portInput);
+                }
+            }).catch((err) => {
+                console.error(err);
+            });
         }
 
         function gitLogin(repo, login, pwd) {
@@ -181,7 +187,7 @@
             if (window.location.href.indexOf('login') > -1) {
                 console.log('at login page');
                 const selectedTab = data.tab;
-                if (selectedTab === 'FTPS' || selectedTab === 'FTP') {
+                if (selectedTab === 'FTPS' || selectedTab === 'FTP' || selectedTab === 'SFTP') {
                     ftpLogin(selectedTab, data.host, data.port, data.login, data.pwd);
                 } else if (selectedTab === 'GIT') {
                     gitLogin(data.repo, data.login, data.pwd);
