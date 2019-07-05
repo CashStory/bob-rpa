@@ -112,7 +112,7 @@
                     }
                 }
                 if (found) {
-                    found.checked = true;
+                    found.click();
                     setTimeout(400, resolve(found));
                 } else {
                     reject('button not found');
