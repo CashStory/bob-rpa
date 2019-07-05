@@ -95,8 +95,8 @@
                     const buttonConnect = document.getElementsByClassName('login__submit-button')[0];
                     if (buttonConnect && loginInput && pwdInput) {
                         console.log('login detected');
-                        loginInput.value = login;
-                        pwdInput.value = pwd;
+                        loginInput.value = data.email;
+                        pwdInput.value = data.pwd;
                         try {
                             buttonConnect.click();
                         } catch (err) {
