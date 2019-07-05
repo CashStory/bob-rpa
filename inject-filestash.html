@@ -123,7 +123,7 @@
         function ftpLogin(tab, host, port, login, pwd) {
             let chTab = changeTab(tab);
             if (port) {
-                chTab.then(checkAdvancedBox);
+                chTab = chTab.then(checkAdvancedBox);
             }
             chTab.then(() => {
                 const hostInput = document.getElementsByName('hostname')[0];
