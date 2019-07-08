@@ -13,17 +13,19 @@
             const connection = Penpal.connectToParent({
                 debug: true,
                 methods: {
-                    hideLeftMenu() {
-                        document.getElementsByClassName('slide-navigator')[0].style.display = 'none';
+                    hideElements(elemets) {
+                        if (elemets && elemets.length) {
+                            elemets.forEach((elemet) => {
+                                document.getElementsByClassName(elemet)[0].style.display = 'none';
+                            })
+                        }
                     },
-                    showLeftMenu() {
-                        document.getElementsByClassName('slide-navigator')[0].style.display = '';
-                    },
-                    hideHeader() {
-                        document.getElementsByClassName('header')[0].style.display = 'none';
-                    },
-                    showHeader() {
-                        document.getElementsByClassName('header')[0].style.display = '';
+                    showElements(elemets) {
+                        if (elemets && elemets.length) {
+                            elemets.forEach((elemet) => {
+                                document.getElementsByClassName(elemet)[0].style.display = '';
+                            })
+                        }
                     },
                 }
             });
