@@ -19,15 +19,19 @@
                 hideElements(elemets) {
                     if (elemets && elemets.length) {
                         elemets.forEach((elemet) => {
-                            document.getElementsByClassName(elemet)[0].style.display = 'none';
+                            const elem = document.getElementsByClassName(elemet)[0]
+                            if (elem) {
+                                elem.style.display = 'none';
+                            }
                         })
                     }
                 },
                 showElements(elemets) {
                     if (elemets && elemets.length) {
-                        elemets.forEach((elemet) => {
-                            document.getElementsByClassName(elemet)[0].style.display = '';
-                        })
+                        const elem = document.getElementsByClassName(elemet)[0]
+                        if (elem) {
+                            elem.style.display = '';
+                        }
                     }
                 },
             }
