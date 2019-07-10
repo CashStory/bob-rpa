@@ -11,22 +11,10 @@
                 debug: true,
                 methods: {
                     hideElements(elemets) {
-                        if (elemets && elemets.length) {
-                            elemets.forEach((elemet) => {
-                                const elem = document.getElementsByClassName(elemet)[0]
-                                if (elem) {
-                                    elem.style.display = 'none';
-                                }
-                            })
-                        }
+                        setElementsDisplay(elements, 'none')
                     },
                     showElements(elemets) {
-                        if (elemets && elemets.length) {
-                            const elem = document.getElementsByClassName(elemet)[0]
-                            if (elem) {
-                                elem.style.display = '';
-                            }
-                        }
+                        setElementsDisplay(elements, '')
                     },
                 }
             });
@@ -45,6 +33,24 @@
                     console.error('no FlowRouter');
                 }
             });
+
+            function setElementsDisplay(elements, display) {
+                const done = false;
+                elemets.forEach((elemet) => {
+                    const elem = document.getElementsByClassName(elemet)[0]
+                    if (elem) {
+                        elem.style.display = display;
+                        done = true;
+                    } else {
+                        done = false;
+                    }
+                })
+                if (!done) {
+                    setTimeout(() => {
+                        setElementsDisplay(elements, display)
+                    }, 500)
+                }
+            }
 
             function needLogin(parent) {
                 if (window.location.href.indexOf('sign-in') > -1) {
