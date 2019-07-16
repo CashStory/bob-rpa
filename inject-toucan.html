@@ -75,7 +75,7 @@
             }
 
             function needLogin(parent) {
-                if (document.getElementsByClassName("login-wrapper")) {
+                if (document.getElementsByClassName("login-wrapper") > 0) {
                     setTimeout(() => {
                         needLogin(parent);
                     }, 5000);
@@ -91,7 +91,7 @@
 
             function hashChanged(parent) {
                 console.log('hashChanged !!');
-                if (document.getElementsByClassName("login-wrapper")) {
+                if (document.getElementsByClassName("login-wrapper") > 0) {
                     needLogin(parent);
                 } else {
                     console.log('hash nothing to do with', window.location.href);
@@ -99,7 +99,7 @@
             }
 
             function loginAction(data) {
-                if (document.getElementsByClassName("login-wrapper")) {
+                if (document.getElementsByClassName("login-wrapper") > 0) {
                     console.log('at login page');
                     const loginInput = document.getElementsByClassName('login__input')[0];
                     const pwdInput = document.getElementsByClassName('login__input')[1];
