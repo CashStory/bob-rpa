@@ -46,6 +46,8 @@
 
                 // waitUntilAngularLoaded
                 var $rootScope = await waitUntilAngularLoaded();
+                console.log('found rootScope', $rootScope);
+
 
                 $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
                     console.log('$stateChangeStart from ' + fromState.name + '- fired when the transition begins. fromState,fromParams : \n', fromState, fromParams);
