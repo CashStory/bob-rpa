@@ -158,10 +158,10 @@
                     console.log('login detected');
                     let event = new Event('input', { bubbles: true });
                     event.simulated = true;
-                    loginInput.value = login;
-                    loginInput.dispatchEvent(event);
                     hostInput.value = host;
                     hostInput.dispatchEvent(event);
+                    loginInput.value = login;
+                    loginInput.dispatchEvent(event);
                     if (port) {
                         portInput.value = port;
                         portInput.dispatchEvent(event);

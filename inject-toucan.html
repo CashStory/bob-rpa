@@ -12,8 +12,8 @@
 
     const waitUntilAngularLoaded = async () => {
         for (let i = null; !i; i = angular.element(document.querySelectorAll("[ui-view]")[0]).injector()) {
-            console.log('wait for router');
-            await timeout(500);
+            // console.log('wait for router');
+            await timeout(100);
         }
         try {
             const retVal = angular.element(document.querySelectorAll("[ui-view]")[0]).injector().get('$rootScope');
@@ -90,15 +90,16 @@
                 if (!done) {
                     setTimeout(() => {
                         setElementsDisplay(elements, display)
-                    }, 500)
+                    }, 100)
                 }
             }
 
             function needLogin(parent) {
-                if (document.getElementsByClassName("login-wrapper").length > 0) {
+                if (document.getElementsByClassName("login-wrapper")
+                    && document.getElementsByClassName("login-wrapper").length > 0) {
                     setTimeout(() => {
                         needLogin(parent);
-                    }, 5000);
+                    }, 100);
                     return parent.need_login().then((data) => {
                         console.log(data);
                         loginAction(data);
@@ -111,7 +112,8 @@
 
             function hashChanged(parent) {
                 console.log('hashChanged !!');
-                if (document.getElementsByClassName("login-wrapper").length > 0) {
+                if (document.getElementsByClassName("login-wrapper")
+                    && document.getElementsByClassName("login-wrapper").length > 0) {
                     needLogin(parent);
                 } else {
                     console.log('hash nothing to do with', window.location.href);
@@ -119,7 +121,8 @@
             }
 
             function loginAction(data) {
-                if (document.getElementsByClassName("login-wrapper").length > 0) {
+                if (document.getElementsByClassName("login-wrapper")
+                    && document.getElementsByClassName("login-wrapper").length > 0) {
                     console.log('at login page');
                     const loginInput = document.getElementsByClassName('login__input')[0];
                     const pwdInput = document.getElementsByClassName('login__input')[1];
