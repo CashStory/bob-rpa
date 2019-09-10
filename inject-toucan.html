@@ -12,6 +12,7 @@
 
     const waitUntilAngularLoaded = async () => {
         for (let i = null; !i; i = angular.element(document.querySelectorAll("[ui-view]")[0]).injector()) {
+            console.log('wait for router');
             await timeout(500);
         }
         try {
