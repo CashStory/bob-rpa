@@ -125,16 +125,9 @@
 
         function checkAdvancedBox() {
             return new Promise((resolve, reject) => {
-                var inputs = document.getElementsByTagName('input');
-                var found;
-                for (var i = 0; i < inputs.length; i++) {
-                    if (inputs[i].type.toLowerCase() == 'checkbox') {
-                        found = inputs[i];
-                        break;
-                    }
-                }
-                if (found) {
-                    found.click();
+                var input = document.querySelectorAll('input[type=checkbox]')[0];
+                if (input) {
+                    input.click();
                     setTimeout(() => {
                         resolve();
                     }, 500);
@@ -146,7 +139,7 @@
 
         function ftpLogin(tab, host, port, login, pwd) {
             let chTab = changeTab(tab);
-            if (port && !document.getElementsByName('port')[0]) {
+            if (port && !document.querySelectorAll('input[type=checkbox]')[0].checked) {
                 chTab = chTab.then(checkAdvancedBox);
             }
             chTab.then(() => {
