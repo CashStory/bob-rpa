@@ -6,6 +6,17 @@
     const version_inject_iframe = '0.0.1';
 
 
+    function timeout(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    const waitUntilAngularLoaded = async () => {
+        while (!angular.element(document.querySelectorAll("[ui-view]")[0]).injector()) {
+            await timeout(500);
+        }
+        return angular.element(document.querySelectorAll("[ui-view]")[0]).injector();
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
 
         var iFrameDetection = (window === window.parent) ? false : true;
@@ -22,12 +33,13 @@
                     },
                 }
             });
-            connection.promise.then((parent) => {
+            connection.promise.then(async (parent) => {
                 console.log('connected !!');
 
                 hashChanged(parent);
 
-                var $rootScope = angular.element(document.querySelectorAll("[ui-view]")[0]).injector().get('$rootScope');
+                // waitUntilAngularLoaded
+                var $rootScope = await waitUntilAngularLoaded().get('$rootScope');
 
                 $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
                     console.log('$stateChangeStart from ' + fromState.name + '- fired when the transition begins. fromState,fromParams : \n', fromState, fromParams);
