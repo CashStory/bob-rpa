@@ -11,7 +11,7 @@
     }
 
     const waitUntilAngularLoaded = async () => {
-        while (!angular.element(document.querySelectorAll("[ui-view]")[0]).injector()) {
+        for (let i = null; !i; i = angular.element(document.querySelectorAll("[ui-view]")[0]).injector()) {
             await timeout(500);
         }
         return angular.element(document.querySelectorAll("[ui-view]")[0]).injector();
