@@ -24,127 +24,138 @@
         }
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
+    // document.addEventListener("DOMContentLoaded", function () {
 
-        var iFrameDetection = (window === window.parent) ? false : true;
-        if (iFrameDetection) {
-            console.log('iframe detected');
-            const connection = Penpal.connectToParent({
-                debug: true,
-                methods: {
-                    hideElements(elements) {
-                        setElementsDisplay(elements, 'none')
-                    },
-                    showElements(elements) {
-                        setElementsDisplay(elements, '')
-                    },
-                }
-            });
-            connection.promise.then(async (parent) => {
-                console.log('connected !!');
+    var iFrameDetection = (window === window.parent) ? false : true;
+    if (iFrameDetection) {
+        console.log('iframe detected');
+        const connection = Penpal.connectToParent({
+            debug: true,
+            methods: {
+                hideElements(elements) {
+                    setElementsDisplay(elements, 'none')
+                },
+                showElements(elements) {
+                    setElementsDisplay(elements, '')
+                },
+            }
+        });
+        connection.promise.then(async (parent) => {
+            console.log('connected !!');
 
-                // waitUntilAngularLoaded
-                var $rootScope = await waitUntilAngularLoaded();
-                console.log('found rootScope', $rootScope);
-                hashChanged(parent);
-
-                $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-                    console.log('$stateChangeStart from ' + fromState.name + '- fired when the transition begins. fromState,fromParams : \n', fromState, fromParams);
-                    console.log('$stateChangeStart to ' + toState.name + '- fired when the transition begins. toState,toParams : \n', toState, toParams);
+            const bodyList = document.querySelector("html")
+                , observer = new MutationObserver((mutations) => {
+                    if (oldHref != document.location.href) {
+                        oldHref = '' + document.location.href;
+                        console.log("location: " + document.location.href);
+                        /* Changed ! your code here */
+                        hashChanged(parent);
+                    } else {
+                        console.log('mutation but not change', oldHref, document.location.href);
+                    }
                 });
+            // // waitUntilAngularLoaded
+            // var $rootScope = await waitUntilAngularLoaded();
+            // console.log('found rootScope', $rootScope);
+            // hashChanged(parent);
 
-                $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams) {
-                    console.log('$stateChangeError - fired when an error occurs during transition.');
-                    console.log(arguments);
-                });
-
-                $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-                    console.log('$stateChangeSuccess from ' + toState.name + '- fired once the state transition is complete.');
-                    console.log('$stateChangeSuccess to ' + toState.name + '- fired once the state transition is complete.');
-                    hashChanged(parent);
-                });
-
-                $rootScope.$on('$viewContentLoaded', function (event) {
-                    console.log('$viewContentLoaded - fired after dom rendered', event);
-                });
-
-                $rootScope.$on('$stateNotFound', function (event, unfoundState, fromState, fromParams) {
-                    console.log('$stateNotFound ' + unfoundState.to + '  - fired when a state cannot be found by its name.');
-                    console.log(unfoundState, fromState, fromParams);
-                });
-            });
-
+            // $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+            //     console.log('$stateChangeStart from ' + fromState.name + '- fired when the transition begins. fromState,fromParams : \n', fromState, fromParams);
+            //     console.log('$stateChangeStart to ' + toState.name + '- fired when the transition begins. toState,toParams : \n', toState, toParams);
             // });
 
-            function setElementsDisplay(elements, display) {
-                let done = false;
-                elements.forEach((element) => {
-                    const elem = document.getElementsByClassName(element)[0]
-                    if (elem) {
-                        elem.style.display = display;
-                        done = true;
-                    } else {
-                        done = false;
-                    }
-                })
-                if (!done) {
-                    setTimeout(() => {
-                        setElementsDisplay(elements, display)
-                    }, 100)
-                }
-            }
+            // $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams) {
+            //     console.log('$stateChangeError - fired when an error occurs during transition.');
+            //     console.log(arguments);
+            // });
 
-            function needLogin(parent) {
-                if (document.getElementsByClassName("login-wrapper")
-                    && document.getElementsByClassName("login-wrapper").length > 0) {
-                    setTimeout(() => {
-                        needLogin(parent);
-                    }, 100);
-                    return parent.need_login().then((data) => {
-                        console.log(data);
-                        loginAction(data);
-                    });
+            // $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+            //     console.log('$stateChangeSuccess from ' + toState.name + '- fired once the state transition is complete.');
+            //     console.log('$stateChangeSuccess to ' + toState.name + '- fired once the state transition is complete.');
+            //     hashChanged(parent);
+            // });
+
+            // $rootScope.$on('$viewContentLoaded', function (event) {
+            //     console.log('$viewContentLoaded - fired after dom rendered', event);
+            // });
+
+            // $rootScope.$on('$stateNotFound', function (event, unfoundState, fromState, fromParams) {
+            //     console.log('$stateNotFound ' + unfoundState.to + '  - fired when a state cannot be found by its name.');
+            //     console.log(unfoundState, fromState, fromParams);
+            // });
+        });
+
+        // });
+
+        function setElementsDisplay(elements, display) {
+            let done = false;
+            elements.forEach((element) => {
+                const elem = document.getElementsByClassName(element)[0]
+                if (elem) {
+                    elem.style.display = display;
+                    done = true;
                 } else {
-                    console.log('no need login');
-                    return Promise.resolve();
+                    done = false;
                 }
-            }
-
-            function hashChanged(parent) {
-                console.log('hashChanged !!');
-                if (location.pathname === '/') {
-                    needLogin(parent);
-                } else {
-                    console.log('hash nothing to do with', window.location.href);
-                }
-            }
-
-            function loginAction(data) {
-                if (document.getElementsByClassName("login-wrapper")
-                    && document.getElementsByClassName("login-wrapper").length > 0) {
-                    console.log('at login page');
-                    const loginInput = document.getElementsByClassName('login__input')[0];
-                    const pwdInput = document.getElementsByClassName('login__input')[1];
-
-                    const buttonConnect = document.getElementsByClassName('login__submit-button')[0];
-                    if (buttonConnect && loginInput && pwdInput) {
-                        console.log('login detected');
-                        loginInput.value = data.email;
-                        pwdInput.value = data.pwd;
-                        try {
-                            buttonConnect.click();
-                        } catch (err) {
-                            console.error('fail submit', buttonConnect);
-                        }
-                    } else {
-                        console.error('fail to get, buttonConnect, loginInput, pwdInput', buttonConnect, loginInput, pwdInput);
-                    }
-                } else {
-                    console.error('not on login page');
-                }
+            })
+            if (!done) {
+                setTimeout(() => {
+                    setElementsDisplay(elements, display)
+                }, 100)
             }
         }
-    });
+
+        function needLogin(parent) {
+            if (document.getElementsByClassName("login-wrapper")
+                && document.getElementsByClassName("login-wrapper").length > 0) {
+                setTimeout(() => {
+                    needLogin(parent);
+                }, 100);
+                return parent.need_login().then((data) => {
+                    console.log(data);
+                    loginAction(data);
+                });
+            } else {
+                console.log('no need login');
+                return Promise.resolve();
+            }
+        }
+
+        function hashChanged(parent) {
+            console.log('hashChanged !!');
+            if (location.pathname === '/') {
+                needLogin(parent);
+            } else {
+                console.log('hash nothing to do with', window.location.href);
+            }
+        }
+
+        function loginAction(data) {
+            if (document.getElementsByClassName("login-wrapper")
+                && document.getElementsByClassName("login-wrapper").length > 0) {
+                console.log('at login page');
+                const loginInput = document.getElementsByClassName('login__input')[0];
+                const pwdInput = document.getElementsByClassName('login__input')[1];
+
+                const buttonConnect = document.getElementsByClassName('login__submit-button')[0];
+                if (buttonConnect && loginInput && pwdInput) {
+                    console.log('login detected');
+                    loginInput.value = data.email;
+                    pwdInput.value = data.pwd;
+                    try {
+                        buttonConnect.click();
+                    } catch (err) {
+                        console.error('fail submit', buttonConnect);
+                    }
+                } else {
+                    console.error('fail to get, buttonConnect, loginInput, pwdInput', buttonConnect, loginInput, pwdInput);
+                }
+            } else {
+                console.error('not on login page');
+            }
+        }
+    }
+    // });
 </script>
 <style type="text/css">
 
