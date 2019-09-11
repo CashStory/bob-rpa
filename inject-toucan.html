@@ -7,23 +7,23 @@
     const version_inject_iframe = '0.0.1';
 
 
-    function timeout(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
+    // function timeout(ms) {
+    //     return new Promise(resolve => setTimeout(resolve, ms));
+    // }
 
-    const waitUntilAngularLoaded = async () => {
-        let $body = null;
-        for (let i = null; !i; i = $body = angular.element(document.body)) {
-            // console.log('wait for router');
-            await timeout(100);
-        }
-        try {
-            const retVal = $body.injector().get('$rootScope');
-            return retVal;
-        } catch (err) {
-            console.error(err);
-        }
-    }
+    // const waitUntilAngularLoaded = async () => {
+    //     let $body = null;
+    //     for (let i = null; !i; i = $body = angular.element(document.body)) {
+    //         // console.log('wait for router');
+    //         await timeout(100);
+    //     }
+    //     try {
+    //         const retVal = $body.injector().get('$rootScope');
+    //         return retVal;
+    //     } catch (err) {
+    //         console.error(err);
+    //     }
+    // }
 
     // document.addEventListener("DOMContentLoaded", function () {
 
@@ -44,6 +44,7 @@
         connection.promise.then(async (parent) => {
             console.log('connected !!');
 
+            hashChanged(parent);
             const bodyList = document.querySelector("html")
                 , observer = new MutationObserver((mutations) => {
                     if (oldHref != document.location.href) {
@@ -124,7 +125,7 @@
 
         function hashChanged(parent) {
             console.log('hashChanged !!');
-            if (location.pathname === '/') {
+            if (window.location.pathname === '/') {
                 needLogin(parent);
             } else {
                 console.log('hash nothing to do with', window.location.href);
