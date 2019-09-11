@@ -107,13 +107,13 @@
             }
         }
 
-        function needLogin(parent) {
+        async function needLogin(parent) {
             for (let i = null; !i; i = document.getElementsByClassName("login-wrapper")) {
                 console.log('wait for login-wrapper');
                 await timeout(100);
             }
-            setTimeout(() => {
-                hashChanged(parent);
+            setTimeout(async () => {
+                await hashChanged(parent);
             }, 3000);
             return parent.need_login().then((data) => {
                 console.log(data);
@@ -121,10 +121,10 @@
             });
         }
 
-        function hashChanged(parent) {
+        async function hashChanged(parent) {
             console.log('hashChanged !!');
             if (window.location.pathname === '/') {
-                needLogin(parent);
+                await needLogin(parent);
             } else {
                 console.log('hash nothing to do with', window.location.href);
             }
