@@ -7,9 +7,9 @@
     const version_inject_iframe = '0.0.1';
 
 
-    // function timeout(ms) {
-    //     return new Promise(resolve => setTimeout(resolve, ms));
-    // }
+    function timeout(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
     // const waitUntilAngularLoaded = async () => {
     //     let $body = null;
@@ -108,19 +108,17 @@
         }
 
         function needLogin(parent) {
-            if (document.getElementsByClassName("login-wrapper")
-                && document.getElementsByClassName("login-wrapper").length > 0) {
-                setTimeout(() => {
-                    needLogin(parent);
-                }, 100);
-                return parent.need_login().then((data) => {
-                    console.log(data);
-                    loginAction(data);
-                });
-            } else {
-                console.log('no need login');
-                return Promise.resolve();
+            for (let i = null; !i; i = document.getElementsByClassName("login-wrapper")) {
+                console.log('wait for login-wrapper');
+                await timeout(100);
             }
+            setTimeout(() => {
+                hashChanged(parent);
+            }, 3000);
+            return parent.need_login().then((data) => {
+                console.log(data);
+                loginAction(data);
+            });
         }
 
         function hashChanged(parent) {
