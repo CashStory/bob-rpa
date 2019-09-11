@@ -108,9 +108,13 @@
         }
 
         async function needLogin(parent) {
-            for (let i = null; !i; i = document.getElementsByClassName("login-wrapper")) {
+            for (let i = null, y = 0; !i || i.length === 0; i = document.getElementsByClassName("login-wrapper"), y++) {
+                if (i.length == 0 && y > 9) {
+                    console.log('no need login anymore');
+                    return
+                }
                 console.log('wait for login-wrapper');
-                await timeout(100);
+                await timeout(100 * y);
             }
             setTimeout(async () => {
                 await hashChanged(parent);
