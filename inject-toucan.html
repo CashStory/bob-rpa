@@ -109,7 +109,7 @@
 
         async function needLogin(parent) {
             for (let i = null, y = 0; !i || i.length === 0; i = document.getElementsByClassName("login-wrapper"), y++) {
-                if (i.length == 0 && y > 9) {
+                if (i && i.length == 0 && y > 9) {
                     console.log('no need login anymore');
                     return
                 }
