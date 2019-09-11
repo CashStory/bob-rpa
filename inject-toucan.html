@@ -113,8 +113,7 @@
 
             function hashChanged(parent) {
                 console.log('hashChanged !!');
-                if (document.getElementsByClassName("login-wrapper")
-                    && document.getElementsByClassName("login-wrapper").length > 0) {
+                if (location.pathname === '/') {
                     needLogin(parent);
                 } else {
                     console.log('hash nothing to do with', window.location.href);
