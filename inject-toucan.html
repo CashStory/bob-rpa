@@ -11,12 +11,13 @@
     }
 
     const waitUntilAngularLoaded = async () => {
-        for (let i = null; !i; i = angular.element(document.querySelectorAll("[ui-view]")[0]).injector()) {
+        let $body = null;
+        for (let i = null; !i; i = $body = angular.element(document.body)) {
             // console.log('wait for router');
             await timeout(100);
         }
         try {
-            const retVal = angular.element(document.querySelectorAll("[ui-view]")[0]).injector().get('$rootScope');
+            const retVal = $body.injector().get('$rootScope');
             return retVal;
         } catch (err) {
             console.error(err);
