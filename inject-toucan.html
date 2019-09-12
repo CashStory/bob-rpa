@@ -3,24 +3,12 @@
 
     const version_inject_iframe = '0.0.3';
 
-    function cleanLogin() {
-        if (!localStorage.getItem('ifram_pathname')
-            || localStorage.getItem('ifram_pathname') !== window.location.pathname) {
-            if (localStorage.getItem('token')) {
-                localStorage.setItem('token', null)
-            }
-            if (localStorage.getItem('embed-token')) {
-                localStorage.setItem('embed-token', null)
-            }
-        }
-        localStorage.setItem('ifram_pathname', window.location.pathname)
-    }
+
 
     var iFrameDetection = (window === window.parent) ? false : true;
     if (iFrameDetection) {
         console.log('iframe detected');
 
-        cleanLogin();
         const connection = Penpal.connectToParent({
             debug: true,
             methods: {
@@ -35,6 +23,7 @@
         connection.promise.then((parent) => {
             console.log('connected !!');
 
+            cleanLogin(parent);
             const bodyList = document.querySelector("html")
                 , observer = new MutationObserver((mutations) => {
                     if (isLoginWrapperPresent()) {
@@ -53,6 +42,20 @@
                 needLogin(parent);
             }
         });
+
+        function cleanLogin(parent) {
+            parent.getName().then((name) => {
+                const currentName = localStorage.getItem('ifram_name');
+                if (!currentName || name !== currentName) {
+                    localStorage.setItem('token', null)
+                    localStorage.setItem('embed-token', null)
+                    localStorage.setItem('user', null)
+                    localStorage.setItem('userId', null)
+                    localStorage.setItem('currentUser', null)
+                }
+                localStorage.setItem('ifram_name', name)
+            });
+        }
 
         function isLoginWrapperPresent() {
             if (document.getElementsByClassName("login-wrapper")
