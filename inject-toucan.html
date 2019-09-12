@@ -6,6 +6,10 @@
     var iFrameDetection = (window === window.parent) ? false : true;
     if (iFrameDetection) {
         console.log('iframe detected');
+
+        if (localStorage.getItem('token')) {
+            localStorage.setItem('token', null)
+        }
         const connection = Penpal.connectToParent({
             debug: true,
             methods: {
@@ -72,7 +76,7 @@
                     needLogin(parent);
                 }, 3000);
                 return parent.need_login().then((data) => {
-                    console.log('need_login', data);
+                    // console.log('need_login', data);
                     loginAction(data);
                 });
             }
