@@ -44,18 +44,27 @@
         connection.promise.then(async (parent) => {
             console.log('connected !!');
 
-            await hashChanged(parent);
+            // await hashChanged(parent);
             const bodyList = document.querySelector("html")
                 , observer = new MutationObserver((mutations) => {
                     if (oldHref != document.location.href) {
                         oldHref = '' + document.location.href;
                         console.log("location: " + document.location.href);
                         /* Changed ! your code here */
-                        // hashChanged(parent);
+                        hashChanged(parent);
                     } else {
                         console.log('mutation but not change', oldHref, document.location.href);
                     }
                 });
+            var config = {
+                childList: true,
+                subtree: true
+            };
+
+            observer.observe(bodyList, config);
+            if (oldHref != document.location.href) {
+                hashChanged(parent);
+            }
             // // waitUntilAngularLoaded
             // var $rootScope = await waitUntilAngularLoaded();
             // console.log('found rootScope', $rootScope);
