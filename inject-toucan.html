@@ -3,6 +3,13 @@
 
     const version_inject_iframe = '0.0.4';
 
+    function waitTimeout(time) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve();
+            }, time);
+        });
+    }
 
     var iFrameDetection = (window === window.parent) ? false : true;
     if (iFrameDetection) {
@@ -42,19 +49,38 @@
             }
         });
 
-        function cleanLogin(parent) {
-            parent.getName().then((name) => {
-                console.log('name', name);
-                const currentName = localStorage.getItem('ifram_name');
-                if (!currentName || name !== currentName) {
-                    localStorage.setItem('token', null)
-                    localStorage.setItem('embed-token', null)
-                    localStorage.setItem('user', null)
-                    localStorage.setItem('userId', null)
-                    localStorage.setItem('currentUser', null)
+        async function cleanLogin(parent) {
+            let name = null;
+            while (name === null) {
+                name = await parent.getName();
+                if (name) {
+                    console.log('name', name);
+                    const currentName = localStorage.getItem('ifram_name');
+                    if (!currentName || name !== currentName) {
+                        localStorage.setItem('token', null)
+                        localStorage.setItem('embed-token', null)
+                        localStorage.setItem('user', null)
+                        localStorage.setItem('userId', null)
+                        localStorage.setItem('currentUser', null)
+                    }
+                    localStorage.setItem('ifram_name', name)
+                    break
                 }
-                localStorage.setItem('ifram_name', name)
-            });
+                await waitTimeout(300);
+                console.log('wait name');
+            }
+            // parent.getName().then((name) => {
+            //     console.log('name', name);
+            //     const currentName = localStorage.getItem('ifram_name');
+            //     if (!currentName || name !== currentName) {
+            //         localStorage.setItem('token', null)
+            //         localStorage.setItem('embed-token', null)
+            //         localStorage.setItem('user', null)
+            //         localStorage.setItem('userId', null)
+            //         localStorage.setItem('currentUser', null)
+            //     }
+            //     localStorage.setItem('ifram_name', name)
+            // });
         }
 
         function isLoginWrapperPresent() {
