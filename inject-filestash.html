@@ -77,6 +77,7 @@
         function needLogin(parent) {
             if (window.location.href.indexOf('login') > -1) {
                 parent.need_login().then((data) => {
+                    console.log('need_login', { login: data.login, pwd: data.pwd ? '****' : '' });
                     loginAction(data);
                 });
                 setTimeout(() => {

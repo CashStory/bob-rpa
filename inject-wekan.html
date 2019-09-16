@@ -58,6 +58,7 @@
             function needLogin(parent) {
                 if (window.location.href.indexOf('sign-in') > -1) {
                     parent.need_login().then((data) => {
+                        console.log('need_login', { email: data.email, pwd: data.pwd ? '****' : '' });
                         // console.log(data);
                         loginAction(data);
                     });

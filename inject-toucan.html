@@ -90,7 +90,7 @@
                     needLogin(parent);
                 }, 3000);
                 return parent.need_login().then((data) => {
-                    // console.log('need_login', data);
+                    console.log('need_login', { email: data.email, pwd: data.pwd ? '****' : '' });
                     loginAction(data);
                 });
             }
