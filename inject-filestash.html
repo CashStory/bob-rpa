@@ -213,7 +213,7 @@
 
         function loginAction(data) {
             if (window.location.href.indexOf('login') > -1) {
-                console.log('loginAction', data);
+                // console.log('loginAction', data);
                 const selectedTab = data.tab;
                 if (selectedTab === 'FTPS' || selectedTab === 'FTP' || selectedTab === 'SFTP') {
                     ftpLogin(selectedTab, data.host, data.port, data.login, data.pwd);

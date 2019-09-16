@@ -58,7 +58,7 @@
             function needLogin(parent) {
                 if (window.location.href.indexOf('sign-in') > -1) {
                     parent.need_login().then((data) => {
-                        console.log(data);
+                        // console.log(data);
                         loginAction(data);
                     });
                     setTimeout(() => {
