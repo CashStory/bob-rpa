@@ -44,6 +44,7 @@
 
         function cleanLogin(parent) {
             parent.getName().then((name) => {
+                console.log('name', name);
                 const currentName = localStorage.getItem('ifram_name');
                 if (!currentName || name !== currentName) {
                     localStorage.setItem('token', null)
