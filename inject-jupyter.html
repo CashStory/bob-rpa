@@ -100,6 +100,18 @@
             }
         }
 
+        // function fillLogin(login, password) {
+        //     const loginInput = document.getElementById('username_input');
+        //     const pwdInput = document.getElementById('password_input');
+        //     if (loginInput && pwdInput) {
+        //         let event = new Event('input', { bubbles: true });
+        //         loginInput.value = login;
+        //         pwdInput.value = password;
+        //         loginInput.dispatchEvent(event);
+        //         pwdInput.dispatchEvent(event);
+        //     }
+        // }
+
         function loginAction(data) {
             if (isLoginWrapperPresent()) {
                 const loginInput = document.getElementById('username_input');
@@ -112,11 +124,10 @@
                     pwdInput.value = data.pwd;
                     loginInput.dispatchEvent(event);
                     pwdInput.dispatchEvent(event);
-                    buttonConnect.dispatchEvent(event);
                     try {
                         setTimeout(() => {
                             buttonConnect.click();
-                        }, 100);
+                        }, 500);
                     } catch (err) {
                         console.error('fail submit', buttonConnect);
                     }
