@@ -30,7 +30,7 @@
             console.log('connected !!');
 
             cleanLogin(parent);
-            const bodyList = document.querySelector("html")
+            const bodyList = document.querySelector('html')
                 , observer = new MutationObserver((mutations) => {
                     if (isLoginWrapperPresent()) {
                         needLogin(parent);
@@ -63,8 +63,7 @@
         }
 
         function isLoginWrapperPresent() {
-            if (document.getElementsByName("login-main")
-                && document.getElementsByClassName("login-main").length > 0) {
+            if (document.getElementById('login-main')) {
                 return true;
             }
             return false;
@@ -103,9 +102,9 @@
 
         function loginAction(data) {
             if (isLoginWrapperPresent()) {
-                const loginInput = document.getElementsByName('username_input')[0];
-                const pwdInput = document.getElementsByName('password_input')[0];
-                const buttonConnect = document.getElementsByName('login_submit')[0];
+                const loginInput = document.getElementById('username_input');
+                const pwdInput = document.getElementById('password_input');
+                const buttonConnect = document.getElementById('login_submit');
                 if (buttonConnect && loginInput && pwdInput) {
                     console.log('login detected');
                     loginInput.value = data.email;
