@@ -107,8 +107,12 @@
                 const buttonConnect = document.getElementById('login_submit');
                 if (buttonConnect && loginInput && pwdInput) {
                     console.log('login detected');
+                    let event = new Event('input', { bubbles: true });
                     loginInput.value = data.email;
                     pwdInput.value = data.pwd;
+                    loginInput.dispatchEvent(event);
+                    pwdInput.dispatchEvent(event);
+                    buttonConnect.dispatchEvent(event);
                     try {
                         buttonConnect.click();
                     } catch (err) {
