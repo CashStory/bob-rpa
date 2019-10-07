@@ -114,7 +114,9 @@
                     pwdInput.dispatchEvent(event);
                     buttonConnect.dispatchEvent(event);
                     try {
-                        buttonConnect.click();
+                        setTimeout(() => {
+                            buttonConnect.click();
+                        }, 100);
                     } catch (err) {
                         console.error('fail submit', buttonConnect);
                     }
