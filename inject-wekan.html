@@ -91,7 +91,6 @@
                     console.log('at login page');
                     const email = document.getElementById('at-field-username_and_email');
                     const pwd = document.getElementById('at-field-password');
-                    // const form = document.getElementById('at-pwd-form');
                     const button = document.getElementById('at-btn');
                     if (button && email && pwd) {
                         console.log('login detected');
@@ -103,7 +102,7 @@
                             console.error('fail submit', button);
                         }
                     } else {
-                        console.error('fail to get form, pwd or email', form, email, pwd);
+                        console.error('fail to get form, pwd or email', email, pwd);
                     }
                 } else {
                     console.error('not on login page');
