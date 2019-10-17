@@ -26,14 +26,22 @@
                 console.log('conected !!');
 
                 // parent.add(3, 1).then(total => console.log(total));
-                if (FlowRouter) {
-                    hashChanged(parent);
-                    FlowRouter.subscriptions = function () {
-                        console.log('routeee');
-                        hashChanged(parent);
-                    };
-                } else {
-                    console.error('no FlowRouter');
+                const bodyList = document.querySelector("html")
+                    , observer = new MutationObserver((mutations) => {
+                        if (isLoginWrapperPresent()) {
+                            needLogin(parent);
+                        } else {
+                            console.log('mutation but not login wraper present', document.location.href);
+                        }
+                    });
+                var config = {
+                    childList: true,
+                    subtree: true
+                };
+
+                observer.observe(bodyList, config);
+                if (isLoginWrapperPresent()) {
+                    needLogin(parent);
                 }
             });
 
@@ -56,7 +64,7 @@
             }
 
             function needLogin(parent) {
-                if (window.location.href.indexOf('sign-in') > -1) {
+                if (isLoginWrapperPresent()) {
                     parent.need_login().then((data) => {
                         console.log('need_login', { email: data.email, pwd: data.pwd ? '****' : '' });
                         // console.log(data);
@@ -70,14 +78,16 @@
                 }
             }
 
-            function hashChanged(parent) {
-                if (window.location.href.indexOf('sign-in') > -1) {
-                    needLogin(parent);
+            function isLoginWrapperPresent() {
+                if (document.getElementsByClassName("auth-layout")
+                    && document.getElementsByClassName("auth-layout").length > 0) {
+                    return true;
                 }
+                return false;
             }
 
             function loginAction(data) {
-                if (window.location.href.indexOf('sign-in') > -1) {
+                if (isLoginWrapperPresent()) {
                     console.log('at login page');
                     const email = document.getElementById('at-field-username_and_email');
                     const pwd = document.getElementById('at-field-password');
