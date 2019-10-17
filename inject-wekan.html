@@ -28,6 +28,7 @@
                 // parent.add(3, 1).then(total => console.log(total));
                 const bodyList = document.querySelector("html")
                     , observer = new MutationObserver((mutations) => {
+                        needLoginBoard();
                         if (isLoginWrapperPresent()) {
                             needLogin(parent);
                         } else {
@@ -84,6 +85,12 @@
                     return true;
                 }
                 return false;
+            }
+
+            function needLoginBoard() {
+                if (document.evaluate("//a[contains(text(),'logging in')]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue) {
+                    window.location.href = '/sign-in'
+                }
             }
 
             function loginAction(data) {
