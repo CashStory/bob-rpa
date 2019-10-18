@@ -16,30 +16,30 @@
         return b ? b.pop() : '';
     }
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const o = XMLHttpRequest.prototype.open;
-    XMLHttpRequest.prototype.open = () => {
-        var res = o.apply(this, arguments);
-        const tc_version = getCookieValue('tc_version');
-        const tc_api = getCookieValue('tc_api');
-        if (tc_api) {
-            this.setRequestHeader('tc_api', tc_api);
-        } else if (urlParams.has('tc_api')) {
-            this.setRequestHeader('tc_api', urlParams.get('tc_api'));
-        }
-        if (tc_version) {
-            this.setRequestHeader('tc_version', tc_version);
-        } else if (urlParams.has('tc_version')) {
-            this.setRequestHeader('tc_version', urlParams.get('tc_version'));
-        } else {
-            this.setRequestHeader('tc_version', 'latest');
-        }
-        return res;
-    }
-
     var iFrameDetection = (window === window.parent) ? false : true;
     if (iFrameDetection) {
         console.log('iframe detected');
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const o = XMLHttpRequest.prototype.open;
+        XMLHttpRequest.prototype.open = () => {
+            var res = o.apply(this, arguments);
+            const tc_version = getCookieValue('tc_version');
+            const tc_api = getCookieValue('tc_api');
+            if (tc_api) {
+                this.setRequestHeader('tc_api', tc_api);
+            } else if (urlParams.has('tc_api')) {
+                this.setRequestHeader('tc_api', urlParams.get('tc_api'));
+            }
+            if (tc_version) {
+                this.setRequestHeader('tc_version', tc_version);
+            } else if (urlParams.has('tc_version')) {
+                this.setRequestHeader('tc_version', urlParams.get('tc_version'));
+            } else {
+                this.setRequestHeader('tc_version', 'latest');
+            }
+            return res;
+        }
 
         const connection = Penpal.connectToParent({
             debug: true,
