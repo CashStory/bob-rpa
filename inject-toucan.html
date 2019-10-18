@@ -22,7 +22,7 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const o = XMLHttpRequest.prototype.open;
-        XMLHttpRequest.prototype.open = () => {
+        XMLHttpRequest.prototype.open = function () {
             var res = o.apply(this, arguments);
             const tc_version = getCookieValue('tc_version');
             const tc_api = getCookieValue('tc_api');
