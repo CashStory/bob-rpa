@@ -61,10 +61,7 @@
                 const currentName = localStorage.getItem('ifram_name');
                 if (!currentName || name !== currentName) {
                     console.log('Cleaning cookie');
-                    document.cookie.split(";")
-                        .forEach((c) => {
-                            document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-                        });
+                    window.location = "/logout";
                 }
                 localStorage.setItem('ifram_name', name)
             });
