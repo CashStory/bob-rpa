@@ -60,11 +60,10 @@
                 console.log('Current name', name);
                 const currentName = localStorage.getItem('ifram_name');
                 if (!currentName || name !== currentName) {
-                    localStorage.setItem('token', null)
-                    localStorage.setItem('embed-token', null)
-                    localStorage.setItem('user', null)
-                    localStorage.setItem('userId', null)
-                    localStorage.setItem('currentUser', null)
+                    document.cookie.split(";")
+                        .forEach((c) => {
+                            document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+                        });
                 }
                 localStorage.setItem('ifram_name', name)
             });
