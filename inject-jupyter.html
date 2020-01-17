@@ -54,9 +54,10 @@
                 console.log('Current name', name);
                 const currentName = localStorage.getItem('ifram_name');
                 if (!currentName || name !== currentName) {
-                    localStorage.setItem('jupyterhub-hub-login', null)
-                    localStorage.setItem('jupyterhub-session-id', null)
-                    localStorage.setItem('jupyterhub-user-bobcashstory', null)
+                    localStorage.setItem('jupyterhub-hub-login', null);
+                    localStorage.setItem('jupyterhub-session-id', null);
+                    localStorage.setItem('jupyterhub-user-bobcashstory', null);
+                    window.location = "/logout";
                 }
                 localStorage.setItem('ifram_name', name)
             });

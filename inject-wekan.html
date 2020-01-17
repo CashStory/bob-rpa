@@ -26,6 +26,7 @@
                 console.log('conected !!');
 
                 // parent.add(3, 1).then(total => console.log(total));
+                cleanLogin(parent);
                 const bodyList = document.querySelector("html")
                     , observer = new MutationObserver((mutations) => {
                         needLoginBoard();
@@ -45,6 +46,22 @@
                     needLogin(parent);
                 }
             });
+
+            function cleanLogin(parent) {
+                parent.getName().then((name) => {
+                    console.log('Current name', name);
+                    const currentName = localStorage.getItem('ifram_name');
+                    if (!currentName || name !== currentName) {
+                        localStorage.setItem('token', null);
+                        localStorage.setItem('embed-token', null);
+                        localStorage.setItem('user', null);
+                        localStorage.setItem('userId', null);
+                        localStorage.setItem('currentUser', null);
+                        window.location = "/logout";
+                    }
+                    localStorage.setItem('ifram_name', name)
+                });
+            }
 
             function setElementsDisplay(elements, display) {
                 let done = false;
