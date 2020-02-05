@@ -89,7 +89,7 @@
                 }
             }
 
-            function getFormElems(tag) {
+            function getFormElem(tag) {
                 if (document.getElementById(formLoginClass) && document.getElementById(formLoginClass).getElementsByTagName(tag)) {
                     return Array.prototype.slice.call(document.getElementById(formLoginClass).getElementsByTagName(tag));
                 }
@@ -97,13 +97,13 @@
             }
 
             function getSubmitButton() {
-                let elements = getFormElems('button');
+                let elements = getFormElem('button');
                 return elements.length === 1 ? elements[0] : null;
             }
 
             function getFormInputElem(type) {
                 let elemSelected = null;
-                let elements = getFormElems('input');
+                let elements = getFormElem('input');
                 elements.forEach((elem) => {
                     if (elem.type === type) {
                         elemSelected = elem;
