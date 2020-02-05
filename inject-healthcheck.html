@@ -128,10 +128,16 @@
                     const button = getSubmitButton();
                     if (button && email && pwd) {
                         console.log('login detected');
+                        let event = new Event('input', { bubbles: true });
+                        event.simulated = true;
                         email.value = data.email;
+                        email.dispatchEvent(event);
                         pwd.value = data.pwd;
+                        pwd.dispatchEvent(event);
                         try {
-                            button.click();
+                            setTimeout(() => {
+                                buttonConnect.click();
+                            }, 500);
                         } catch (err) {
                             console.error('fail submit', button);
                         }
