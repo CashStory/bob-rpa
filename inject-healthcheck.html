@@ -89,7 +89,7 @@
                 }
             }
 
-            function getFormElem(tag) {
+            function getFormElems(tag) {
                 if (document.getElementById(formLoginClass) && document.getElementById(formLoginClass).getElementsByTagName(tag)) {
                     return Array.prototype.slice.call(document.getElementById(formLoginClass).getElementsByTagName(tag));
                 }
@@ -97,13 +97,13 @@
             }
 
             function getSubmitButton() {
-                let elements = getFormElem('button');
+                let elements = getFormElems('button');
                 return elements.length === 1 ? elements[0] : null;
             }
 
             function getFormInputElem(type) {
                 let elemSelected = null;
-                let elements = getFormElem('input');
+                let elements = getFormElems('input');
                 elements.forEach((elem) => {
                     if (elem.type === type) {
                         elemSelected = elem;
@@ -123,8 +123,8 @@
             function loginAction(data) {
                 if (isLoginWrapperPresent()) {
                     console.log('at login page');
-                    const email = getFormElem('email');
-                    const pwd = getFormElem('password');
+                    const email = getFormInputElem('email');
+                    const pwd = getFormInputElem('password');
                     const button = getSubmitButton();
                     if (button && email && pwd) {
                         console.log('login detected');
