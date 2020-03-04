@@ -17,11 +17,11 @@
     }
     function switchCSLoader(kind) {
         var csl = document.getElementById("cs_loader_wrap");
-        if (csl && kind && kind == 'off' || (!kind && x.style.display === "block")) {
+        if (csl && kind && kind == 'off' || (!kind && x.style.display === "flex")) {
             csl.style.display = "none";
 
         } else if (csl && kind && kind == 'on' || (!kind && x.style.display === "none")) {
-            csl.style.display = "block";
+            csl.style.display = "flex";
         }
     }
 
@@ -187,14 +187,14 @@
     </div>
     <style type="text/css">
         #cs_loader_wrap {
-            display: flex;
+            display: none;
             justify-content: center;
             flex-direction: column;
             height: 100vh;
             width: 100vw;
             position: absolute;
             background-color: white;
-            display: none;
+            z-index: 100;
         }
 
         #cs_logo_wrap {
