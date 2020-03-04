@@ -244,9 +244,7 @@
             }
         }
     } else {
-        window.onload = function () {
-            switchCSLoader('off');
-        }
+        window.addEventListener("load", () => { switchCSLoader('off') });
     }
 </script>
 </head>
