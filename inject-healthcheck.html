@@ -1,3 +1,19 @@
+<div id="cs_loader_wrap">
+    <div id="cs_logo_wrap">
+        <svg id="cs_logo_loading" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="svg"
+            version="1.1" width="400" height="400" viewBox="0, 0, 400,400">
+            <g id="svgg">
+                <path id="path0"
+                    d="M229.809 140.032 C 228.312 142.614,219.827 157.206,210.953 172.458 C 202.079 187.710,194.656 200.547,194.457 200.984 C 194.127 201.707,230.479 266.171,232.157 267.840 C 232.930 268.608,308.409 268.726,309.116 267.961 C 309.409 267.643,316.740 255.166,325.406 240.234 C 334.072 225.303,342.603 210.607,344.362 207.578 L 347.562 202.070 342.214 192.734 C 339.272 187.600,330.830 172.852,323.454 159.961 C 316.077 147.070,309.798 136.260,309.499 135.938 C 309.024 135.424,304.202 135.351,270.744 135.344 L 232.531 135.336 229.809 140.032 M309.106 173.145 C 315.047 183.511,319.956 192.138,320.013 192.316 C 320.231 192.994,276.882 193.447,276.214 192.773 C 275.698 192.253,254.688 155.000,254.688 154.605 C 254.688 154.435,264.501 154.297,276.495 154.297 L 298.303 154.297 309.106 173.145 M242.541 171.975 C 244.992 176.324,249.715 184.690,253.037 190.565 C 256.359 196.441,259.155 201.544,259.250 201.907 C 259.347 202.280,257.154 206.451,254.187 211.536 C 242.603 231.391,238.691 238.166,238.450 238.794 C 237.968 240.052,237.520 239.357,227.115 221.191 C 221.362 211.147,216.485 202.647,216.276 202.302 C 215.936 201.739,237.205 164.129,237.891 164.082 C 237.998 164.074,240.091 167.626,242.541 171.975 M318.804 213.770 C 318.158 214.897,313.232 223.379,307.857 232.617 L 298.085 249.414 276.289 249.278 C 264.301 249.203,254.448 249.100,254.395 249.050 C 254.342 249.000,255.172 247.480,256.240 245.671 C 257.308 243.863,262.115 235.615,266.923 227.344 L 275.664 212.305 282.851 212.096 C 286.805 211.981,296.776 211.849,305.009 211.803 L 319.979 211.719 318.804 213.770 "
+                    stroke="none" fill="#3edb7c" fill-rule="evenodd" />
+                <path id="path1"
+                    d="M129.149 77.832 C 128.842 78.315,117.564 97.783,104.087 121.094 C 90.609 144.404,76.323 169.102,72.339 175.977 C 68.355 182.852,63.365 191.479,61.250 195.149 L 57.405 201.822 76.871 235.579 C 87.577 254.145,103.797 282.298,112.915 298.141 L 129.492 326.945 201.747 326.851 L 274.001 326.758 290.929 297.907 C 300.240 282.038,307.801 268.999,307.732 268.930 C 307.663 268.861,302.986 268.748,297.339 268.679 L 287.071 268.555 275.268 288.672 L 263.465 308.789 226.752 308.911 C 206.560 308.979,178.755 308.914,164.963 308.767 L 139.888 308.500 109.171 255.198 C 92.277 225.881,78.542 201.688,78.650 201.436 C 78.758 201.183,92.640 177.158,109.500 148.047 L 140.154 95.117 201.815 95.117 L 263.477 95.117 264.585 96.875 C 265.195 97.842,270.469 106.807,276.304 116.797 L 286.914 134.961 297.363 135.065 C 303.110 135.122,307.813 135.066,307.812 134.941 C 307.812 134.815,300.221 121.717,290.942 105.833 L 274.072 76.953 201.889 76.953 L 129.706 76.953 129.149 77.832 "
+                    stroke="none" fill="#3c3c3c" fill-rule="evenodd" />
+            </g>
+        </svg>
+        <div id="cs_spinner_loading"></div>
+    </div>
+</div>
 <script type="text/javascript">
     var Penpal = function () { "use strict"; const e = "handshake"; const n = "handshake-reply"; const t = "call"; const r = "reply"; const o = "fulfilled"; const i = "rejected"; const c = "message"; const s = "DataCloneError"; const a = "ConnectionDestroyed"; const d = "ConnectionTimeout"; const l = "NotInIframe"; const u = "NoIframeSrc"; var m = () => { const e = []; let n = false; return { destroy() { n = true; e.forEach(e => { e() }) }, onDestroy(t) { n ? t() : e.push(t) } } }; const h = { "http:": "80", "https:": "443" }; const f = /^(https?:|file:)?\/\/([^\/:]+)?(:(\d+))?/; const g = ["file:", "data:"]; var p = e => { if (e && g.find(n => e.startsWith(n))) { return "null" } const n = document.location; const t = f.exec(e); let r; let o; let i; if (t) { r = t[1] ? t[1] : n.protocol; o = t[2]; i = t[4] } else { r = n.protocol; o = n.hostname; i = n.port } const c = i && i !== h[r] ? `:${i}` : ""; return `${r}//${o}${c}` }; var v = e => { return function () { if (e) { for (var n = arguments.length, t = new Array(n), r = 0; r < n; r++) { t[r] = arguments[r] } console.log("[Penpal]", ...t) } } }; const E = e => { let n = e.name, t = e.message, r = e.stack; return { name: n, message: t, stack: r } }; const w = e => { const n = new Error; Object.keys(e).forEach(t => n[t] = e[t]); return n }; var y = (e, n, a) => { const d = e.localName, l = e.local, u = e.remote, m = e.originForSending, h = e.originForReceiving; let f = false; a(`${d}: Connecting call receiver`); const g = e => { if (e.source !== u || e.data.penpal !== t) { return } if (e.origin !== h) { a(`${d} received message from origin ${e.origin} which did not match expected origin ${h}`); return } const c = e.data, l = c.methodName, g = c.args, p = c.id; a(`${d}: Received ${l}() call`); const v = e => { return n => { a(`${d}: Sending ${l}() reply`); if (f) { a(`${d}: Unable to send ${l}() reply due to destroyed connection`); return } const t = { penpal: r, id: p, resolution: e, returnValue: n }; if (e === i && n instanceof Error) { t.returnValue = E(n); t.returnValueIsError = true } try { u.postMessage(t, m) } catch (e) { if (e.name === s) { u.postMessage({ penpal: r, id: p, resolution: i, returnValue: E(e), returnValueIsError: true }, m) } throw e } } }; new Promise(e => e(n[l].apply(n, g))).then(v(o), v(i)) }; l.addEventListener(c, g); return () => { f = true; l.removeEventListener(c, g) } }; let $ = 0; var N = () => ++$; var C = (e, n, i, s, d) => { const l = n.localName, u = n.local, m = n.remote, h = n.originForSending, f = n.originForReceiving; let g = false; d(`${l}: Connecting call sender`); const p = e => { return function () { for (var n = arguments.length, i = new Array(n), p = 0; p < n; p++) { i[p] = arguments[p] } d(`${l}: Sending ${e}() call`); let v; try { if (m.closed) { v = true } } catch (e) { v = true } if (v) { s() } if (g) { const n = new Error(`Unable to send ${e}() call due ` + `to destroyed connection`); n.code = a; throw n } return new Promise((n, s) => { const a = N(); const g = t => { if (t.source !== m || t.data.penpal !== r || t.data.id !== a) { return } if (t.origin !== f) { d(`${l} received message from origin ${t.origin} which did not match expected origin ${f}`); return } d(`${l}: Received ${e}() reply`); u.removeEventListener(c, g); let i = t.data.returnValue; if (t.data.returnValueIsError) { i = w(i) } (t.data.resolution === o ? n : s)(i) }; u.addEventListener(c, g); m.postMessage({ penpal: t, id: a, methodName: e, args: i }, h) }) } }; i.reduce((e, n) => { e[n] = p(n); return e }, e); return () => { g = true } }; const I = 6e4; var T = t => { let r = t.iframe, o = t.methods, i = o === void 0 ? {} : o, s = t.timeout, l = t.debug; const h = v(l); const f = window; const g = m(), E = g.destroy, w = g.onDestroy; if (!r.src && !r.srcdoc) { const e = new Error("Iframe must have src or srcdoc property defined."); e.code = u; throw e } const $ = p(r.src); const N = $ === "null" ? "*" : $; const T = new Promise((t, o) => { let l; if (s !== undefined) { l = setTimeout(() => { const e = new Error(`Connection to child timed out after ${s}ms`); e.code = d; o(e); E() }, s) } const u = {}; let m; let g; const p = o => { const c = r.contentWindow; if (o.source !== c || o.data.penpal !== e) { return } if (o.origin !== $) { h(`Parent received handshake from origin ${o.origin} which did not match expected origin ${$}`); return } h("Parent: Received handshake, sending reply"); o.source.postMessage({ penpal: n, methodNames: Object.keys(i) }, N); const s = { localName: "Parent", local: f, remote: c, originForSending: N, originForReceiving: $ }; if (g) { g() } g = y(s, i, h); w(g); if (m) { m.forEach(e => { delete u[e] }) } m = o.data.methodNames; const a = C(u, s, m, E, h); w(a); clearTimeout(l); t(u) }; f.addEventListener(c, p); h("Parent: Awaiting handshake"); var v = setInterval(() => { if (!document.contains(r)) { clearInterval(v); E() } }, I); w(() => { f.removeEventListener(c, p); clearInterval(v); const e = new Error("Connection destroyed"); e.code = a; o(e) }) }); return { promise: T, destroy: E } }; var k = function () { let t = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {}, r = t.parentOrigin, o = r === void 0 ? "*" : r, i = t.methods, s = i === void 0 ? {} : i, u = t.timeout, h = t.debug; const f = v(h); if (window === window.top) { const e = new Error("connectToParent() must be called within an iframe"); e.code = l; throw e } const g = m(), p = g.destroy, E = g.onDestroy; const w = window; const $ = w.parent; const N = new Promise((t, r) => { let i; if (u !== undefined) { i = setTimeout(() => { const e = new Error(`Connection to parent timed out after ${u}ms`); e.code = d; r(e); p() }, u) } const l = e => { try { clearTimeout() } catch (e) { return } if (e.source !== $ || e.data.penpal !== n) { return } if (o !== "*" && o !== e.origin) { f(`Child received handshake reply from origin ${e.origin} which did not match expected origin ${o}`); return } f("Child: Received handshake reply"); w.removeEventListener(c, l); const r = { localName: "Child", local: w, remote: $, originForSending: e.origin === "null" ? "*" : e.origin, originForReceiving: e.origin }; const a = {}; const d = y(r, s, f); E(d); const u = C(a, r, e.data.methodNames, p, f); E(u); clearTimeout(i); t(a) }; w.addEventListener(c, l); E(() => { w.removeEventListener(c, l); const e = new Error("Connection destroyed"); e.code = a; r(e) }); f("Child: Sending handshake"); $.postMessage({ penpal: e, methodNames: Object.keys(s) }, o) }); return { promise: N, destroy: p } }; var O = { ERR_CONNECTION_DESTROYED: a, ERR_CONNECTION_TIMEOUT: d, ERR_NOT_IN_IFRAME: l, ERR_NO_IFRAME_SRC: u, connectToChild: T, connectToParent: k }; return O }();
 
@@ -15,7 +31,6 @@
     }
     const iFrameDetected = !(window === window.parent);
     if (iFrameDetected) {
-        switchCSLoader('on');
         console.log('iframe detected');
         const connection = Penpal.connectToParent({
             // Methods child is exposing to parent
@@ -93,7 +108,7 @@
                 }, 5000);
             } else {
                 console.log('no need login');
-                switchCSLoader('on');
+                switchCSLoader('off');
             }
         }
 
@@ -157,71 +172,60 @@
                 console.error('not on login page');
             }
         }
+    } else {
+        window.onload = function () {
+            switchCSLoader('off');
+        }
     }
 
 </script>
-<div id="cs_loader_wrap">
-    <div id="cs_logo_wrap">
-        <svg id="cs_logo_loading" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="svg"
-            version="1.1" width="400" height="400" viewBox="0, 0, 400,400">
-            <g id="svgg">
-                <path id="path0"
-                    d="M229.809 140.032 C 228.312 142.614,219.827 157.206,210.953 172.458 C 202.079 187.710,194.656 200.547,194.457 200.984 C 194.127 201.707,230.479 266.171,232.157 267.840 C 232.930 268.608,308.409 268.726,309.116 267.961 C 309.409 267.643,316.740 255.166,325.406 240.234 C 334.072 225.303,342.603 210.607,344.362 207.578 L 347.562 202.070 342.214 192.734 C 339.272 187.600,330.830 172.852,323.454 159.961 C 316.077 147.070,309.798 136.260,309.499 135.938 C 309.024 135.424,304.202 135.351,270.744 135.344 L 232.531 135.336 229.809 140.032 M309.106 173.145 C 315.047 183.511,319.956 192.138,320.013 192.316 C 320.231 192.994,276.882 193.447,276.214 192.773 C 275.698 192.253,254.688 155.000,254.688 154.605 C 254.688 154.435,264.501 154.297,276.495 154.297 L 298.303 154.297 309.106 173.145 M242.541 171.975 C 244.992 176.324,249.715 184.690,253.037 190.565 C 256.359 196.441,259.155 201.544,259.250 201.907 C 259.347 202.280,257.154 206.451,254.187 211.536 C 242.603 231.391,238.691 238.166,238.450 238.794 C 237.968 240.052,237.520 239.357,227.115 221.191 C 221.362 211.147,216.485 202.647,216.276 202.302 C 215.936 201.739,237.205 164.129,237.891 164.082 C 237.998 164.074,240.091 167.626,242.541 171.975 M318.804 213.770 C 318.158 214.897,313.232 223.379,307.857 232.617 L 298.085 249.414 276.289 249.278 C 264.301 249.203,254.448 249.100,254.395 249.050 C 254.342 249.000,255.172 247.480,256.240 245.671 C 257.308 243.863,262.115 235.615,266.923 227.344 L 275.664 212.305 282.851 212.096 C 286.805 211.981,296.776 211.849,305.009 211.803 L 319.979 211.719 318.804 213.770 "
-                    stroke="none" fill="#3edb7c" fill-rule="evenodd" />
-                <path id="path1"
-                    d="M129.149 77.832 C 128.842 78.315,117.564 97.783,104.087 121.094 C 90.609 144.404,76.323 169.102,72.339 175.977 C 68.355 182.852,63.365 191.479,61.250 195.149 L 57.405 201.822 76.871 235.579 C 87.577 254.145,103.797 282.298,112.915 298.141 L 129.492 326.945 201.747 326.851 L 274.001 326.758 290.929 297.907 C 300.240 282.038,307.801 268.999,307.732 268.930 C 307.663 268.861,302.986 268.748,297.339 268.679 L 287.071 268.555 275.268 288.672 L 263.465 308.789 226.752 308.911 C 206.560 308.979,178.755 308.914,164.963 308.767 L 139.888 308.500 109.171 255.198 C 92.277 225.881,78.542 201.688,78.650 201.436 C 78.758 201.183,92.640 177.158,109.500 148.047 L 140.154 95.117 201.815 95.117 L 263.477 95.117 264.585 96.875 C 265.195 97.842,270.469 106.807,276.304 116.797 L 286.914 134.961 297.363 135.065 C 303.110 135.122,307.813 135.066,307.812 134.941 C 307.812 134.815,300.221 121.717,290.942 105.833 L 274.072 76.953 201.889 76.953 L 129.706 76.953 129.149 77.832 "
-                    stroke="none" fill="#3c3c3c" fill-rule="evenodd" />
-            </g>
-        </svg>
-        <div id="cs_spinner_loading"></div>
-    </div>
-    <style type="text/css">
-        #cs_loader_wrap {
-            display: none;
-            justify-content: center;
-            flex-direction: column;
-            height: 100vh;
-            width: 100vw;
-            position: absolute;
-            background-color: white;
-            z-index: 100;
+<style type="text/css">
+    #cs_loader_wrap {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        height: 100vh;
+        width: 100vw;
+        position: absolute;
+        background-color: white;
+        z-index: 100;
+    }
+
+    #cs_logo_wrap {
+        display: flex;
+        width: 150px;
+        height: 150px;
+        background: white;
+        border-radius: 50%;
+        margin: 0 auto;
+    }
+
+    #cs_logo_loading {
+        display: flex;
+        height: 120px;
+        margin: auto;
+        opacity: 0.7;
+    }
+
+    #cs_spinner_loading {
+        width: 150px;
+        height: 150px;
+        position: absolute;
+        border-top: 3px solid #3edb7c;
+        border-right: 3px solid rgba(0, 0, 0, 0);
+        border-left: 3px solid rgba(0, 0, 0, 0);
+        border-radius: 50%;
+        animation: spin-bot 1s ease-in-out infinite;
+    }
+
+    @keyframes spin-bot {
+        0% {
+            transform: rotate(0deg);
         }
 
-        #cs_logo_wrap {
-            display: flex;
-            width: 150px;
-            height: 150px;
-            background: white;
-            border-radius: 50%;
-            margin: 0 auto;
+        100% {
+            transform: rotate(360deg);
         }
-
-        #cs_logo_loading {
-            display: flex;
-            height: 120px;
-            margin: auto;
-            opacity: 0.7;
-        }
-
-        #cs_spinner_loading {
-            width: 150px;
-            height: 150px;
-            position: absolute;
-            border-top: 3px solid #3edb7c;
-            border-right: 3px solid rgba(0, 0, 0, 0);
-            border-left: 3px solid rgba(0, 0, 0, 0);
-            border-radius: 50%;
-            animation: spin-bot 1s ease-in-out infinite;
-        }
-
-        @keyframes spin-bot {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
-    </body>
+    }
+</style>
+</body>
