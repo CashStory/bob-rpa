@@ -138,6 +138,9 @@
                     console.log('need_login', { email: data.email, pwd: data.pwd ? '****' : '' });
                     loginAction(data);
                 });
+            } else {
+                console.log('no need login');
+                switchCSLoader('on');
             }
         }
 
