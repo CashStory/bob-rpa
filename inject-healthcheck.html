@@ -34,6 +34,7 @@
         console.log('iframe detected');
         const connection = Penpal.connectToParent({
             // Methods child is exposing to parent
+            timeout: 6000,
             debug: true,
             methods: {
                 hideElements(elements) {
@@ -66,7 +67,10 @@
             if (isLoginWrapperPresent()) {
                 needLogin(parent);
             }
-        });
+        }).catch(() => {
+            console.log('iframe timeout');
+            switchCSLoader('off');
+        })
 
         function cleanLogin(parent) {
             parent.getName().then((name) => {

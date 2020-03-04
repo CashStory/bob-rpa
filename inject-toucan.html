@@ -121,6 +121,7 @@
 
         const connection = Penpal.connectToParent({
             debug: true,
+            timeout: 6000,
             methods: {
                 hideElements(elements) {
                     setElementsDisplay(elements, 'none')
@@ -151,7 +152,10 @@
             if (isLoginWrapperPresent()) {
                 needLogin(parent);
             }
-        });
+        }).catch(() => {
+            console.log('iframe timeout');
+            switchCSLoader('off');
+        })
 
         function cleanLogin(parent) {
             parent.getName().then((name) => {

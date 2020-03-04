@@ -38,6 +38,7 @@
         const connection = Penpal.connectToParent({
             // Methods child is exposing to parent
             debug: true,
+            timeout: 6000,
             methods: {
                 hideElements(elements) {
                     setElementsDisplay(elements, 'none')
@@ -75,6 +76,9 @@
             if (oldHref != document.location.href) {
                 hashChanged(parent);
             }
+        }).catch(() => {
+            console.log('iframe timeout');
+            switchCSLoader('off');
         });
 
         // });
