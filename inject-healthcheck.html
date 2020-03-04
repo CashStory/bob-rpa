@@ -1,3 +1,52 @@
+<style type="text/css">
+    #cs_loader_wrap {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        height: 100vh;
+        width: 100vw;
+        position: absolute;
+        background-color: white;
+        z-index: 4210;
+    }
+
+    #cs_logo_wrap {
+        display: flex;
+        width: 150px;
+        height: 150px;
+        background: white;
+        border-radius: 50%;
+        margin: 0 auto;
+    }
+
+    #cs_logo_loading {
+        display: flex;
+        height: 120px;
+        margin: auto;
+        opacity: 0.7;
+    }
+
+    #cs_spinner_loading {
+        width: 150px;
+        height: 150px;
+        position: absolute;
+        border-top: 3px solid #3edb7c;
+        border-right: 3px solid rgba(0, 0, 0, 0);
+        border-left: 3px solid rgba(0, 0, 0, 0);
+        border-radius: 50%;
+        animation: spin-bot 1s ease-in-out infinite;
+    }
+
+    @keyframes spin-bot {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
 <div id="cs_loader_wrap">
     <div id="cs_logo_wrap">
         <svg id="cs_logo_loading" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="svg"
@@ -29,11 +78,13 @@
             csl.style.display = "flex";
         }
     }
+    function delete_cookie(name) {
+        document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
     const iFrameDetected = !(window === window.parent);
     if (iFrameDetected) {
         console.log('iframe detected');
         const connection = Penpal.connectToParent({
-            // Methods child is exposing to parent
             timeout: 6000,
             debug: true,
             methods: {
@@ -48,7 +99,6 @@
 
         connection.promise.then(function (parent) {
             console.log('conected !!');
-
             cleanLogin(parent);
             const bodyList = document.querySelector("html")
                 , observer = new MutationObserver((mutations) => {
@@ -64,9 +114,7 @@
             };
 
             observer.observe(bodyList, config);
-            if (isLoginWrapperPresent()) {
-                needLogin(parent);
-            }
+            needLogin(parent);
         }).catch(() => {
             console.log('iframe timeout');
             switchCSLoader('off');
@@ -77,7 +125,7 @@
                 console.log('Current name', name);
                 const currentName = localStorage.getItem('ifram_name');
                 if (!currentName || name !== currentName) {
-                    window.location = "/accounts/logout/";
+                    delete_cookie('sessionid');
                 }
                 localStorage.setItem('ifram_name', name)
             });
@@ -183,53 +231,4 @@
     }
 
 </script>
-<style type="text/css">
-    #cs_loader_wrap {
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        height: 100vh;
-        width: 100vw;
-        position: absolute;
-        background-color: white;
-        z-index: 421;
-    }
-
-    #cs_logo_wrap {
-        display: flex;
-        width: 150px;
-        height: 150px;
-        background: white;
-        border-radius: 50%;
-        margin: 0 auto;
-    }
-
-    #cs_logo_loading {
-        display: flex;
-        height: 120px;
-        margin: auto;
-        opacity: 0.7;
-    }
-
-    #cs_spinner_loading {
-        width: 150px;
-        height: 150px;
-        position: absolute;
-        border-top: 3px solid #3edb7c;
-        border-right: 3px solid rgba(0, 0, 0, 0);
-        border-left: 3px solid rgba(0, 0, 0, 0);
-        border-radius: 50%;
-        animation: spin-bot 1s ease-in-out infinite;
-    }
-
-    @keyframes spin-bot {
-        0% {
-            transform: rotate(0deg);
-        }
-
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-</style>
 </head>
