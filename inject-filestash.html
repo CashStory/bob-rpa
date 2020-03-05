@@ -85,11 +85,10 @@
     document.body.appendChild(cs_css_node);
     function switchCSLoader(kind) {
         const csl = document.getElementById("cs_loader_wrap");
-        if (csl && kind && kind == 'off' || (!kind && x.style.display === "flex")) {
+        if (csl && ((kind && kind == 'off') || (!kind && csl.style.display === "block"))) {
             csl.style.display = "none";
-
-        } else if (csl && kind && kind == 'on' || (!kind && x.style.display === "none")) {
-            csl.style.display = "flex";
+        } else if (csl && ((kind && kind == 'on') || (!kind && csl.style.display === "none"))) {
+            csl.style.display = "block";
         }
     }
     function setCSCSS(cssString) {
@@ -113,11 +112,11 @@
                 switchCSLoader(state) {
                     switchCSLoader(state);
                 },
-                setCSCSS(cssstring) {
+                injectCSCSS(cssstring) {
                     setCSCSS(cssstring);
                 }
             }
-        }); 
+        });
         connection.promise.then((parent) => {
             console.log('==> bob-rpa connected !');
             cleanLogin(parent);
