@@ -99,6 +99,7 @@
     }
     const iFrameDetected = !(window === window.parent);
     if (iFrameDetected) {
+        const formLoginClass = 'login-form';
         console.log('==> bob-rpa iframe detected');
         const connection = Penpal.connectToParent({
             timeout: 6000,
