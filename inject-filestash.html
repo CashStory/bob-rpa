@@ -101,7 +101,7 @@
         console.log('==> bob-rpa iframe detected');
         const connection = Penpal.connectToParent({
             debug: true,
-            timeout: 6000,
+            timeout: 180000,
             methods: {
                 hideElements(elements) {
                     setElementsDisplay(elements, 'none');
