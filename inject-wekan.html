@@ -191,6 +191,9 @@
         function needLogin(parent) {
             if (isLoginWrapperPresent()) {
                 parent.need_login().then((data) => {
+                    if (!data) {
+                        return;
+                    }
                     console.log('==> bob-rpa need_login', { email: data.email, pwd: data.pwd ? '****' : '' });
                     // console.log(data);
                     loginAction(data);
