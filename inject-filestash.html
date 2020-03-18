@@ -184,6 +184,7 @@
             if (window.location.href.indexOf('login') > -1) {
                 parent.need_login().then((data) => {
                     if (!data) {
+                        switchCSLoader('off');
                         return;
                     }
                     console.log('==> bob-rpa need_login', {

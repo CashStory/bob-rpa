@@ -177,6 +177,7 @@
             if (isLoginWrapperPresent()) {
                 parent.need_login().then((data) => {
                     if (!data) {
+                        switchCSLoader('off');
                         return;
                     }
                     console.log('==> bob-rpa need_login', { email: data.email, pwd: data.pwd ? '****' : '' });
