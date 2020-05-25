@@ -117,8 +117,31 @@
                 }
             }
         });
+
+        var oldHref = document.location.href;
         connection.promise.then((parent) => {
             console.log('==> bob-rpa connected !');
+
+            window.addEventListener("load", (event) => {
+                const bodyListU = document.querySelector("body"),
+                    observerU = new MutationObserver(function(mutations) {
+                        mutations.forEach(function(mutation) {
+                            if (oldHref != document.location.href) {
+                                oldHref = document.location.href;
+                                console.log('==> bob-rpa url change !!');
+                                parent.urlChangeEvent(oldHref);
+                            }
+                        });
+                    });
+
+                const configU = {
+                    childList: true,
+                    subtree: true
+                };
+
+                observerU.observe(bodyListU, configU);
+            });
+
             cleanLogin(parent);
             const bodyList = document.querySelector("html")
                 , observer = new MutationObserver((mutations) => {
