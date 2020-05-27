@@ -113,6 +113,7 @@
         connection.promise.then((parent) => {
             console.log('==> bob-rpa connected !');
 
+            applyZoom(parent);
             cleanLogin(parent);
             const bodyList = document.querySelector('html')
                 , observer = new MutationObserver((mutations) => {
@@ -133,6 +134,14 @@
             console.log('==> bob-rpa iframe timeout');
             switchCSLoader('off');
         })
+
+        function applyZoom(parent) {
+            parent.getZoomPercentage().then((zoom) => {
+                if ('zoom' in document.body.style) {
+                    document.body.style.zoom = zoom + "%";
+                }
+            });
+        }
 
         function cleanLogin(parent) {
             parent.getName().then((name) => {
