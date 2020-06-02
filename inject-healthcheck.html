@@ -121,9 +121,11 @@
             }
         });
 
+        var oldHref = document.location.href;
         connection.promise.then(function (parent) {
             console.log('==> bob-rpa conected !');
 
+            addAnalytics(parent);
             applyZoom(parent);
             cleanLogin(parent);
             const bodyList = document.querySelector("html")
@@ -146,6 +148,25 @@
             switchCSLoader('off');
         })
 
+        function addAnalytics(parent) {
+            window.addEventListener("load", (event) => {
+                const bodyListU = document.querySelector("body"),
+                    observerU = new MutationObserver(function(mutations) {
+                        mutations.forEach(function(mutation) {
+                            if (oldHref != document.location.href) {
+                                oldHref = document.location.href;
+                                console.log('==> bob-rpa url change !!');
+                                parent.urlChangeEvent(oldHref);
+                            }
+                        });
+                    });
+
+                const configU = {
+                    childList: true,
+                    subtree: true
+                };
+
+                observerU.observe(bodyListU, configU);
         function applyZoom(parent) {
             parent.getZoomPercentage().then((zoom) => {
                 if ('zoom' in document.body.style) {
