@@ -123,6 +123,7 @@
             console.log('==> bob-rpa connected !');
 
             addAnalytics(parent);
+            applyZoom(parent);
             cleanLogin(parent);
             const bodyList = document.querySelector("html")
                 , observer = new MutationObserver((mutations) => {
@@ -164,6 +165,11 @@
                 };
 
                 observerU.observe(bodyListU, configU);
+        function applyZoom(parent) {
+            parent.getZoomPercentage().then((zoom) => {
+                if ('zoom' in document.body.style) {
+                    document.body.style.zoom = zoom + "%";
+                }
             });
         }
 
