@@ -8,6 +8,7 @@
   "main": "./dist/bob_rpa.js",
   "sideEffects": false,
   "scripts": {
+    "release": "release-it",
     "build": "webpack",
     "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -35,6 +36,7 @@
     "css-modules-typescript-loader": "^4.0.0",
     "eslint": "^7.5.0",
     "html-loader": "^1.1.0",
+    "release-it": "^13.6.6",
     "style-loader": "^1.2.1",
     "typescript": "^3.9.7",
     "webpack": "^4.44.0",
