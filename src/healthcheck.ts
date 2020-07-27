@@ -1,5 +1,5 @@
 import { BobRpa, LoginData } from './base';
-import css_healthcheck from 'healthcheck.css';
+const css_healthcheck = require('./healthcheck.css');
 
 class HealthcheckRpa extends BobRpa {
 
@@ -38,4 +38,4 @@ class HealthcheckRpa extends BobRpa {
         }
     }
 }
-export const healthcheck = ():BobRpa => new HealthcheckRpa(css_healthcheck);
+export const healthcheckRpa = new HealthcheckRpa(css_healthcheck);

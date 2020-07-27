@@ -41,4 +41,4 @@ class JupyterRpa extends BobRpa {
         }
     }
 }
-export const jupyter = ():BobRpa => new JupyterRpa(css_jupyter);
+export const jupyterRpa = new JupyterRpa(css_jupyter);

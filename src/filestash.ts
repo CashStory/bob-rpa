@@ -126,4 +126,4 @@ class FilestashRpa extends BobRpa {
         }
     }
 }
-export const filestash = ():BobRpa => new FilestashRpa(css_filestash);
+export const filestashRpa = new FilestashRpa(css_filestash);

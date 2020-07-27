@@ -46,4 +46,4 @@ class ToucanRpa extends BobRpa {
         }
     }
 }
-export const toucan = ():BobRpa => new ToucanRpa(css_toucan);
+export const toucanRpa = new ToucanRpa(css_toucan);

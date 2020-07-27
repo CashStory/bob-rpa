@@ -42,4 +42,4 @@ class WekanRpa extends BobRpa {
         }
     }
 }
-export const wekan = ():BobRpa => new WekanRpa();
+export const wekanRpa = new WekanRpa();

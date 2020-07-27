@@ -1,13 +1,19 @@
 var path = require('path');
+var entryPointsPathPrefix = './src';
 
 module.exports = {
-    // Change to your "entry-point".
-    entry: './src/index',
     mode: 'production',
+    entry : {
+        jupyter: entryPointsPathPrefix + '/jupyter.ts',
+        wekan: entryPointsPathPrefix + '/wekan.ts',
+        toucan: entryPointsPathPrefix + '/toucan.ts',
+        healthcheck: entryPointsPathPrefix + '/healthcheck.ts',
+        filestash: entryPointsPathPrefix + '/filestash.ts'
+    },
     output: {
         path: path.resolve(__dirname, 'dist'),
         library: 'bobRpa',
-        filename: 'bob_rpa.js'
+        filename: '[name].js'
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.json', '.css', '.html'],
