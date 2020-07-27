@@ -5,7 +5,10 @@ class WekanRpa extends BobRpa {
 
     isLoginWrapperPresent(): boolean {
         console.error('==> bob-rpa no loginAction configuration');
-
+        if (document.getElementsByClassName("auth-layout")
+            && document.getElementsByClassName("auth-layout").length > 0) {
+            return true;
+        }
         return false;
     }
 

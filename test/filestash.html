@@ -1,8 +1,24 @@
 <html>
   <head>
-    <script src="../dist/filestash.js" ></script>
+    <!-- <script>
+      const iframe = document.createElement('iframe');
+      iframe.src = './filestash_iframe.html";
+      if (
+        document.readyState === 'complete' ||
+        document.readyState === 'interactive'
+      ) {
+        document.body.appendChild(iframe);
+      } else {
+        document.addEventListener('DOMContentLoaded', () => {
+          document.body.appendChild(iframe);
+        });
+      }
+    </script> -->
+    <script src="../dist/test_parent.js" ></script>
   </head>
   <body>
-    <div id="app"></div>
+    <a href="../index.html"> Back</a>
+    <br/>
+    <iframe id="iframe_rpa" src="./filestash_iframe.html" frameBorder="0" style="background-color: antiquewhite;"></iframe>
   </body>
 </html>

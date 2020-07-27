@@ -4,6 +4,7 @@ var entryPointsPathPrefix = './src';
 module.exports = {
     mode: 'production',
     entry : {
+        test_parent: entryPointsPathPrefix + '/test_parent.ts',
         jupyter: entryPointsPathPrefix + '/jupyter.ts',
         wekan: entryPointsPathPrefix + '/wekan.ts',
         toucan: entryPointsPathPrefix + '/toucan.ts',

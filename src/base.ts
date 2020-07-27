@@ -1,4 +1,5 @@
 import { connectToParent } from 'penpal/lib';
+import { CallSender, Connection } from 'penpal/lib/types';
 const html_base = require('./base.html');
 const css_base = require('./base.css');
 
@@ -36,6 +37,7 @@ export class BobRpa {
     displayElems: {name: string, display: string}[] = [];
     cssBase = css_base;
     htmlBase = html_base;
+    connexion: Connection<CallSender> | null = null;
 
     watchFunctions: Array<() => void> = [];
     mutationConfig = {
@@ -84,7 +86,7 @@ export class BobRpa {
         console.log('==> bob-rpa iframe detected');
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const bob = this;
-        const connection = connectToParent({
+        this.connexion = connectToParent({
             debug: true,
             timeout: 180000,
             methods: {
@@ -138,8 +140,8 @@ export class BobRpa {
             }
         });
     
-        connection.promise.then((parent) => {
-            this.parent = <ParentFrame><unknown>parent;
+        this.connexion.promise.then((parent: ParentFrame) => {
+            this.parent = parent;
             if (parent) {
                 console.log('==> bob-rpa connected !');
                 this.watchFunctions.push(this.applyZoom);
