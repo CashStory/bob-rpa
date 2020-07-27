@@ -44,19 +44,24 @@ export class BobRpa {
     };
 
     constructor(css_plus = '', html_plus = '') {
+        console.log('==> bob-rpa init');
         this.iFrameDetected = !(window === window.parent);
         this.cssElem = document.createElement('style');
         this.htmlElem = document.createElement("div");
         this.csLoader = document.getElementById("cs_loader_wrap");
         this.cssPlus = css_plus;
         this.htmlPlus = html_plus;
-        document.head.appendChild(this.cssElem);
-        document.body.appendChild(this.htmlElem);
 
         this.watchFunctions.push(this.addAnalytics);
         this.watchFunctions.push(this.setCSCSS);
         this.watchFunctions.push(this.setCSHTML);
         window.addEventListener("load", () => { 
+            if (this.cssElem) {
+                document.head.appendChild(this.cssElem);
+            }
+            if (this.htmlElem) {
+                document.body.appendChild(this.htmlElem);
+            }
             this.bodyList = document.querySelector("body");
             if (this.bodyList) {
                 this.bodyObserver = new MutationObserver(() => {
