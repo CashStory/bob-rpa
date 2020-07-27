@@ -1,0 +1,22 @@
+#header {
+    background: #40dc7e;
+}
+
+.board-color-belize#header {
+    background: #40dc7e;
+}
+
+#header-quick-access {
+    background: #37c36f;
+}
+
+.board-color-belize#header-quick-access {
+    background: #37c36f;
+}
+
+.board-color-belize#header,
+.board-color-belize.sk-spinner div,
+.board-backgrounds-list .board-color-belize.background-box,
+.board-list .board-color-belize a {
+    background: #40dc7e;
+}

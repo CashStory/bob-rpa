@@ -1,0 +1,13 @@
+:root {
+    --bg-color: #f2f3f5 !important;
+    --color: #57595A !important;
+    --emphasis: #466372 !important;
+    --primary: #40dc7e !important;
+    --emphasis-primary: #c5e2f1 !important;
+    --emphasis-secondary: #466372 !important;
+    --light: #909090 !important;
+    --super-light: #f9fafc !important;
+    --error: #f26d6d !important;
+    --success: #63d9b1 !important;
+    --dark: #313538 !important;
+}
