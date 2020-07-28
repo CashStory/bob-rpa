@@ -3,7 +3,6 @@ const css_toucan = require('./toucan.css');
 
 class ToucanRpa extends BobRpa {
     isLoginWrapperPresent(): boolean {
-        console.error('==> bob-rpa isLoginWrapperPresent');
         if (document.getElementsByClassName("login-wrapper")
             && document.getElementsByClassName("login-wrapper").length > 0) {
             return true;
@@ -12,7 +11,6 @@ class ToucanRpa extends BobRpa {
     }
 
     logoutAction() {
-        console.error('==> bob-rpa logoutAction');
         localStorage.setItem('token', '');
         localStorage.setItem('embed-token', '');
         localStorage.setItem('user', '');
@@ -22,27 +20,23 @@ class ToucanRpa extends BobRpa {
     }
 
     loginAction(data: LoginData) {
-        console.error('==> bob-rpa loginAction');
-        if (data) {
-            console.log('data', data);
-            const loginInput = <HTMLInputElement>document.getElementById('username_input');
-            const pwdInput = <HTMLInputElement>document.getElementById('password_input');
-            const buttonConnect = document.getElementById('login_submit');
-            if (buttonConnect && loginInput && pwdInput) {
-                console.log('==> bob-rpa login detected');
-                this.setNativeValue(loginInput, data.login);
-                this.setNativeValue(pwdInput, data.pwd);
+        const loginInput = <HTMLInputElement>document.getElementsByClassName('login__input')[0];
+        const pwdInput = <HTMLInputElement>document.getElementsByClassName('login__input')[1];
+        const buttonConnect = <HTMLButtonElement>document.getElementsByClassName('login__button')[0];
+        if (buttonConnect && loginInput && pwdInput) {
+            console.log('==> bob-rpa login detected');
+            this.setNativeValue(loginInput, data.login);
+            this.setNativeValue(pwdInput, data.pwd);
+            try {
+                buttonConnect.click();
                 setTimeout(() => {
-                    try {
-                        buttonConnect.click();
-                        console.log('==> bob-rpa login submit');
-                    } catch (err) {
-                        console.error('==> bob-rpa login fail submit', buttonConnect);
-                    }
-                }, 500);
-            } else {
-                console.error('==> bob-rpa fail to get, buttonConnect, loginInput or pwdInput', buttonConnect, loginInput, pwdInput);
+                    this.switchCSLoader('off');
+                }, this.speedClick);
+            } catch (err) {
+                console.error('==> bob-rpa fail submit', buttonConnect);
             }
+        } else {
+            console.error('==> bob-rpa fail to get, buttonConnect, loginInput or pwdInput', buttonConnect, loginInput, pwdInput);
         }
     }
 }

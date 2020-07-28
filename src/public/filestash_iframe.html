@@ -1,0 +1,68 @@
+<html>
+
+<head>
+  <script>window.rpaSpeed = 10000;</script>
+  <script src="/filestash.js"></script>
+</head>
+
+<body>
+  <div class="component_page_connect">
+    <div class="component_container" style="max-width: 565px;">
+      <div style=""><span>
+          <div class="no-select component_page_connection_form box" style="margin-top: 146px;">
+            <div>
+              <div role="navigation" class="buttons "><button class=" ">WebDav</button><button
+                  class=" ">FTP</button><button class=" active primary">SFTP</button><button
+                  class=" ">GIT</button><button class=" ">S3</button><button class=" ">Dropbox</button><button
+                  class=" ">Drive</button></div>
+            </div>
+            <div>
+              <form autocomplete="off" autocapitalize="off" spellcheck="false" autocorrect="off">
+                <div class="formbuilder">
+
+                  <div><label class="no-select input_type_text">
+                      <div><input type="text" class="component_input" name="hostname" value="" placeholder="Hostname*">
+                      </div>
+                    </label></div>
+                  <div><label class="no-select input_type_text">
+                      <div><input type="text" class="component_input" name="username" value="" placeholder="Username">
+                      </div>
+                    </label></div>
+                  <div><label class="no-select input_type_long_password">
+                      <div><textarea type="text" rows="1" name="password" placeholder="Password"
+                          autocomplete="new-password" class="component_textarea"></textarea></div>
+                    </label></div>
+                  <div><label style="color: rgba(0, 0, 0, 0.4);"><input type="checkbox" class="component_input"
+                        value="on"><!-- react-text: 85 -->advanced
+                      <!-- /react-text --></label></div>
+                  <div class="advanced_form">
+                    <div style="display: none; opacity: 0;"><label for="sftp_path" class="no-select input_type_text">
+                        <div><input type="text" class="component_input" id="sftp_path" name="path" value=""
+                            placeholder="Path"></div>
+                      </label></div>
+                    <div style="display: none; opacity: 0;"><label for="sftp_port" class="no-select input_type_number">
+                        <div><input type="number" class="component_input" id="sftp_port" name="port" value=""
+                            placeholder="Port"></div>
+                      </label></div>
+                    <div style="display: none; opacity: 0;"><label for="sftp_passphrase"
+                        class="no-select input_type_text">
+                        <div><input type="text" class="component_input" id="sftp_passphrase" name="passphrase" value=""
+                            placeholder="Passphrase"></div>
+                      </label></div>
+                    <div style="display: none; opacity: 0;"><label for="sftp_hostkey" class="no-select input_type_text">
+                        <div><input type="text" class="component_input" id="sftp_hostkey" name="hostkey" value=""
+                            placeholder="Host key"></div>
+                      </label></div>
+                  </div>
+                </div><button class="emphasis">CONNECT</button>
+              </form>
+            </div>
+          </div>
+        </span></div>
+      <div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

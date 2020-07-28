@@ -17,9 +17,16 @@ interface ParentFrame {
     needLogin: () => Promise<LoginData>;
     getName: () => Promise<string>;
 }
+declare global {
+    interface Window { rpaSpeed: number; }
+}
+
+export const docReady = new Promise((resolve) => document.addEventListener('DOMContentLoaded', resolve));
 
 export class BobRpa {
     version = '1.0.0';
+    speedClick = 100;
+    speedLogin = 1500;
     iFrameDetected = false;
     loginFormClass = 'login-form';
     csLoader: HTMLElement | null = null;
@@ -46,18 +53,24 @@ export class BobRpa {
     };
 
     constructor(css_plus = '', html_plus = '') {
+        this.cssPlus = css_plus;
+        this.htmlPlus = html_plus;
+        docReady.then(() => this.initAll());
+    }
+
+    initAll(): void {
         console.log('==> bob-rpa init');
+        this.speedClick = window.rpaSpeed ? window.rpaSpeed : this.speedClick;
+        this.speedLogin = window.rpaSpeed ? window.rpaSpeed * 10 : this.speedLogin;
         this.iFrameDetected = !(window === window.parent);
         this.cssElem = document.createElement('style');
         this.htmlElem = document.createElement("div");
         this.csLoader = document.getElementById("cs_loader_wrap");
-        this.cssPlus = css_plus;
-        this.htmlPlus = html_plus;
 
-        this.watchFunctions.push(this.addAnalytics);
-        this.watchFunctions.push(this.setCSCSS);
-        this.watchFunctions.push(this.setCSHTML);
-        window.addEventListener("load", () => { 
+        this.watchFunctions.push(() => this.addAnalytics());
+        this.watchFunctions.push(() => this.setCSCSS());
+        this.watchFunctions.push(() => this.setCSHTML());
+        // window.addEventListener("load", () => { 
             if (this.cssElem) {
                 document.head.appendChild(this.cssElem);
             }
@@ -67,7 +80,7 @@ export class BobRpa {
             this.bodyList = document.querySelector("body");
             if (this.bodyList) {
                 this.bodyObserver = new MutationObserver(() => {
-                    this.watchFunctions.forEach(element => {
+                    this.watchFunctions.forEach((element) => {
                         element();
                     });
                 });
@@ -78,7 +91,8 @@ export class BobRpa {
             } else {
                 this.switchCSLoader('off');
             }
-        });
+        // });
+
     }
 
     initPenpal(): void  {
@@ -144,7 +158,7 @@ export class BobRpa {
             this.parent = parent;
             if (parent) {
                 console.log('==> bob-rpa connected !');
-                this.watchFunctions.push(this.applyZoom);
+                this.watchFunctions.push(() => this.applyZoom());
                 this.initAutoLogin();
             }
         }).catch(() => {
@@ -184,7 +198,7 @@ export class BobRpa {
         if (!this.loginRetry && this.isLoginWrapperPresent()) {
             this.switchCSLoader('on');
             this.needLogin();
-            this.loginRetry = setTimeout(this.checkLogin, 1500);
+            this.loginRetry = setTimeout(() => this.checkLogin(), this.speedLogin);
         } else if (this.loginRetry) {
             console.log('==> bob-rpa mutation but not login wraper present', document.location.href);
             clearTimeout(this.loginRetry);
@@ -204,8 +218,11 @@ export class BobRpa {
     applyZoom(): void {
         if (this.parent) {
             this.parent.getZoomPercentage().then((zoom) => {
-                if ('zoom' in document.body.style) {
-                    document.body.style.zoom = zoom + "%";
+                const newZoom = `${zoom}%`;
+                console.log('newZoom', newZoom);
+                console.log('oldZoom', document.body.style.zoom);
+                if ('zoom' in document.body.style && newZoom !== document.body.style.zoom) {
+                    document.body.style.zoom = newZoom;
                 }
             });
         }
@@ -299,8 +316,8 @@ export class BobRpa {
                     return;
                 } else {
                     console.log('==> bob-rpa need_login confirmed');
-                    this.watchFunctions.push(this.checkLogin);
                     this.cleanLogin();
+                    this.watchFunctions.push(() => this.checkLogin());
                     this.checkLogin();
                 }
             });

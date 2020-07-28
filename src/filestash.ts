@@ -23,7 +23,7 @@ class FilestashRpa extends BobRpa {
                 buttonTab.click();
                 setTimeout(() => {
                     resolve();
-                }, 100);
+                }, this.speedClick);
             } else {
                 reject('tab not found');
             }
@@ -39,7 +39,7 @@ class FilestashRpa extends BobRpa {
                 input.dispatchEvent(event);
                 setTimeout(() => {
                     resolve();
-                }, 100);
+                }, this.speedClick);
             } else {
                 reject('button not found');
             }
@@ -75,7 +75,7 @@ class FilestashRpa extends BobRpa {
                     } catch (err) {
                         console.error('==> bob-rpa fail submit', buttonConnect);
                     }
-                }, 100);
+                }, this.speedClick);
         } else {
                 console.error('==> bob-rpa fail to get buttonConnect, loginInput, pwdInput, hostInput or portInput', buttonConnect, loginInput, pwdInput, hostInput, portInput);
             }
@@ -91,7 +91,7 @@ class FilestashRpa extends BobRpa {
                 const repoInput = <HTMLInputElement>document.getElementsByName('repo')[0];
                 const loginInput = <HTMLInputElement>document.getElementsByName('username')[0];
                 const pwdInput = <HTMLInputElement>document.getElementsByName('password')[0];
-                const buttonConnect = this.findButton('CONNECT');
+                const buttonConnect = <HTMLButtonElement>this.findButton('CONNECT');
                 if (buttonConnect && loginInput && pwdInput && repoInput) {
                     this.setNativeValue(repoInput, repo);
                     this.setNativeValue(loginInput, login);
@@ -103,7 +103,7 @@ class FilestashRpa extends BobRpa {
                         } catch (err) {
                             console.error('==> bob-rpa fail submit', buttonConnect);
                         }
-                    }, 100);
+                    }, this.speedClick);
             } else {
                     console.error('==> bob-rpa fail to get buttonConnect, loginInput, pwdInput, repoInput', buttonConnect, loginInput, pwdInput, repoInput);
                 }
@@ -126,4 +126,5 @@ class FilestashRpa extends BobRpa {
         }
     }
 }
+
 export const filestashRpa = new FilestashRpa(css_filestash);
