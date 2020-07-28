@@ -1,7 +1,7 @@
 <html>
 
 <head>
-  <script>window.rpaSpeed = 10000;</script>
+  <script src="/test_child.js"></script>
   <script src="/wekan.js"></script>
 </head>
 
@@ -20,7 +20,7 @@
             <select class="select-authentication">
               <option value="password">Password</option>
             </select></div>
-          <form role="form" id="at-pwd-form" novalidate="" action="#" method="POST">
+          <form role="form" id="at-pwd-form" novalidate="" action="/api/wekan/login" method="POST">
             <div class="at-input">
               <label for="at-field-username_and_email">
                 Username or email

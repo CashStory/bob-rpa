@@ -12,10 +12,34 @@ module.exports = env => {
         writeToDisk: true,
         publicPath: '/',
         contentBase: path.join(__dirname, 'dist'),
-        port: 9000
+        port: 9000,
+        proxy: {
+            '/filestash_remote': {
+                target: 'http://files.cashstory.com'
+            },
+            '/healthcheck_remote': {
+                target: 'http://health.cashstory.com'
+            },
+            '/wekan_remote': {
+                target: 'http://wekan.cashstory.com'
+            },
+            '/toucan_remote': {
+                target: 'http://viz.cashstory.com'
+            },
+            '/jupyter_remote': {
+                target: 'http://datascience.cashstory.com'
+            },
+            '/api/:id/login': {
+                bypass: (req, res) => {
+                    const id = req.url.split('/')[2];
+                    res.sendFile(`/dist/public/${id}/logged.html`, { root : __dirname})
+                }
+            },
+        }
     },
     entry : {
         test_parent: entryPointsPathPrefix + '/test_parent.ts',
+        test_child: entryPointsPathPrefix + '/test_child.ts',
         jupyter: entryPointsPathPrefix + '/jupyter.ts',
         wekan: entryPointsPathPrefix + '/wekan.ts',
         toucan: entryPointsPathPrefix + '/toucan.ts',

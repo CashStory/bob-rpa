@@ -1,14 +1,14 @@
 <html>
 
 <head>
-  <script>window.rpaSpeed = 10000;</script>
+  <script src="/test_child.js"></script>
   <script src="/filestash.js"></script>
 </head>
 
 <body>
   <div class="component_page_connect">
     <div class="component_container" style="max-width: 565px;">
-      <div style=""><span>
+      <div><span>
           <div class="no-select component_page_connection_form box" style="margin-top: 146px;">
             <div>
               <div role="navigation" class="buttons "><button class=" ">WebDav</button><button
@@ -17,7 +17,7 @@
                   class=" ">Drive</button></div>
             </div>
             <div>
-              <form autocomplete="off" autocapitalize="off" spellcheck="false" autocorrect="off">
+              <form action="/api/filestash/login" autocomplete="off" autocapitalize="off" spellcheck="false" autocorrect="off">
                 <div class="formbuilder">
 
                   <div><label class="no-select input_type_text">

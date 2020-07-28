@@ -20,7 +20,6 @@ interface ParentFrame {
 declare global {
     interface Window { rpaSpeed: number; }
 }
-
 export const docReady = new Promise((resolve) => document.addEventListener('DOMContentLoaded', resolve));
 
 export class BobRpa {
@@ -243,6 +242,11 @@ export class BobRpa {
             return Array.prototype.slice.call(formElem.getElementsByTagName(tag));
         }
         return [];
+    }
+
+    getSubmitButton(): HTMLElement | null {
+        const elements = this.getFormElems('button');
+        return elements.length === 1 ? elements[0] : null;
     }
 
     getFormInputElem(type: string): HTMLInputElement | null {

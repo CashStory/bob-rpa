@@ -16,9 +16,9 @@ class HealthcheckRpa extends BobRpa {
     }
 
     loginAction(data: LoginData) {
-        const loginInput = <HTMLInputElement>document.getElementById('username_input');
-        const pwdInput = <HTMLInputElement>document.getElementById('password_input');
-        const buttonConnect = <HTMLButtonElement>document.getElementById('login_submit');
+        const loginInput = this.getFormInputElem('email');
+        const pwdInput = this.getFormInputElem('password');
+        const buttonConnect = this.getSubmitButton();
         if (buttonConnect && loginInput && pwdInput) {
             this.setNativeValue(loginInput, data.login);
             this.setNativeValue(pwdInput, data.pwd);

@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         tab: 'ftp',
                         host: 'ftp.test.com',
                         port: '21',
-                        login: 'test login',
+                        login: 'test@cashstory.com',
                         pwd: 'test password'
                     };
                 },
