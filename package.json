@@ -9,7 +9,7 @@
   "sideEffects": false,
   "scripts": {
     "dev": "webpack-dev-server",
-    "release": "release-it",
+    "release": "npm run lint && npm run build  && release-it",
     "build": "webpack --env.production",
     "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1"
