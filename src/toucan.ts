@@ -1,5 +1,5 @@
 import { BobRpa, LoginData } from './base';
-const css_toucan = require('./toucan.css');
+require('./toucan.css');
 
 class ToucanRpa extends BobRpa {
     isLoginWrapperPresent(): boolean {
@@ -51,4 +51,4 @@ class ToucanRpa extends BobRpa {
         }
     }
 }
-export const toucanRpa = new ToucanRpa(css_toucan);
+export const toucanRpa = new ToucanRpa();

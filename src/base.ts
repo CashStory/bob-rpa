@@ -1,7 +1,8 @@
 import { connectToParent } from 'penpal/lib';
 import { CallSender, Connection } from 'penpal/lib/types';
+require('./base.css');
 const html_base = require('./base.html');
-const css_base = require('./base.css');
+const pkg = require('../package.json');
 
 export interface LoginData {
     host?: string;
@@ -23,38 +24,35 @@ declare global {
 export const docReady = new Promise((resolve) => document.addEventListener('DOMContentLoaded', resolve));
 
 export class BobRpa {
-    version = '1.0.0';
+    version = pkg.version;
     speedClick = 100;
     speedLogin = 1500;
     iFrameDetected = false;
     DEBUG = false;
     loginFormClass = 'login-form';
-    csLoader: HTMLElement | null = null;
     cssElem: HTMLStyleElement | null = null;
+    htmlBaseElem: HTMLDivElement | null = null;
     htmlElem: HTMLDivElement | null = null;
     bodyList: HTMLBodyElement | null = null;
     bodyObserver: MutationObserver | null = null;
     parent: ParentFrame | null = null;
-    loginRetry: ReturnType<typeof setTimeout> | null = null;
     oldHref: string | null  = null;
-    cssPlus = '';
     htmlPlus = '';
     htmlInject: string[] = [];
     cssInject: string[] = [];
-    displayElems: {name: string, display: string}[] = [];
-    cssBase = css_base;
     htmlBase = html_base;
     connexion: Connection<CallSender> | null = null;
 
     watchFunctions: Array<() => void> = [];
+    watchFunctionsWork: boolean;
     mutationConfig = {
         childList: true,
         subtree: true
     };
 
-    constructor(css_plus = '', html_plus = '') {
-        this.cssPlus = css_plus;
+    constructor(html_plus = '') {
         this.htmlPlus = html_plus;
+        this.watchFunctionsWork = false;
         docReady.then(() => this.initAll());
     }
 
@@ -68,34 +66,36 @@ export class BobRpa {
         this.iFrameDetected = !(window === window.parent);
         this.cssElem = document.createElement('style');
         this.htmlElem = document.createElement("div");
-        this.csLoader = document.getElementById("cs_loader_wrap");
+        this.htmlBaseElem = document.createElement("div");
 
         this.watchFunctions.push(() => this.addAnalytics());
         this.watchFunctions.push(() => this.setCSCSS());
         this.watchFunctions.push(() => this.setCSHTML());
-        // window.addEventListener("load", () => { 
-            if (this.cssElem) {
-                document.head.appendChild(this.cssElem);
-            }
-            if (this.htmlElem) {
-                document.body.appendChild(this.htmlElem);
-            }
-            this.bodyList = document.querySelector("body");
-            if (this.bodyList) {
-                this.bodyObserver = new MutationObserver(() => {
-                    this.watchFunctions.forEach((element) => {
-                        element();
-                    });
-                });
-                this.bodyObserver.observe(this.bodyList, this.mutationConfig);
-            }
-            if (this.iFrameDetected) {
-                this.initPenpal();
-            } else {
+        if (this.cssElem) {
+            document.head.appendChild(this.cssElem);
+        }
+        if (this.htmlBaseElem) {
+            document.body.insertBefore(this.htmlBaseElem, document.body.firstChild);
+            this.setCSBaseHTML();
+        }
+        if (this.htmlElem) {
+            document.body.insertBefore(this.htmlElem, this.htmlBaseElem);
+        }
+        this.bodyList = document.querySelector("body");
+        if (this.bodyList) {
+            this.bodyObserver = new MutationObserver(() => this.watchMutation);
+            this.bodyObserver.observe(this.bodyList, this.mutationConfig);
+        }
+        if (this.iFrameDetected) {
+            this.initPenpal();
+        } else {
+            window.addEventListener("load", () => {
+                if (this.DEBUG) {
+                    console.log('[Bob-rpa] Child: NO iframe detected');
+                }
                 this.switchCSLoader('off');
-            }
-        // });
-
+            });
+        }
     }
 
     initPenpal(): void  {
@@ -106,30 +106,28 @@ export class BobRpa {
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const bob = this;
         this.connexion = connectToParent({
-            debug: true,
+            debug: this.DEBUG,
             timeout: 180000,
             methods: {
                 hideElements(elements: string[]) {
-                    elements.forEach(element => {
-                        const index = bob.displayElems.findIndex(el => el.name === element);
-                        if (index > -1) {
-                            bob.displayElems[index] = {name: element, display: 'none'};
-                        } else {
-                            bob.displayElems.push({name: element, display: 'none'});
-                        }
+                    elements.forEach((element) => {
+                        const className = element[0] === '.' ? element : `.${element}`;
+                        this.removeCSCSS(`${className} {display: initial;}`);
+                        this.injectCSCSS(`${className} {display: none;}`);
                     });
-                    bob.setElementsDisplay();
+                    if (bob.DEBUG) {
+                        console.log('[Bob-rpa] Child: hideElements!');
+                    }
                 },
                 showElements(elements: string[]) {
-                    elements.forEach(element => {
-                        const index = bob.displayElems.findIndex(el => el.name === element);
-                        if (index > -1) {
-                            bob.displayElems[index] = {name: element, display: ''};
-                        } else {
-                            bob.displayElems.push({name: element, display: ''});
-                        }
+                    elements.forEach((element) => {
+                        const className = element[0] === '.' ? element : `.${element}`;
+                        this.removeCSCSS(`${className} {display: none;}`);
+                        this.injectCSCSS(`${className} {display: initial;}`);
                     });
-                    bob.setElementsDisplay();
+                    if (bob.DEBUG) {
+                        console.log('[Bob-rpa] Child: showElements!');
+                    }
                 },
                 switchCSLoader(state: 'on' | 'off') {
                     bob.switchCSLoader(state);
@@ -141,7 +139,10 @@ export class BobRpa {
                 removeCSHTML(htmlstring: string) {
                     const index = bob.htmlInject.findIndex((html: string) => html === htmlstring);
                     if (index > -1) {
-                        bob.cssInject.splice(index, 1);
+                        if (bob.DEBUG) {
+                            console.log('[Bob-rpa] Child: removeCSHTML found !', index);
+                        }
+                        bob.htmlInject.splice(index, 1);
                         bob.setCSHTML();
                     }
                 }, 
@@ -152,6 +153,9 @@ export class BobRpa {
                 removeCSCSS(cssstring: string) {
                     const index = bob.cssInject.findIndex((css: string) => css === cssstring);
                     if (index > -1) {
+                        if (bob.DEBUG) {
+                            console.log('[Bob-rpa] Child: removeCSCSS found !', index);
+                        }
                         bob.cssInject.splice(index, 1);
                         bob.setCSCSS();
                     }
@@ -166,7 +170,9 @@ export class BobRpa {
                     console.log('[Bob-rpa] Child: connected !');
                 }
                 this.watchFunctions.push(() => this.applyZoom());
-                this.initAutoLogin();
+                this.initAutoLogin().then(() => {
+                    this.watchMutation();
+                });
             }
         }).catch(() => {
             if (this.DEBUG) {
@@ -175,28 +181,72 @@ export class BobRpa {
             this.switchCSLoader('off');
         });
     }
+    watchMutation(): void {
+        if (this.DEBUG) {
+            console.log('[Bob-rpa] Child: MutationObserver');
+        }
+        if (!this.watchFunctionsWork) {
+            this.watchFunctionsWork = true;
+            this.watchFunctions.forEach((element) => {
+                if (this.DEBUG) {
+                    console.log('[Bob-rpa] Child: watchFunctions', element);
+                }
+                element();
+            });
+            this.watchFunctionsWork = false;
+        }
+    }
 
     switchCSLoader(kind: 'on' | 'off' = 'off'): void  {
+        if (this.DEBUG) {
+            console.log('[Bob-rpa] Child: switchCSLoader', kind);
+        }
         const csl = document.getElementById("cs_loader_wrap");
-        if (csl && kind == 'off' && csl.style.display === "block") {
+        if (csl && kind == 'off') {
             csl.style.display = "none";
-        } else if (csl && kind == 'on' && csl.style.display === "none") {
+        } else if (csl && kind == 'on') {
             csl.style.display = "block";
         }
     }
 
     setCSCSS(): void  {
+        if (this.DEBUG) {
+            console.log('[Bob-rpa] Child: setCSCSS');
+        }
         if (this.cssElem) {
-            const newInner = `${this.cssBase}\n\n${this.cssPlus}\n\n${this.cssInject.join('\n')}\n\n/* Cashstory ${this.version} */`;
+            const newInner = `/* Cashstory Inject*/\n${this.cssInject.join('\n')}\n\n/* Cashstory ${this.version} */`;
+            if (this.DEBUG) {
+                console.log('[Bob-rpa] Child: setCSCSS', newInner);
+            }
             if (newInner !== this.cssElem.innerHTML) {
                 this.cssElem.innerHTML = newInner
             }
         }
     }
+    setCSBaseHTML(): void {
+        if (this.DEBUG) {
+            console.log('[Bob-rpa] Child: setCSBaseHTML');
+        }
+        if (this.htmlBaseElem) {
+            const newInner = `<!-- Cashstory Base -->\n${this.htmlBase}\n<!-- Cashstory ${this.version} -->`;
+            if (this.DEBUG) {
+                console.log('[Bob-rpa] Child: setCSBaseHTML', newInner);
+            }
+            if (newInner !== this.htmlBaseElem.innerHTML) {
+                this.htmlBaseElem.innerHTML = newInner
+            }
+        }
+    }
 
     setCSHTML(): void {
+        if (this.DEBUG) {
+            console.log('[Bob-rpa] Child: setCSHTML');
+        }
         if (this.htmlElem) {
-            const newInner = `${this.htmlBase}\n\n${this.htmlPlus}\n\n${this.htmlInject.join('\n')}\n\n/* Cashstory ${this.version} */`;
+            const newInner = `<!-- Cashstory Plus -->\n${this.htmlPlus}\n<!-- Cashstory Inject -->\n${this.htmlInject.join('\n')}\n\n<!-- Cashstory ${this.version} -->`;
+            if (this.DEBUG) {
+                console.log('[Bob-rpa] Child: setCSHTML', newInner);
+            }
             if (newInner !== this.htmlElem.innerHTML) {
                 this.htmlElem.innerHTML = newInner
             }
@@ -204,17 +254,17 @@ export class BobRpa {
     }
 
     checkLogin(): void {
-        if (!this.loginRetry && this.isLoginWrapperPresent()) {
-            this.switchCSLoader('on');
-            this.askLogin();
-            this.loginRetry = setTimeout(() => this.checkLogin(), this.speedLogin);
-        } else if (this.loginRetry) {
+        if (!this.isLoginWrapperPresent()) {
             if (this.DEBUG) {
                 console.log('[Bob-rpa] Child: mutation but not login wraper present', document.location.href);
             }
-            clearTimeout(this.loginRetry);
-            this.loginRetry = null;
             this.switchCSLoader('off');
+        } else {
+            if (this.DEBUG) {
+                console.log('[Bob-rpa] Child: mutation and login wraper present', document.location.href);
+            }
+            this.switchCSLoader('on');
+            this.askLogin();
         }
     }
 
@@ -239,23 +289,13 @@ export class BobRpa {
             this.parent.getZoomPercentage().then((zoom) => {
                 const newZoom = `${zoom}%`;
                 if (this.DEBUG) {
-                    console.log('newZoom', newZoom);
-                    console.log('oldZoom', document.body.style.zoom);
+                    console.log('[Bob-rpa] Child: applyZoom newZoom', newZoom, 'oldZoom', document.body.style.zoom);
                 }
                 if ('zoom' in document.body.style && newZoom !== document.body.style.zoom) {
                     document.body.style.zoom = newZoom;
                 }
             });
         }
-    }
-
-    setElementsDisplay(): void {
-        this.displayElems.forEach((element) => {
-            const elem = <HTMLElement>document.getElementsByClassName(element.name)[0];
-            if (elem) {
-                elem.style.display = element.display;
-            }
-        });
     }
 
     getFormElems(tag: string): HTMLElement[] {
@@ -338,24 +378,27 @@ export class BobRpa {
         }
     }
 
-    initAutoLogin(): void  {
+    initAutoLogin(): Promise<LoginData | null>  {
         if (this.parent) {
-            this.parent.needLogin().then((data: LoginData) => {
+            return this.parent.needLogin().then((data: LoginData) => {
                 if (!data) {
                     if (this.DEBUG) {
-                        console.log('[Bob-rpa] Child: need_login no data');
+                        console.log('[Bob-rpa] Child: needLogin no data');
                     }
                     this.switchCSLoader('off');
-                    return;
+                    return null;
                 } else {
                     if (this.DEBUG) {
-                        console.log('[Bob-rpa] Child: need_login confirmed');
+                        console.log('[Bob-rpa] Child: needLogin confirmed');
                     }
                     this.cleanLogin();
                     this.watchFunctions.push(() => this.checkLogin());
-                    this.checkLogin();
+                    // this.checkLogin();
                 }
+                return data;
             });
+        } else {
+            return Promise.reject();
         }
     }
 

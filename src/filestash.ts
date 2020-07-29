@@ -1,5 +1,5 @@
 import { BobRpa, LoginData } from './base';
-const css_filestash = require('./filestash.css');
+require('./filestash.css');
 
 
 class FilestashRpa extends BobRpa {
@@ -145,4 +145,4 @@ class FilestashRpa extends BobRpa {
     }
 }
 
-export const filestashRpa = new FilestashRpa(css_filestash);
+export const filestashRpa = new FilestashRpa();

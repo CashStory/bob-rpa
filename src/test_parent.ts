@@ -23,14 +23,30 @@ document.addEventListener('DOMContentLoaded', () => {
             // child.hideElements(['app']).then((res) => console.log('hideElements', res));
             // child.showElements(['app']).then((res) => console.log('showElements', res));
             
-            child.switchCSLoader('on').then(() => console.log('[bob-rpa] Parent: switchCSLoader(\'on\') Done'));
-            // child.switchCSLoader('off').then((res) => console.log('switchCSLoader off', res));
-        
-            // child.injectCSHTML('off').then((res) => console.log('injectCSHTML off', res));
-            // child.removeCSHTML('off').then((res) => console.log('removeCSHTML off', res));
-        
-            // child.injectCSCSS('off').then((res) => console.log('injectCSCSS off', res));
-            // child.removeCSCSS('off').then((res) => console.log('removeCSCSS off', res));
+            setTimeout(() => {
+                child.switchCSLoader('on').then(() => console.log('[bob-rpa] Parent: switchCSLoader(\'on\') Done'));
+            }, 6000);
+            setTimeout(() => {
+                child.switchCSLoader('off').then(() => console.log('[bob-rpa] Parent: switchCSLoader(\'off\') Done'));
+            }, 9000);
+            setTimeout(() => {
+                child.injectCSHTML('<div class="dallasclass">TOTO</div>').then(() => console.log('[bob-rpa] Parent: injectCSHTML(\'<div class="dallasclass">TOTO</div>\') Done'));
+            }, 12000);
+            setTimeout(() => {
+                child.hideElements(['.dallasclass']).then(() => console.log('[bob-rpa] Parent: hideElements(\'.dallasclass\') Done'));
+            }, 15000);
+            // setTimeout(() => {
+            //     child.showElements(['.dallasclass']).then(() => console.log('[bob-rpa] Parent: showElements(\'.dallasclass\') Done'));
+            // }, 18000);
+            // setTimeout(() => {
+            //     child.injectCSCSS('.dallasclass{color: red;}').then(() => console.log('[bob-rpa] Parent: injectCSCSS(\'TOTO\') Done'));
+            // }, 21000);
+            // setTimeout(() => {
+            //     child.removeCSCSS('.dallasclass{color: red;}').then(() => console.log('[bob-rpa] Parent: removeCSCSS(\'TOTO\') Done'));
+            // }, 24000);
+            // setTimeout(() => {
+            //     child.removeCSHTML('<div class="dallasclass">TOTO</div>').then(() => console.log('[bob-rpa] Parent: removeCSHTML(\'<div class="dallasclass">TOTO</div>\') Done'));
+            // }, 27000);
         });
     }
 });

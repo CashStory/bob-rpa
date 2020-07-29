@@ -1,5 +1,5 @@
 import { BobRpa, LoginData } from './base';
-const css_jupyter = require('./jupyter.css');
+require('./jupyter.css');
 
 
 class JupyterRpa extends BobRpa {
@@ -52,4 +52,4 @@ class JupyterRpa extends BobRpa {
         }
     }
 }
-export const jupyterRpa = new JupyterRpa(css_jupyter);
+export const jupyterRpa = new JupyterRpa();

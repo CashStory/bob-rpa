@@ -1,4 +1,5 @@
 import { BobRpa, LoginData } from './base';
+require('./wekan.css');
 
 
 class WekanRpa extends BobRpa {

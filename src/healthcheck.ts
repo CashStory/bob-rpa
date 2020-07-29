@@ -1,5 +1,5 @@
 import { BobRpa, LoginData } from './base';
-const css_healthcheck = require('./healthcheck.css');
+require('./healthcheck.css');
 
 class HealthcheckRpa extends BobRpa {
 
@@ -49,4 +49,4 @@ class HealthcheckRpa extends BobRpa {
         }
     }
 }
-export const healthcheckRpa = new HealthcheckRpa(css_healthcheck);
+export const healthcheckRpa = new HealthcheckRpa();

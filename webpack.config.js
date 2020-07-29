@@ -58,6 +58,7 @@ module.exports = env => {
     entry : {
         test_parent: entryPointsPathPrefix + '/test_parent.ts',
         test_child: entryPointsPathPrefix + '/test_child.ts',
+        trigger_child: entryPointsPathPrefix + '/trigger_child.ts',
         jupyter: entryPointsPathPrefix + '/jupyter.ts',
         wekan: entryPointsPathPrefix + '/wekan.ts',
         toucan: entryPointsPathPrefix + '/toucan.ts',
@@ -91,18 +92,33 @@ module.exports = env => {
             exclude: /node_modules/,
             loader: 'babel-loader',
         },
+        // {
+        //     test: /\.css$/i,
+        //     loader: ['to-string-loader', 'css-loader'],
+        // },
         {
             test: /\.css$/,
             use: [
-                'css-modules-typescript-loader',
-                {
-                loader: 'css-loader',
-                options: {
-                    modules: true
-                }
-                }
+                'style-loader',
+                'css-loader'
             ]
         },
+        // {
+        //     test: /\.css$/i,
+        //     loader: 'css-loader',
+        //     options: {
+        //         modules: true
+        //     }
+        // },
+        // {
+        //     test: /\.css$/i,
+        //     use: [
+        //       'handlebars-loader', // handlebars loader expects raw resource string
+        //       'extract-loader',
+        //       'to-string-loader',
+        //       'css-loader',
+        //     ],
+        // },
         {
             test: /\.html$/i,
             loader: 'html-loader',
