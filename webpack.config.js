@@ -7,7 +7,7 @@ const mappingData = require('./src/mappingData.json');
 
 const validLogin = (id, form, allData) => {
     let res = true;
-    console.log('form', form, allData);
+    // console.log('form', form, allData);
     Object.keys(form).forEach((key) => {
         try {
             const mapKey = mappingData[id][key];
@@ -15,7 +15,7 @@ const validLogin = (id, form, allData) => {
                 res = false;
             }
         } catch {
-            console.log('Not a key');
+            console.error('Not a key', key);
         }
     });
     return res;
