@@ -5,6 +5,9 @@ const css_filestash = require('./filestash.css');
 class FilestashRpa extends BobRpa {
 
     isLoginWrapperPresent(): boolean {
+        if (this.DEBUG) {
+            console.log('==> bob-rpa isLoginWrapperPresent');
+        }
         if (document.getElementsByClassName("component_page_connect")
             && document.getElementsByClassName("component_page_connect").length > 0) {
             return true;
@@ -13,6 +16,9 @@ class FilestashRpa extends BobRpa {
     }
 
     logoutAction() {
+        if (this.DEBUG) {
+            console.log('==> bob-rpa logoutAction');
+        }
         window.location.href = "/logout";
     }
 
@@ -62,13 +68,18 @@ class FilestashRpa extends BobRpa {
             }
             const buttonConnect = this.findButton('CONNECT');
             if (buttonConnect && loginInput && pwdInput && hostInput) {
-                console.log('==> bob-rpa login detected');
+                if (this.DEBUG) {
+                    console.log('==> bob-rpa login detected');
+                }
                 this.setNativeValue(hostInput, host);
                 this.setNativeValue(loginInput, login);
                 if (port && portInput) {
                     this.setNativeValue(portInput, port);
                 }
                 this.setNativeValue(pwdInput, pwd);
+                if (this.DEBUG) {
+                    console.log('==> bob-rpa ftp login filled');
+                }
                 setTimeout(() => {
                     try {
                         buttonConnect.click();
@@ -93,10 +104,15 @@ class FilestashRpa extends BobRpa {
                 const pwdInput = <HTMLInputElement>document.getElementsByName('password')[0];
                 const buttonConnect = <HTMLButtonElement>this.findButton('CONNECT');
                 if (buttonConnect && loginInput && pwdInput && repoInput) {
+                    if (this.DEBUG) {
+                        console.log('==> bob-rpa login detected');
+                    }
                     this.setNativeValue(repoInput, repo);
                     this.setNativeValue(loginInput, login);
                     this.setNativeValue(pwdInput, pwd);
-                    console.log('==> bob-rpa login filled');
+                    if (this.DEBUG) {
+                        console.log('==> bob-rpa git login filled');
+                    }
                     setTimeout(() => {
                         try {
                             buttonConnect.click();
@@ -114,6 +130,9 @@ class FilestashRpa extends BobRpa {
 
 
     loginAction(data: LoginData) {
+        if (this.DEBUG) {
+            console.error('==> bob-rpa loginAction');
+        }
         if (data.tab && data.host && data.port) {
             const selectedTab = data.tab;
             if (selectedTab === 'FTPS' || selectedTab === 'FTP' || selectedTab === 'SFTP') {

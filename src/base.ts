@@ -18,7 +18,7 @@ interface ParentFrame {
     getName: () => Promise<string>;
 }
 declare global {
-    interface Window { rpaSpeed: number; }
+    interface Window { rpaSpeed: number; rpaDebug: boolean; }
 }
 export const docReady = new Promise((resolve) => document.addEventListener('DOMContentLoaded', resolve));
 
@@ -27,6 +27,7 @@ export class BobRpa {
     speedClick = 100;
     speedLogin = 1500;
     iFrameDetected = false;
+    DEBUG = false;
     loginFormClass = 'login-form';
     csLoader: HTMLElement | null = null;
     cssElem: HTMLStyleElement | null = null;
@@ -58,7 +59,10 @@ export class BobRpa {
     }
 
     initAll(): void {
-        console.log('==> bob-rpa init');
+        this.DEBUG = window.rpaDebug ? window.rpaDebug : false;
+        if (this.DEBUG) {
+            console.log('==> bob-rpa init');
+        }
         this.speedClick = window.rpaSpeed ? window.rpaSpeed : this.speedClick;
         this.speedLogin = window.rpaSpeed ? window.rpaSpeed * 10 : this.speedLogin;
         this.iFrameDetected = !(window === window.parent);
@@ -96,7 +100,9 @@ export class BobRpa {
 
     initPenpal(): void  {
         this.oldHref = document.location.href;
-        console.log('==> bob-rpa iframe detected');
+        if (this.DEBUG) {
+            console.log('==> bob-rpa iframe detected');
+        }
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const bob = this;
         this.connexion = connectToParent({
@@ -156,12 +162,16 @@ export class BobRpa {
         this.connexion.promise.then((parent: ParentFrame) => {
             this.parent = parent;
             if (parent) {
-                console.log('==> bob-rpa connected !');
+                if (this.DEBUG) {
+                    console.log('==> bob-rpa connected !');
+                }
                 this.watchFunctions.push(() => this.applyZoom());
                 this.initAutoLogin();
             }
         }).catch(() => {
-            console.log('==> bob-rpa iframe timeout');
+            if (this.DEBUG) {
+                console.log('==> bob-rpa iframe timeout');
+            }
             this.switchCSLoader('off');
         });
     }
@@ -199,7 +209,9 @@ export class BobRpa {
             this.needLogin();
             this.loginRetry = setTimeout(() => this.checkLogin(), this.speedLogin);
         } else if (this.loginRetry) {
-            console.log('==> bob-rpa mutation but not login wraper present', document.location.href);
+            if (this.DEBUG) {
+                console.log('==> bob-rpa mutation but not login wraper present', document.location.href);
+            }
             clearTimeout(this.loginRetry);
             this.loginRetry = null;
             this.switchCSLoader('off');
@@ -209,7 +221,9 @@ export class BobRpa {
     addAnalytics(): void {
         if (this.parent && this.oldHref != document.location.href) {
             this.oldHref = document.location.href;
-            console.log('==> bob-rpa url change !!');
+            if (this.DEBUG) {
+                console.log('==> bob-rpa url change !!');
+            }
             this.parent.urlChangeEvent(this.oldHref);
         }
     }
@@ -218,8 +232,10 @@ export class BobRpa {
         if (this.parent) {
             this.parent.getZoomPercentage().then((zoom) => {
                 const newZoom = `${zoom}%`;
-                console.log('newZoom', newZoom);
-                console.log('oldZoom', document.body.style.zoom);
+                if (this.DEBUG) {
+                    console.log('newZoom', newZoom);
+                    console.log('oldZoom', document.body.style.zoom);
+                }
                 if ('zoom' in document.body.style && newZoom !== document.body.style.zoom) {
                     document.body.style.zoom = newZoom;
                 }
@@ -302,7 +318,9 @@ export class BobRpa {
     cleanLogin(): void {
         if (this.parent) {
             this.parent.getName().then((name: string) => {
-                console.log('==> bob-rpa current name', name);
+                if (this.DEBUG) {
+                    console.log('==> bob-rpa current name', name);
+                }
                 const currentName: string| null = localStorage.getItem('cs_child_name');
                 if (!currentName || name !== currentName) {
                     this.logoutAction();
@@ -319,7 +337,9 @@ export class BobRpa {
                     this.switchCSLoader('off');
                     return;
                 } else {
-                    console.log('==> bob-rpa need_login confirmed');
+                    if (this.DEBUG) {
+                        console.log('==> bob-rpa need_login confirmed');
+                    }
                     this.cleanLogin();
                     this.watchFunctions.push(() => this.checkLogin());
                     this.checkLogin();
@@ -332,18 +352,24 @@ export class BobRpa {
         if (this.parent && this.isLoginWrapperPresent()) {
             this.parent.needLogin().then((data: LoginData) => {
                 if (!data) {
-                    console.log('==> bob-rpa no login from parent');
+                    if (this.DEBUG) {
+                        console.log('==> bob-rpa no login from parent');
+                    }
                     this.switchCSLoader('off');
                     return;
                 }
-                console.log('==> bob-rpa need_login', this.hiddePass(data));
+                if (this.DEBUG) {
+                    console.log('==> bob-rpa need_login', this.hiddePass(data));
+                }
                 this.loginAction(data);
             });
         }
     }
 
     isLoginWrapperPresent(): boolean {
-        console.error('==> bob-rpa no loginAction configuration');
+        if (this.DEBUG) {
+            console.error('==> bob-rpa no loginAction configuration');
+        }
         return false;
     }
 

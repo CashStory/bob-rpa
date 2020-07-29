@@ -3,6 +3,9 @@ const css_toucan = require('./toucan.css');
 
 class ToucanRpa extends BobRpa {
     isLoginWrapperPresent(): boolean {
+        if (this.DEBUG) {
+            console.log('==> bob-rpa isLoginWrapperPresent');
+        }
         if (document.getElementsByClassName("login-wrapper")
             && document.getElementsByClassName("login-wrapper").length > 0) {
             return true;
@@ -11,6 +14,9 @@ class ToucanRpa extends BobRpa {
     }
 
     logoutAction() {
+        if (this.DEBUG) {
+            console.log('==> bob-rpa logoutAction');
+        }
         localStorage.setItem('token', '');
         localStorage.setItem('embed-token', '');
         localStorage.setItem('user', '');
@@ -24,11 +30,19 @@ class ToucanRpa extends BobRpa {
         const pwdInput = <HTMLInputElement>document.getElementsByClassName('login__input')[1];
         const buttonConnect = <HTMLButtonElement>document.getElementsByClassName('login__button')[0];
         if (buttonConnect && loginInput && pwdInput) {
-            console.log('==> bob-rpa login detected');
+            if (this.DEBUG) {
+                console.log('==> bob-rpa login detected');
+            }
             this.setNativeValue(loginInput, data.login);
             this.setNativeValue(pwdInput, data.pwd);
+            if (this.DEBUG) {
+                console.log('==> bob-rpa login filled');
+            }
             try {
                 buttonConnect.click();
+                if (this.DEBUG) {
+                    console.log('==> bob-rpa login submited');
+                }
                 setTimeout(() => {
                     this.switchCSLoader('off');
                 }, this.speedClick);

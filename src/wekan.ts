@@ -4,6 +4,9 @@ import { BobRpa, LoginData } from './base';
 class WekanRpa extends BobRpa {
 
     isLoginWrapperPresent(): boolean {
+        if (this.DEBUG) {
+            console.log('==> bob-rpa isLoginWrapperPresent');
+        }
         if (document.getElementsByClassName("auth-layout")
             && document.getElementsByClassName("auth-layout").length > 0) {
             return true;
@@ -12,6 +15,9 @@ class WekanRpa extends BobRpa {
     }
 
     logoutAction() {
+        if (this.DEBUG) {
+            console.log('==> bob-rpa logoutAction');
+        }
         localStorage.setItem('jupyterhub-hub-login', '');
         localStorage.setItem('jupyterhub-session-id', '');
         localStorage.setItem('jupyterhub-user-bobcashstory', '');
@@ -23,13 +29,20 @@ class WekanRpa extends BobRpa {
         const pwdInput = <HTMLInputElement>document.getElementById('at-field-password');
         const buttonConnect = <HTMLButtonElement>document.getElementById('at-btn');
         if (buttonConnect && loginInput && pwdInput) {
-            console.log('==> bob-rpa login detected');
+            if (this.DEBUG) {
+                console.log('==> bob-rpa login detected');
+            }
             this.setNativeValue(loginInput, data.login);
             this.setNativeValue(pwdInput, data.pwd);
+            if (this.DEBUG) {
+                console.log('==> bob-rpa login filled');
+            }
             setTimeout(() => {
                 try {
                     buttonConnect.click();
-                    console.log('==> bob-rpa login submit');
+                    if (this.DEBUG) {
+                        console.log('==> bob-rpa login submit');
+                    }
                 } catch (err) {
                     console.error('==> bob-rpa login fail submit', buttonConnect);
                 }

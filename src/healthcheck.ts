@@ -4,6 +4,9 @@ const css_healthcheck = require('./healthcheck.css');
 class HealthcheckRpa extends BobRpa {
 
     isLoginWrapperPresent(): boolean {
+        if (this.DEBUG) {
+            console.log('==> bob-rpa isLoginWrapperPresent');
+        }
         if (document.getElementById("login-form")) {
             return true;
         }
@@ -11,6 +14,9 @@ class HealthcheckRpa extends BobRpa {
     }
 
     logoutAction() {
+        if (this.DEBUG) {
+            console.log('==> bob-rpa logoutAction');
+        }
         this.deleteCookie('sessionid');
         window.location.href = "/";
     }
@@ -20,13 +26,20 @@ class HealthcheckRpa extends BobRpa {
         const pwdInput = this.getFormInputElem('password');
         const buttonConnect = this.getSubmitButton();
         if (buttonConnect && loginInput && pwdInput) {
+            if (this.DEBUG) {
+                console.log('==> bob-rpa login detected');
+            }
             this.setNativeValue(loginInput, data.login);
             this.setNativeValue(pwdInput, data.pwd);
-            console.log('==> bob-rpa login filled');
+            if (this.DEBUG) {
+                console.log('==> bob-rpa login filled');
+            }
             setTimeout(() => {
                 try {
                     buttonConnect.click();
-                    console.log('==> bob-rpa login submited');
+                    if (this.DEBUG) {
+                        console.log('==> bob-rpa login submited');
+                    }
                 } catch (err) {
                     console.error('==> bob-rpa login fail submit', buttonConnect);
                 }
