@@ -4,7 +4,7 @@ const css_toucan = require('./toucan.css');
 class ToucanRpa extends BobRpa {
     isLoginWrapperPresent(): boolean {
         if (this.DEBUG) {
-            console.log('==> bob-rpa isLoginWrapperPresent');
+            console.log('[Bob-rpa] Child: isLoginWrapperPresent');
         }
         if (document.getElementsByClassName("login-wrapper")
             && document.getElementsByClassName("login-wrapper").length > 0) {
@@ -15,7 +15,7 @@ class ToucanRpa extends BobRpa {
 
     logoutAction() {
         if (this.DEBUG) {
-            console.log('==> bob-rpa logoutAction');
+            console.log('[Bob-rpa] Child: logoutAction');
         }
         localStorage.setItem('token', '');
         localStorage.setItem('embed-token', '');
@@ -31,23 +31,23 @@ class ToucanRpa extends BobRpa {
         const buttonConnect = <HTMLButtonElement>document.getElementsByClassName('login__button')[0];
         if (buttonConnect && loginInput && pwdInput) {
             if (this.DEBUG) {
-                console.log('==> bob-rpa login detected');
+                console.log('[Bob-rpa] Child: login detected');
             }
             this.setNativeValue(loginInput, data.login);
             this.setNativeValue(pwdInput, data.pwd);
             if (this.DEBUG) {
-                console.log('==> bob-rpa login filled');
+                console.log('[Bob-rpa] Child: login filled');
             }
             setTimeout(() => {
                 try {
                     buttonConnect.click();
                 } catch (err) {
-                    console.error('==> bob-rpa fail submit', buttonConnect);
+                    console.error('[Bob-rpa] Child: fail submit', buttonConnect);
                 }
             }, this.speedClick);
 
         } else {
-            console.error('==> bob-rpa fail to get, buttonConnect, loginInput or pwdInput', buttonConnect, loginInput, pwdInput);
+            console.error('[Bob-rpa] Child: fail to get, buttonConnect, loginInput or pwdInput', buttonConnect, loginInput, pwdInput);
         }
     }
 }

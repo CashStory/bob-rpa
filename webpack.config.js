@@ -2,7 +2,7 @@ const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const entryPointsPathPrefix = './src';
-const loginData = require('./src/loginData.json');
+const fakeData = require('./src/fakeData.json');
 const mappingData = require('./src/mappingData.json');
 
 const validLogin = (id, form, allData) => {
@@ -23,7 +23,7 @@ const validLogin = (id, form, allData) => {
 
 const proxyApi = (req, res) => {
     const path = `dist/public/${req.params.id}/logged.html`;
-    if (!validLogin(req.params.id, req.query, loginData)) {
+    if (!validLogin(req.params.id, req.query, fakeData.login)) {
         res.sendFile('dist/public/failLogin.html', { root : __dirname});
     } else {
         res.sendFile(path, { root : __dirname});

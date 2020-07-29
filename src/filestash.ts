@@ -6,7 +6,7 @@ class FilestashRpa extends BobRpa {
 
     isLoginWrapperPresent(): boolean {
         if (this.DEBUG) {
-            console.log('==> bob-rpa isLoginWrapperPresent');
+            console.log('[Bob-rpa] Child: isLoginWrapperPresent');
         }
         if (document.getElementsByClassName("component_page_connect")
             && document.getElementsByClassName("component_page_connect").length > 0) {
@@ -17,7 +17,7 @@ class FilestashRpa extends BobRpa {
 
     logoutAction() {
         if (this.DEBUG) {
-            console.log('==> bob-rpa logoutAction');
+            console.log('[Bob-rpa] Child: logoutAction');
         }
         window.location.href = "/logout";
     }
@@ -69,7 +69,7 @@ class FilestashRpa extends BobRpa {
             const buttonConnect = this.findButton('CONNECT');
             if (buttonConnect && loginInput && pwdInput && hostInput) {
                 if (this.DEBUG) {
-                    console.log('==> bob-rpa login detected');
+                    console.log('[Bob-rpa] Child: login detected');
                 }
                 this.setNativeValue(hostInput, host);
                 this.setNativeValue(loginInput, login);
@@ -78,17 +78,17 @@ class FilestashRpa extends BobRpa {
                 }
                 this.setNativeValue(pwdInput, pwd);
                 if (this.DEBUG) {
-                    console.log('==> bob-rpa ftp login filled');
+                    console.log('[Bob-rpa] Child: ftp login filled');
                 }
                 setTimeout(() => {
                     try {
                         buttonConnect.click();
                     } catch (err) {
-                        console.error('==> bob-rpa fail submit', buttonConnect);
+                        console.error('[Bob-rpa] Child: fail submit', buttonConnect);
                     }
                 }, this.speedClick);
         } else {
-                console.error('==> bob-rpa fail to get buttonConnect, loginInput, pwdInput, hostInput or portInput', buttonConnect, loginInput, pwdInput, hostInput, portInput);
+                console.error('[Bob-rpa] Child: fail to get buttonConnect, loginInput, pwdInput, hostInput or portInput', buttonConnect, loginInput, pwdInput, hostInput, portInput);
             }
         }).catch((err) => {
             console.error(err);
@@ -104,23 +104,23 @@ class FilestashRpa extends BobRpa {
                 const buttonConnect = <HTMLButtonElement>this.findButton('CONNECT');
                 if (buttonConnect && loginInput && pwdInput && repoInput) {
                     if (this.DEBUG) {
-                        console.log('==> bob-rpa login detected');
+                        console.log('[Bob-rpa] Child: login detected');
                     }
                     this.setNativeValue(repoInput, repo);
                     this.setNativeValue(loginInput, login);
                     this.setNativeValue(pwdInput, pwd);
                     if (this.DEBUG) {
-                        console.log('==> bob-rpa git login filled');
+                        console.log('[Bob-rpa] Child: git login filled');
                     }
                     setTimeout(() => {
                         try {
                             buttonConnect.click();
                         } catch (err) {
-                            console.error('==> bob-rpa fail submit', buttonConnect);
+                            console.error('[Bob-rpa] Child: fail submit', buttonConnect);
                         }
                     }, this.speedClick);
             } else {
-                    console.error('==> bob-rpa fail to get buttonConnect, loginInput, pwdInput, repoInput', buttonConnect, loginInput, pwdInput, repoInput);
+                    console.error('[Bob-rpa] Child: fail to get buttonConnect, loginInput, pwdInput, repoInput', buttonConnect, loginInput, pwdInput, repoInput);
                 }
             }).catch((err) => {
                 console.error(err);
@@ -130,7 +130,7 @@ class FilestashRpa extends BobRpa {
 
     loginAction(data: LoginData) {
         if (this.DEBUG) {
-            console.log('==> bob-rpa loginAction');
+            console.log('[Bob-rpa] Child: loginAction');
         }
         if (data.tab && data.host && data.port) {
             const selectedTab = data.tab.toUpperCase();

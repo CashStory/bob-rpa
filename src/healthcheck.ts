@@ -5,7 +5,7 @@ class HealthcheckRpa extends BobRpa {
 
     isLoginWrapperPresent(): boolean {
         if (this.DEBUG) {
-            console.log('==> bob-rpa isLoginWrapperPresent');
+            console.log('[Bob-rpa] Child: isLoginWrapperPresent');
         }
         if (document.getElementById("login-form")) {
             return true;
@@ -15,7 +15,7 @@ class HealthcheckRpa extends BobRpa {
 
     logoutAction() {
         if (this.DEBUG) {
-            console.log('==> bob-rpa logoutAction');
+            console.log('[Bob-rpa] Child: logoutAction');
         }
         this.deleteCookie('sessionid');
         window.location.href = "/";
@@ -27,25 +27,25 @@ class HealthcheckRpa extends BobRpa {
         const buttonConnect = this.getSubmitButton();
         if (buttonConnect && loginInput && pwdInput) {
             if (this.DEBUG) {
-                console.log('==> bob-rpa login detected');
+                console.log('[Bob-rpa] Child: login detected');
             }
             this.setNativeValue(loginInput, data.login);
             this.setNativeValue(pwdInput, data.pwd);
             if (this.DEBUG) {
-                console.log('==> bob-rpa login filled');
+                console.log('[Bob-rpa] Child: login filled');
             }
             setTimeout(() => {
                 try {
                     buttonConnect.click();
                     if (this.DEBUG) {
-                        console.log('==> bob-rpa login submited');
+                        console.log('[Bob-rpa] Child: login submited');
                     }
                 } catch (err) {
-                    console.error('==> bob-rpa login fail submit', buttonConnect);
+                    console.error('[Bob-rpa] Child: login fail submit', buttonConnect);
                 }
             }, this.speedClick);
         } else {
-            console.error('==> bob-rpa fail to get, buttonConnect, loginInput or pwdInput', buttonConnect, loginInput, pwdInput);
+            console.error('[Bob-rpa] Child: fail to get, buttonConnect, loginInput or pwdInput', buttonConnect, loginInput, pwdInput);
         }
     }
 }

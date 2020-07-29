@@ -1,7 +1,0 @@
-{
-    "tab": "ftp",
-    "host": "ftp.test.com",
-    "port": "21",
-    "login": "test@cashstory.com",
-    "pwd": "testpassword"
-}

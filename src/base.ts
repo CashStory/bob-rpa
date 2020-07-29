@@ -61,7 +61,7 @@ export class BobRpa {
     initAll(): void {
         this.DEBUG = window.rpaDebug ? window.rpaDebug : false;
         if (this.DEBUG) {
-            console.log('==> bob-rpa init');
+            console.log('[Bob-rpa]  Child: init');
         }
         this.speedClick = window.rpaSpeed ? window.rpaSpeed : this.speedClick;
         this.speedLogin = window.rpaSpeed ? window.rpaSpeed * 10 : this.speedLogin;
@@ -101,7 +101,7 @@ export class BobRpa {
     initPenpal(): void  {
         this.oldHref = document.location.href;
         if (this.DEBUG) {
-            console.log('==> bob-rpa iframe detected');
+            console.log('[Bob-rpa]  Child: iframe detected');
         }
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const bob = this;
@@ -163,14 +163,14 @@ export class BobRpa {
             this.parent = parent;
             if (parent) {
                 if (this.DEBUG) {
-                    console.log('==> bob-rpa connected !');
+                    console.log('[Bob-rpa]  Child: connected !');
                 }
                 this.watchFunctions.push(() => this.applyZoom());
                 this.initAutoLogin();
             }
         }).catch(() => {
             if (this.DEBUG) {
-                console.log('==> bob-rpa iframe timeout');
+                console.log('[Bob-rpa]  Child: iframe timeout');
             }
             this.switchCSLoader('off');
         });
@@ -210,7 +210,7 @@ export class BobRpa {
             this.loginRetry = setTimeout(() => this.checkLogin(), this.speedLogin);
         } else if (this.loginRetry) {
             if (this.DEBUG) {
-                console.log('==> bob-rpa mutation but not login wraper present', document.location.href);
+                console.log('[Bob-rpa]  Child: mutation but not login wraper present', document.location.href);
             }
             clearTimeout(this.loginRetry);
             this.loginRetry = null;
@@ -219,16 +219,22 @@ export class BobRpa {
     }
 
     addAnalytics(): void {
+        if (this.DEBUG) {
+            console.log('[Bob-rpa]  Child: addAnalytics !');
+        }
         if (this.parent && this.oldHref != document.location.href) {
             this.oldHref = document.location.href;
             if (this.DEBUG) {
-                console.log('==> bob-rpa url change !!');
+                console.log('[Bob-rpa]  Child: url change !!');
             }
             this.parent.urlChangeEvent(this.oldHref);
         }
     }
 
     applyZoom(): void {
+        if (this.DEBUG) {
+            console.log('[Bob-rpa]  Child: applyZoom !');
+        }
         if (this.parent) {
             this.parent.getZoomPercentage().then((zoom) => {
                 const newZoom = `${zoom}%`;
@@ -321,7 +327,7 @@ export class BobRpa {
         if (this.parent) {
             this.parent.getName().then((name: string) => {
                 if (this.DEBUG) {
-                    console.log('==> bob-rpa current name', name);
+                    console.log('[Bob-rpa]  Child: current name', name);
                 }
                 const currentName: string| null = localStorage.getItem('cs_child_name');
                 if (!currentName || name !== currentName) {
@@ -340,7 +346,7 @@ export class BobRpa {
                     return;
                 } else {
                     if (this.DEBUG) {
-                        console.log('==> bob-rpa need_login confirmed');
+                        console.log('[Bob-rpa]  Child: need_login confirmed');
                     }
                     this.cleanLogin();
                     this.watchFunctions.push(() => this.checkLogin());
@@ -355,13 +361,13 @@ export class BobRpa {
             this.parent.needLogin().then((data: LoginData) => {
                 if (!data) {
                     if (this.DEBUG) {
-                        console.log('==> bob-rpa no login from parent');
+                        console.log('[Bob-rpa]  Child: no login from parent');
                     }
                     this.switchCSLoader('off');
                     return;
                 }
                 if (this.DEBUG) {
-                    console.log('==> bob-rpa need_login', this.hiddePass(data));
+                    console.log('[Bob-rpa]  Child: need_login', this.hiddePass(data));
                 }
                 this.loginAction(data);
             });
@@ -370,17 +376,17 @@ export class BobRpa {
 
     isLoginWrapperPresent(): boolean {
         if (this.DEBUG) {
-            console.error('==> bob-rpa no loginAction configuration');
+            console.error('[Bob-rpa]  Child: no loginAction configuration');
         }
         return false;
     }
 
     logoutAction(): void  {
-        console.error('==> bob-rpa no logoutAction configuration');
+        console.error('[Bob-rpa]  Child: no logoutAction configuration');
     }
 
     loginAction(data: LoginData): void  {
-        console.error('==> bob-rpa no loginAction configuration');
+        console.error('[Bob-rpa]  Child: no loginAction configuration');
         if (data) {
             console.log('data', this.hiddePass(data));
         }

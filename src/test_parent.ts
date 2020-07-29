@@ -1,5 +1,5 @@
 import { connectToChild } from 'penpal/lib';
-const loginData = require('./loginData.json');
+const fakeData = require('./fakeData.json');
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOMContentLoaded');
@@ -10,20 +10,20 @@ document.addEventListener('DOMContentLoaded', () => {
             iframe: iframe_rpa,
             debug: true,
             methods: {
-                getName: () => 'test Name',
-                getZoomPercentage: () => '100',
+                getName: () => fakeData.iframeName,
+                getZoomPercentage: () => fakeData.zoom,
                 needLogin: () => {
-                    return loginData;
+                    return fakeData.login;
                 },
                 },
             });
         
         test_connect.promise.then((child) => {
-            console.log('child', child);
+            console.log('[bob-rpa] Parent: child', child);
             // child.hideElements(['app']).then((res) => console.log('hideElements', res));
             // child.showElements(['app']).then((res) => console.log('showElements', res));
             
-            // child.switchCSLoader('on').then((res) => console.log('switchCSLoader on', res));
+            child.switchCSLoader('on').then((res) => console.log('switchCSLoader on', res));
             // child.switchCSLoader('off').then((res) => console.log('switchCSLoader off', res));
         
             // child.injectCSHTML('off').then((res) => console.log('injectCSHTML off', res));

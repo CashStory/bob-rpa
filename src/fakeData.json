@@ -1,0 +1,13 @@
+{
+    "iframeName": "FakeName",
+    "zoom": 200,
+    "html": "",
+    "css": "",
+    "login": {
+        "tab": "ftp",
+        "host": "ftp.test.com",
+        "port": "21",
+        "login": "test@cashstory.com",
+        "pwd": "testpassword"
+    }
+}
