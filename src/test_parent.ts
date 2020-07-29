@@ -1,6 +1,16 @@
 import { connectToChild } from 'penpal/lib';
 const fakeData = require('./fakeData.json');
 
+const stepWait = 3000;
+let wait = stepWait;
+
+const testFunction = (callback) => {
+    setTimeout(() => {
+        callback();
+    },wait);
+    wait += stepWait;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOMContentLoaded');
     const iframe_rpa = <HTMLIFrameElement>document.getElementById('iframe_rpa');
@@ -20,33 +30,14 @@ document.addEventListener('DOMContentLoaded', () => {
         
         test_connect.promise.then((child) => {
             console.log('[bob-rpa] Parent: child', child);
-            // child.hideElements(['app']).then((res) => console.log('hideElements', res));
-            // child.showElements(['app']).then((res) => console.log('showElements', res));
-            
-            setTimeout(() => {
-                child.switchCSLoader('on').then(() => console.log('[bob-rpa] Parent: switchCSLoader(\'on\') Done'));
-            }, 6000);
-            setTimeout(() => {
-                child.switchCSLoader('off').then(() => console.log('[bob-rpa] Parent: switchCSLoader(\'off\') Done'));
-            }, 9000);
-            setTimeout(() => {
-                child.injectCSHTML('<div class="dallasclass">TOTO</div>').then(() => console.log('[bob-rpa] Parent: injectCSHTML(\'<div class="dallasclass">TOTO</div>\') Done'));
-            }, 12000);
-            setTimeout(() => {
-                child.hideElements(['.dallasclass']).then(() => console.log('[bob-rpa] Parent: hideElements(\'.dallasclass\') Done'));
-            }, 15000);
-            // setTimeout(() => {
-            //     child.showElements(['.dallasclass']).then(() => console.log('[bob-rpa] Parent: showElements(\'.dallasclass\') Done'));
-            // }, 18000);
-            // setTimeout(() => {
-            //     child.injectCSCSS('.dallasclass{color: red;}').then(() => console.log('[bob-rpa] Parent: injectCSCSS(\'TOTO\') Done'));
-            // }, 21000);
-            // setTimeout(() => {
-            //     child.removeCSCSS('.dallasclass{color: red;}').then(() => console.log('[bob-rpa] Parent: removeCSCSS(\'TOTO\') Done'));
-            // }, 24000);
-            // setTimeout(() => {
-            //     child.removeCSHTML('<div class="dallasclass">TOTO</div>').then(() => console.log('[bob-rpa] Parent: removeCSHTML(\'<div class="dallasclass">TOTO</div>\') Done'));
-            // }, 27000);
+            testFunction(() => child.switchCSLoader('on').then(() => console.log('[bob-rpa] Parent: switchCSLoader(\'on\') Done')));
+            testFunction(() => child.switchCSLoader('off').then(() => console.log('[bob-rpa] Parent: switchCSLoader(\'off\') Done')));
+            testFunction(() => child.injectCSHTML('<div class="dallasclass">TOTO</div>').then(() => console.log('[bob-rpa] Parent: injectCSHTML(\'<div class="dallasclass">TOTO</div>\') Done')));
+            testFunction(() => child.injectCSCSS('.dallasclass{color: red;}').then(() => console.log('[bob-rpa] Parent: injectCSCSS(\'.dallasclass{color: red;}\') Done')));
+            testFunction(() => child.removeCSCSS('.dallasclass{color: red;}').then(() => console.log('[bob-rpa] Parent: removeCSCSS(\'.dallasclass{color: red;}\') Done')));
+            testFunction(() => child.hideElements(['.dallasclass']).then(() => console.log('[bob-rpa] Parent: hideElements(\'.dallasclass\') Done')));
+            testFunction(() => child.showElements(['.dallasclass']).then(() => console.log('[bob-rpa] Parent: showElements(\'.dallasclass\') Done')));
+            testFunction(() => child.removeCSHTML('<div class="dallasclass">TOTO</div>').then(() => console.log('[bob-rpa] Parent: removeCSHTML(\'<div class="dallasclass">TOTO</div>\') Done')));
         });
     }
 });
