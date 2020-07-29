@@ -25,10 +25,7 @@
       "tag": true
     },
     "github": {
-      "release": true,
-      "assets": [
-        "dist"
-      ]
+      "release": false
     }
   },
   "repository": {
