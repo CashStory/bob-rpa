@@ -38,17 +38,14 @@ class ToucanRpa extends BobRpa {
             if (this.DEBUG) {
                 console.log('==> bob-rpa login filled');
             }
-            try {
-                buttonConnect.click();
-                if (this.DEBUG) {
-                    console.log('==> bob-rpa login submited');
+            setTimeout(() => {
+                try {
+                    buttonConnect.click();
+                } catch (err) {
+                    console.error('==> bob-rpa fail submit', buttonConnect);
                 }
-                setTimeout(() => {
-                    this.switchCSLoader('off');
-                }, this.speedClick);
-            } catch (err) {
-                console.error('==> bob-rpa fail submit', buttonConnect);
-            }
+            }, this.speedClick);
+
         } else {
             console.error('==> bob-rpa fail to get, buttonConnect, loginInput or pwdInput', buttonConnect, loginInput, pwdInput);
         }

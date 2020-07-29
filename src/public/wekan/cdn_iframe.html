@@ -20,19 +20,19 @@
             <select class="select-authentication">
               <option value="password">Password</option>
             </select></div>
-          <form role="form" id="at-pwd-form" novalidate="" action="#" method="POST">
+          <form role="form" id="at-pwd-form" novalidate="" action="/api/wekan/login" method="POST">
             <div class="at-input">
               <label for="at-field-username_and_email">
                 Username or email
               </label>
-              <input type="text" id="at-field-username_and_email" name="at-field-username_and_email"
+              <input type="text" id="at-field-username_and_email" name="login"
                 placeholder="Username or email" autocapitalize="none" autocorrect="off">
             </div>
             <div class="at-input">
               <label for="at-field-password">
                 Password
               </label>
-              <input type="password" id="at-field-password" name="at-field-password" placeholder="Password"
+              <input type="password" id="at-field-password" name="pwd" placeholder="Password"
                 autocapitalize="none" autocorrect="off">
             </div>
             <div class="at-pwd-link">

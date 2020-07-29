@@ -1,4 +1,5 @@
 import { connectToChild } from 'penpal/lib';
+const loginData = require('./loginData.json');
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOMContentLoaded');
@@ -12,13 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 getName: () => 'test Name',
                 getZoomPercentage: () => '100',
                 needLogin: () => {
-                    return {
-                        tab: 'ftp',
-                        host: 'ftp.test.com',
-                        port: '21',
-                        login: 'test@cashstory.com',
-                        pwd: 'test password'
-                    };
+                    return loginData;
                 },
                 },
             });

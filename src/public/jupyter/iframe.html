@@ -5,7 +5,7 @@
   </head>
   <body>
     <div id="login-main" class="container">
-      <form action="/api/jupyter/login" method="post" role="form">
+      <form action="/api/jupyter/login">
         <div class="auth-form-header">
           Sign in
         </div>
@@ -14,7 +14,7 @@
           <input id="username_input" type="text" autocapitalize="off" autocorrect="off" class="form-control" name="username" val="" tabindex="1" autofocus="autofocus">
           <label for="password_input">Password:</label>
           <input type="password" class="form-control" name="password" id="password_input" tabindex="2">
-          <input type="submit" onclick="window.location.href = '/jupyter/logged.html';" id="login_submit" class="btn btn-jupyter" value="Sign In" tabindex="3">
+          <input type="submit" id="login_submit" class="btn btn-jupyter" value="Sign In" tabindex="3">
         </div>
       </form>
       </div>

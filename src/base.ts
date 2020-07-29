@@ -304,7 +304,9 @@ export class BobRpa {
     }
 
     hiddePass(data: LoginData): LoginData {
-        return Object.assign(data, {pwd: '****'});
+        const newData = Object.assign({}, data);
+        newData.pwd = '****';
+        return newData;
     }
 
     deleteCookie(name: string): void {
@@ -380,7 +382,7 @@ export class BobRpa {
     loginAction(data: LoginData): void  {
         console.error('==> bob-rpa no loginAction configuration');
         if (data) {
-            console.log('data', data);
+            console.log('data', this.hiddePass(data));
         }
     }
 }

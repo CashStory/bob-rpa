@@ -45,7 +45,7 @@ class FilestashRpa extends BobRpa {
                 input.dispatchEvent(event);
                 setTimeout(() => {
                     resolve();
-                }, this.speedClick);
+                }, 50);
             } else {
                 reject('button not found');
             }
@@ -56,7 +56,7 @@ class FilestashRpa extends BobRpa {
         let chTab = this.changeTab(tab);
         const checkBox = <HTMLInputElement>document.querySelectorAll('input[type=checkbox]')[0];
         if (port && checkBox && !checkBox.checked) {
-            chTab = chTab.then(this.checkAdvancedBox);
+            chTab = chTab.then(() => this.checkAdvancedBox);
         }
         chTab.then(() => {
             const hostInput = <HTMLInputElement>document.getElementsByName('hostname')[0];
@@ -95,9 +95,8 @@ class FilestashRpa extends BobRpa {
         });
     }
 
-    gitLogin(repo: string, login: string, pwd: string) {
-        this.changeTab('GIT')
-            .then(this.checkAdvancedBox)
+    gitLogin(tab: string, repo: string, login: string, pwd: string) {
+        this.changeTab(tab)
             .then(() => {
                 const repoInput = <HTMLInputElement>document.getElementsByName('repo')[0];
                 const loginInput = <HTMLInputElement>document.getElementsByName('username')[0];
@@ -131,14 +130,14 @@ class FilestashRpa extends BobRpa {
 
     loginAction(data: LoginData) {
         if (this.DEBUG) {
-            console.error('==> bob-rpa loginAction');
+            console.log('==> bob-rpa loginAction');
         }
         if (data.tab && data.host && data.port) {
-            const selectedTab = data.tab;
+            const selectedTab = data.tab.toUpperCase();
             if (selectedTab === 'FTPS' || selectedTab === 'FTP' || selectedTab === 'SFTP') {
                 this.ftpLogin(selectedTab, data.host, data.port, data.login, data.pwd);
             } else if (selectedTab === 'GIT') {
-                this.gitLogin(data.host, data.login, data.pwd);
+                this.gitLogin(selectedTab, data.host, data.login, data.pwd);
             }
         } else {
             console.error('missing tab, port or host');

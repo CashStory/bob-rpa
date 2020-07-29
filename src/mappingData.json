@@ -1,0 +1,24 @@
+{
+    "toucan": {
+        "login": "login",
+        "pwd": "pwd"
+    },
+    "wekan" : {
+        "login": "at-field-username_and_email",
+        "pwd": "at-field-password"
+    },
+    "jupyter": {
+        "login": "username",
+        "pwd": "password"
+    },
+    "healthchecks": {
+        "login": "email",
+        "pwd": "password"
+    },
+    "filestash": {
+        "host": "hostname",
+        "port": "port",
+        "login": "username",
+        "pwd": "password"
+    }
+}
