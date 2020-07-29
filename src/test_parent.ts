@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // child.hideElements(['app']).then((res) => console.log('hideElements', res));
             // child.showElements(['app']).then((res) => console.log('showElements', res));
             
-            child.switchCSLoader('on').then((res) => console.log('switchCSLoader on', res));
+            child.switchCSLoader('on').then(() => console.log('[bob-rpa] Parent: switchCSLoader(\'on\') Done'));
             // child.switchCSLoader('off').then((res) => console.log('switchCSLoader off', res));
         
             // child.injectCSHTML('off').then((res) => console.log('injectCSHTML off', res));
