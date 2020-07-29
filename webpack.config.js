@@ -1,3 +1,4 @@
+const proxy = require('http-proxy-middleware');
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -30,6 +31,14 @@ const proxyApi = (req, res) => {
     }
 }
 
+const targets = {
+    'filestash':  'https://files.cashstory.com',
+    'healthcheck': 'https://health.cashstory.com',
+    'wekan': 'https://task.cashstory.com',
+    'toucan': 'https://viz.cashstory.com',
+    'jupyter': 'https://datascience.cashstory.com/hub/login',
+}
+
 module.exports = env => {
     return {
             mode: 'production',
@@ -41,25 +50,10 @@ module.exports = env => {
         contentBase: path.join(__dirname, 'dist'),
         port: 9000,
         setup: function(app) {
+            app.post('/api/:id/login', proxyApi);
             app.get('/api/:id/login', proxyApi);
+            app.use('/iframe/:id', (req, res) => proxy.createProxyMiddleware({ target: targets[req.params.id], changeOrigin: true })(req, res));
         },
-        proxy: {
-            '/filestash_remote': {
-                target: 'http://files.cashstory.com'
-            },
-            '/healthcheck_remote': {
-                target: 'http://health.cashstory.com'
-            },
-            '/wekan_remote': {
-                target: 'http://wekan.cashstory.com'
-            },
-            '/toucan_remote': {
-                target: 'http://viz.cashstory.com'
-            },
-            '/jupyter_remote': {
-                target: 'http://datascience.cashstory.com'
-            },
-        }
     },
     entry : {
         test_parent: entryPointsPathPrefix + '/test_parent.ts',

@@ -20,7 +20,9 @@
   },
   "github": {
     "release": true,
-    "assets": ["dist"]
+    "assets": [
+      "dist"
+    ]
   },
   "repository": {
     "type": "git",
@@ -48,6 +50,7 @@
     "file-loader": "^6.0.0",
     "html-loader": "^1.1.0",
     "html-webpack-plugin": "^4.3.0",
+    "http-proxy-middleware": "^1.0.5",
     "release-it": "^13.6.6",
     "style-loader": "^1.2.1",
     "typescript": "^3.9.7",
