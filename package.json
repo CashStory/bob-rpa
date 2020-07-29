@@ -1,6 +1,6 @@
 {
   "name": "bob_rpa",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "allow iframe chat with bob workspace",
   "keywords": [
     "typescript"
@@ -14,15 +14,22 @@
     "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "npm": {
-    "publish": true,
-    "publishPath": "dist"
-  },
-  "github": {
-    "release": true,
-    "assets": [
-      "dist"
-    ]
+  "release-it": {
+    "npm": {
+      "publish": true,
+      "publishPath": "dist"
+    },
+    "git": {
+      "push": true,
+      "commit": true,
+      "tag": true
+    },
+    "github": {
+      "release": true,
+      "assets": [
+        "dist"
+      ]
+    }
   },
   "repository": {
     "type": "git",
