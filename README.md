@@ -14,4 +14,4 @@ use `npm run release`
 
 use with cdn like this:
 
-`https://cdn.jsdelivr.net/gh/CashStory/bob-rpa@1.0.1/dist/[NAME OF RPA MODULE].js`
+`https://cdn.jsdelivr.net/npm/bob_rpa@1.0.6/dist/[NAME_OF_RPA_MODULE].js`
