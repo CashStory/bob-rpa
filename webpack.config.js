@@ -78,6 +78,7 @@ module.exports = env => {
         new CopyPlugin({
             patterns: [
             { from: 'src/public', to: 'public' },
+            { from: 'package.json', to: 'package.json' },
             ],
         }),
         new HtmlWebpackPlugin({
