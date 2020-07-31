@@ -1,4 +1,5 @@
 import { BobRpa, LoginData } from './base';
+import fetchIntercept from 'fetch-intercept';
 require('./toucan.css');
 
 function addInterceptorToucan(bob: BobRpa) {
@@ -25,6 +26,26 @@ function addInterceptorToucan(bob: BobRpa) {
         // eslint-disable-next-line prefer-rest-params
         return oldXHROpen.apply(this, <never>arguments);
     }
+    fetchIntercept.register({
+        request: function (url, config) {
+            return [url, config];
+        },
+        requestError: function (error) {
+            return Promise.reject(error);
+        },
+        response: function (response) {
+            if (response.status == 401) {
+                if (bob.DEBUG) {
+                    console.log('[Bob-rpa] Child: XMLHttpRequest 401 found');
+                }
+                bob.checkLogin();
+            }
+            return response;
+        },
+        responseError: function (error) {
+            return Promise.reject(error);
+        }
+    });
 }
 class ToucanRpa extends BobRpa {
     isLoginWrapperPresent(): boolean {
