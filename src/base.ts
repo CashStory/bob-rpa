@@ -393,7 +393,7 @@ export class BobRpa {
                     }
                     this.cleanLogin();
                     this.watchFunctions.push(() => this.checkLogin());
-                    // this.checkLogin();
+                    this.checkLogin();
                 }
                 return data;
             });
