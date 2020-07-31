@@ -173,7 +173,9 @@ export class BobRpa {
                 }
                 this.watchFunctions.push(() => this.applyZoom());
                 this.initAutoLogin().then(() => {
-                    this.watchMutation();
+                    setTimeout(() => {
+                        this.watchMutation();
+                    }, this.speedClick);
                 });
             }
         }).catch(() => {
@@ -395,9 +397,6 @@ export class BobRpa {
                     }
                     this.cleanLogin();
                     this.watchFunctions.push(() => this.checkLogin());
-                    window.addEventListener("load", () => {
-                        this.checkLogin();
-                    });
                 }
                 return data;
             });
