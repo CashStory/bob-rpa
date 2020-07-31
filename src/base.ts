@@ -46,6 +46,7 @@ export class BobRpa {
     watchFunctions: Array<() => void> = [];
     watchFunctionsWork: boolean;
     mutationConfig = {
+        characterData: true,
         attributes: true,
         childList: true,
         subtree: true
