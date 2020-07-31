@@ -25,6 +25,43 @@ class ToucanRpa extends BobRpa {
         window.location.href = "/logout";
     }
 
+
+    initAutoLogin(): Promise<LoginData | null>  {
+        if (this.parent) {
+            return this.parent.needLogin().then((data: LoginData) => {
+                if (!data) {
+                    if (this.DEBUG) {
+                        console.log('[Bob-rpa] Child: needLogin no data');
+                    }
+                    this.switchCSLoader('off');
+                    return null;
+                } else {
+                    if (this.DEBUG) {
+                        console.log('[Bob-rpa] Child: needLogin confirmed');
+                    }
+                    this.cleanLogin();
+                    this.watchFunctions.push(() => this.checkLogin());
+                    // eslint-disable-next-line @typescript-eslint/no-this-alias
+                    const bob = this;
+                    const oldXHROpen = window.XMLHttpRequest.prototype.open;
+                    // listen for 401 and check login if that happen !
+                    window.XMLHttpRequest.prototype.open = function() {
+                        this.addEventListener('load', function() {
+                            if (this.status == 401) {
+                                bob.checkLogin();
+                            }
+                        });          
+                        // eslint-disable-next-line prefer-rest-params
+                        return oldXHROpen.apply(this, <never>arguments);
+                    }
+                }
+                return data;
+            });
+        } else {
+            return Promise.reject();
+        }
+    }
+
     loginAction(data: LoginData) {
         const loginInput = <HTMLInputElement>document.getElementsByClassName('login__input')[0];
         const pwdInput = <HTMLInputElement>document.getElementsByClassName('login__input')[1];
