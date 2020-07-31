@@ -17,7 +17,8 @@
   "release-it": {
     "npm": {
       "publish": true,
-      "publishPath": "dist"
+      "publishPath": "dist",
+      "ignoreVersion": true
     },
     "git": {
       "push": true,
