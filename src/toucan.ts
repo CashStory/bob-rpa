@@ -1,6 +1,31 @@
 import { BobRpa, LoginData } from './base';
 require('./toucan.css');
 
+function addInterceptorToucan(bob: BobRpa) {
+    if (bob.DEBUG) {
+        console.log('[Bob-rpa] Child: addInterceptorToucan');
+    }
+    const oldXHROpen = window.XMLHttpRequest.prototype.open;
+    // listen for 401 and check login if that happen !
+    window.XMLHttpRequest.prototype.open = function() {
+        if (bob.DEBUG) {
+            console.log('[Bob-rpa] Child: XMLHttpRequest interceptor');
+        }
+        this.addEventListener('load', function() {
+            if (bob.DEBUG) {
+                console.log('[Bob-rpa] Child: XMLHttpRequest load');
+            }
+            if (this.status == 401) {
+                if (bob.DEBUG) {
+                    console.log('[Bob-rpa] Child: XMLHttpRequest 401 found');
+                }
+                bob.checkLogin();
+            }
+        });          
+        // eslint-disable-next-line prefer-rest-params
+        return oldXHROpen.apply(this, <never>arguments);
+    }
+}
 class ToucanRpa extends BobRpa {
     isLoginWrapperPresent(): boolean {
         if (this.DEBUG) {
@@ -41,28 +66,7 @@ class ToucanRpa extends BobRpa {
                     }
                     this.cleanLogin();
                     this.watchFunctions.push(() => this.checkLogin());
-                    // eslint-disable-next-line @typescript-eslint/no-this-alias
-                    const bob = this;
-                    const oldXHROpen = window.XMLHttpRequest.prototype.open;
-                    // listen for 401 and check login if that happen !
-                    window.XMLHttpRequest.prototype.open = function() {
-                        if (bob.DEBUG) {
-                            console.log('[Bob-rpa] Child: XMLHttpRequest interceptor');
-                        }
-                        this.addEventListener('load', function() {
-                            if (bob.DEBUG) {
-                                console.log('[Bob-rpa] Child: XMLHttpRequest load');
-                            }
-                            if (this.status == 401) {
-                                if (bob.DEBUG) {
-                                    console.log('[Bob-rpa] Child: XMLHttpRequest 401 found');
-                                }
-                                bob.checkLogin();
-                            }
-                        });          
-                        // eslint-disable-next-line prefer-rest-params
-                        return oldXHROpen.apply(this, <never>arguments);
-                    }
+                    addInterceptorToucan(this);
                 }
                 return data;
             });
