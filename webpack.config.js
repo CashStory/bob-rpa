@@ -93,10 +93,17 @@ module.exports = env => {
             exclude: /node_modules/,
             loader: 'babel-loader',
         },
-        // {
-        //     test: /\.css$/i,
-        //     loader: ['to-string-loader', 'css-loader'],
-        // },
+        {
+            test: /\.(png|jpg|gif)$/i,
+            use: [
+                {
+                loader: 'url-loader',
+                options: {
+                    limit: 8192,
+                },
+                },
+            ],
+            },
         {
             test: /\.css$/,
             use: [
@@ -104,22 +111,6 @@ module.exports = env => {
                 'css-loader'
             ]
         },
-        // {
-        //     test: /\.css$/i,
-        //     loader: 'css-loader',
-        //     options: {
-        //         modules: true
-        //     }
-        // },
-        // {
-        //     test: /\.css$/i,
-        //     use: [
-        //       'handlebars-loader', // handlebars loader expects raw resource string
-        //       'extract-loader',
-        //       'to-string-loader',
-        //       'css-loader',
-        //     ],
-        // },
         {
             test: /\.html$/i,
             loader: 'html-loader',

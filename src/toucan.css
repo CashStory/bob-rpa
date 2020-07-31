@@ -1,5 +1,5 @@
-.tc-splash {
-    display: none !important;
-    background-color: green !important;
-    color: green !important;
+tc-splash {
+    color: white !important;
+    background-color: white !important;
+    background-image: url("./new-spash-toucan.jpg") !important;
 }
