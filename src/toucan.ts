@@ -46,8 +46,17 @@ class ToucanRpa extends BobRpa {
                     const oldXHROpen = window.XMLHttpRequest.prototype.open;
                     // listen for 401 and check login if that happen !
                     window.XMLHttpRequest.prototype.open = function() {
+                        if (bob.DEBUG) {
+                            console.log('[Bob-rpa] Child: XMLHttpRequest interceptor');
+                        }
                         this.addEventListener('load', function() {
+                            if (bob.DEBUG) {
+                                console.log('[Bob-rpa] Child: XMLHttpRequest load');
+                            }
                             if (this.status == 401) {
+                                if (bob.DEBUG) {
+                                    console.log('[Bob-rpa] Child: XMLHttpRequest 401 found');
+                                }
                                 bob.checkLogin();
                             }
                         });          
