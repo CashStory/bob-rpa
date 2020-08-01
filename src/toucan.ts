@@ -1,5 +1,4 @@
 import { BobRpa, LoginData } from './base';
-import fetchIntercept from 'fetch-intercept';
 require('./toucan.css');
 
 class ToucanRpa extends BobRpa {
