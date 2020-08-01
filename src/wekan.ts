@@ -44,6 +44,11 @@ class WekanRpa extends BobRpa {
                     if (this.DEBUG) {
                         console.log('[Bob-rpa] Child: login submit');
                     }
+                    setTimeout(() => {
+                        if (!this.isLoginWrapperPresent()) {
+                                this.switchCSLoader('off');
+                            }
+                    }, this.speedClick);
                 } catch (err) {
                     console.error('[Bob-rpa] Child: login fail submit', buttonConnect);
                 }
