@@ -1,5 +1,6 @@
 import { connectToParent } from 'penpal/lib';
 import { CallSender, Connection } from 'penpal/lib/types';
+import fetchIntercept from 'fetch-intercept';
 require('./base.css');
 const html_base = require('./base.html');
 const pkg = require('../package.json');
@@ -33,7 +34,6 @@ export class BobRpa {
     cssElem: HTMLStyleElement | null = null;
     htmlBaseElem: HTMLDivElement | null = null;
     htmlElem: HTMLDivElement | null = null;
-    bodyList: HTMLBodyElement | null = null;
     bodyObserver: MutationObserver | null = null;
     parent: ParentFrame | null = null;
     oldHref: string | null  = null;
@@ -83,11 +83,8 @@ export class BobRpa {
         if (this.htmlElem) {
             document.body.insertBefore(this.htmlElem, this.htmlBaseElem);
         }
-        this.bodyList = document.querySelector("body");
-        if (this.bodyList) {
-            this.bodyObserver = new MutationObserver(() => this.watchMutation);
-            this.bodyObserver.observe(this.bodyList, this.mutationConfig);
-        }
+        this.bodyObserver = new MutationObserver(() => this.watchMutation);
+        this.bodyObserver.observe(document, this.mutationConfig);
         if (this.iFrameDetected) {
             this.initPenpal();
         } else {
@@ -396,6 +393,7 @@ export class BobRpa {
                         console.log('[Bob-rpa] Child: needLogin confirmed');
                     }
                     this.cleanLogin();
+                    this.loginInitAction();
                     this.watchFunctions.push(() => this.checkLogin());
                 }
                 return data;
@@ -419,6 +417,9 @@ export class BobRpa {
                     console.log('[Bob-rpa] Child: askLogin', this.hiddePass(data));
                 }
                 this.loginAction(data);
+                if (this.htmlElem && this.htmlElem.getAttribute("class")) {
+                    this.htmlElem.removeAttribute("class");
+                }
                 if (this.DEBUG) {
                     console.log('[Bob-rpa] Child: askLogin Done \n\n\n\n');
                 }
@@ -435,6 +436,37 @@ export class BobRpa {
 
     logoutAction(): void  {
         console.error('[Bob-rpa] Child: no logoutAction configuration');
+    }
+
+    loginInitAction(): void  {
+        if (this.DEBUG) {
+            console.log('[Bob-rpa] Child: add fetchIntercept');
+        }
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
+        const bob = this;
+        fetchIntercept.register({
+            request: function (url, config) {
+                return [url, config];
+            },
+            requestError: function (error) {
+                return Promise.reject(error);
+            },
+            response: function (response) {
+                if (response.status == 401) {
+                    if (bob.DEBUG) {
+                        console.log('[Bob-rpa] Child: fetchIntercept 401 found');
+                    }
+                    if (bob.htmlElem && !bob.htmlElem.getAttribute("class")) {
+                        bob.htmlElem.setAttribute("class", "missing_login");
+                        bob.checkLogin();
+                    }
+                }
+                return response;
+            },
+            responseError: function (error) {
+                return Promise.reject(error);
+            }
+        });
     }
 
     loginAction(data: LoginData): void  {

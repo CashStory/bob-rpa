@@ -2,32 +2,6 @@ import { BobRpa, LoginData } from './base';
 import fetchIntercept from 'fetch-intercept';
 require('./toucan.css');
 
-function addInterceptorToucan(bob: BobRpa) {
-    if (bob.DEBUG) {
-        console.log('[Bob-rpa] Child: addInterceptorToucan');
-    }
-    // listen for 401 and check login if that happen !
-    fetchIntercept.register({
-        request: function (url, config) {
-            return [url, config];
-        },
-        requestError: function (error) {
-            return Promise.reject(error);
-        },
-        response: function (response) {
-            if (response.status == 401) {
-                if (bob.DEBUG) {
-                    console.log('[Bob-rpa] Child: fetchIntercept 401 found');
-                }
-                bob.checkLogin();
-            }
-            return response;
-        },
-        responseError: function (error) {
-            return Promise.reject(error);
-        }
-    });
-}
 class ToucanRpa extends BobRpa {
     isLoginWrapperPresent(): boolean {
         if (this.DEBUG) {
@@ -50,31 +24,6 @@ class ToucanRpa extends BobRpa {
         localStorage.setItem('userId', '');
         localStorage.setItem('currentUser', '');
         window.location.href = "/logout";
-    }
-
-
-    initAutoLogin(): Promise<LoginData | null>  {
-        if (this.parent) {
-            return this.parent.needLogin().then((data: LoginData) => {
-                if (!data) {
-                    if (this.DEBUG) {
-                        console.log('[Bob-rpa] Child: needLogin no data');
-                    }
-                    this.switchCSLoader('off');
-                    return null;
-                } else {
-                    if (this.DEBUG) {
-                        console.log('[Bob-rpa] Child: needLogin confirmed');
-                    }
-                    this.cleanLogin();
-                    this.watchFunctions.push(() => this.checkLogin());
-                    addInterceptorToucan(this);
-                }
-                return data;
-            });
-        } else {
-            return Promise.reject();
-        }
     }
 
     loginAction(data: LoginData) {
