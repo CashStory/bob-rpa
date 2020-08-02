@@ -24,7 +24,7 @@ class JupyterRpa extends BobRpa {
         window.location.href = "/logout";
     }
 
-    loginAction(data: LoginData) {
+    loginAction(data: LoginData): Promise<undefined> {
         const loginInput = <HTMLInputElement>document.getElementById('username_input');
         const pwdInput = <HTMLInputElement>document.getElementById('password_input');
         const buttonConnect = <HTMLButtonElement>document.getElementById('login_submit');
@@ -37,19 +37,10 @@ class JupyterRpa extends BobRpa {
             if (this.DEBUG) {
                 console.log('[Bob-rpa] Child: login filled');
             }
-            setTimeout(() => {
-                try {
-                    buttonConnect.click();
-                    if (this.DEBUG) {
-                        console.log('[Bob-rpa] Child: login submited');
-                    }
-                } catch (err) {
-                    console.error('[Bob-rpa] Child: login fail submit', buttonConnect);
-                }
-            }, this.speedClick);
-        } else {
-            console.error('[Bob-rpa] Child: fail to get, buttonConnect, loginInput or pwdInput', buttonConnect, loginInput, pwdInput);
+            return this.validateLogin(buttonConnect);
         }
+        console.error('[Bob-rpa] Child: fail to get, buttonConnect, loginInput or pwdInput', buttonConnect, loginInput, pwdInput);
+        return Promise.reject();
     }
 }
 export const jupyterRpa = new JupyterRpa();

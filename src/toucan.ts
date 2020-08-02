@@ -25,7 +25,7 @@ class ToucanRpa extends BobRpa {
         window.location.href = "/logout";
     }
 
-    loginAction(data: LoginData) {
+    loginAction(data: LoginData): Promise<undefined> {
         const loginInput = <HTMLInputElement>document.getElementsByClassName('login__input')[0];
         const pwdInput = <HTMLInputElement>document.getElementsByClassName('login__input')[1];
         const buttonConnect = <HTMLButtonElement>document.getElementsByClassName('login__button')[0];
@@ -38,17 +38,10 @@ class ToucanRpa extends BobRpa {
             if (this.DEBUG) {
                 console.log('[Bob-rpa] Child: login filled');
             }
-            setTimeout(() => {
-                try {
-                    buttonConnect.click();
-                } catch (err) {
-                    console.error('[Bob-rpa] Child: fail submit', buttonConnect);
-                }
-            }, this.speedClick);
-
-        } else {
-            console.error('[Bob-rpa] Child: fail to get, buttonConnect, loginInput or pwdInput', buttonConnect, loginInput, pwdInput);
+            return this.validateLogin(buttonConnect);
         }
+        console.error('[Bob-rpa] Child: fail to get, buttonConnect, loginInput or pwdInput', buttonConnect, loginInput, pwdInput);
+        return Promise.reject();
     }
 }
 export const toucanRpa = new ToucanRpa();

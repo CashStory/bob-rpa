@@ -52,13 +52,13 @@ class FilestashRpa extends BobRpa {
         });
     }
 
-    ftpLogin(tab: string, host: string, port: string, login: string, pwd: string) {
+    ftpLogin(tab: string, host: string, port: string, login: string, pwd: string): Promise<undefined> {
         let chTab = this.changeTab(tab);
         const checkBox = <HTMLInputElement>document.querySelectorAll('input[type=checkbox]')[0];
         if (port && checkBox && !checkBox.checked) {
             chTab = chTab.then(() => this.checkAdvancedBox);
         }
-        chTab.then(() => {
+        return chTab.then(() => {
             const hostInput = <HTMLInputElement>document.getElementsByName('hostname')[0];
             const loginInput = <HTMLInputElement>document.getElementsByName('username')[0];
             const pwdInput = <HTMLInputElement>document.getElementsByName('password')[0];
@@ -80,23 +80,15 @@ class FilestashRpa extends BobRpa {
                 if (this.DEBUG) {
                     console.log('[Bob-rpa] Child: ftp login filled');
                 }
-                setTimeout(() => {
-                    try {
-                        buttonConnect.click();
-                    } catch (err) {
-                        console.error('[Bob-rpa] Child: fail submit', buttonConnect);
-                    }
-                }, this.speedClick);
-        } else {
-                console.error('[Bob-rpa] Child: fail to get buttonConnect, loginInput, pwdInput, hostInput or portInput', buttonConnect, loginInput, pwdInput, hostInput, portInput);
-            }
-        }).catch((err) => {
-            console.error(err);
+            return this.validateLogin(buttonConnect);
+            } 
+            console.error('[Bob-rpa] Child: fail to get buttonConnect, loginInput, pwdInput, hostInput or portInput', buttonConnect, loginInput, pwdInput, hostInput, portInput);
+            return Promise.reject();
         });
     }
 
-    gitLogin(tab: string, repo: string, login: string, pwd: string) {
-        this.changeTab(tab)
+    gitLogin(tab: string, repo: string, login: string, pwd: string): Promise<undefined> {
+        return this.changeTab(tab)
             .then(() => {
                 const repoInput = <HTMLInputElement>document.getElementsByName('repo')[0];
                 const loginInput = <HTMLInputElement>document.getElementsByName('username')[0];
@@ -112,36 +104,28 @@ class FilestashRpa extends BobRpa {
                     if (this.DEBUG) {
                         console.log('[Bob-rpa] Child: git login filled');
                     }
-                    setTimeout(() => {
-                        try {
-                            buttonConnect.click();
-                        } catch (err) {
-                            console.error('[Bob-rpa] Child: fail submit', buttonConnect);
-                        }
-                    }, this.speedClick);
-            } else {
-                    console.error('[Bob-rpa] Child: fail to get buttonConnect, loginInput, pwdInput, repoInput', buttonConnect, loginInput, pwdInput, repoInput);
-                }
-            }).catch((err) => {
-                console.error(err);
+                    return this.validateLogin(buttonConnect);
+                } 
+                console.error('[Bob-rpa] Child: fail to get buttonConnect, loginInput, pwdInput, repoInput', buttonConnect, loginInput, pwdInput, repoInput);
+                return Promise.reject();
             });
     }
 
 
-    loginAction(data: LoginData) {
+    loginAction(data: LoginData): Promise<undefined> {
         if (this.DEBUG) {
             console.log('[Bob-rpa] Child: loginAction');
         }
         if (data.tab && data.host && data.port) {
             const selectedTab = data.tab.toUpperCase();
             if (selectedTab === 'FTPS' || selectedTab === 'FTP' || selectedTab === 'SFTP') {
-                this.ftpLogin(selectedTab, data.host, data.port, data.login, data.pwd);
+                return this.ftpLogin(selectedTab, data.host, data.port, data.login, data.pwd);
             } else if (selectedTab === 'GIT') {
-                this.gitLogin(selectedTab, data.host, data.login, data.pwd);
+                return this.gitLogin(selectedTab, data.host, data.login, data.pwd);
             }
-        } else {
-            console.error('missing tab, port or host');
-        }
+        } 
+        console.error('[Bob-rpa] Child: missing tab, port or host');
+        return Promise.reject();
     }
 }
 

@@ -307,8 +307,8 @@ export class BobRpa {
         return [];
     }
 
-    getSubmitButton(): HTMLElement | null {
-        const elements = this.getFormElems('button');
+    getSubmitButton(): HTMLButtonElement | null {
+        const elements = <HTMLButtonElement[]>this.getFormElems('button');
         return elements.length === 1 ? elements[0] : null;
     }
 
@@ -416,13 +416,21 @@ export class BobRpa {
                 if (this.DEBUG) {
                     console.log('[Bob-rpa] Child: askLogin', this.hiddePass(data));
                 }
-                this.loginAction(data);
-                if (this.htmlElem && this.htmlElem.getAttribute("class")) {
-                    this.htmlElem.removeAttribute("class");
-                }
-                if (this.DEBUG) {
-                    console.log('[Bob-rpa] Child: askLogin Done \n\n\n\n');
-                }
+                this.loginAction(data).then(() => {
+                    if (this.htmlElem && this.htmlElem.getAttribute("class")) {
+                        this.htmlElem.removeAttribute("class");
+                    }
+                    if (this.isLoginWrapperPresent()) {
+                        this.switchCSLoader('off');
+                    }
+                    if (this.DEBUG) {
+                        console.log('[Bob-rpa] Child: askLogin Done \n\n\n\n');
+                    }
+                }).catch((err) => {
+                    if (this.DEBUG) {
+                        console.error('[Bob-rpa] Child: askLogin error', err, '\n\n\n\n');
+                    }
+                });
             });
         }
     }
@@ -469,10 +477,30 @@ export class BobRpa {
         });
     }
 
-    loginAction(data: LoginData): void  {
+    validateLogin(button: HTMLButtonElement): Promise<undefined> {
+        return new Promise((resolve, reject) => {
+            return setTimeout(() => {
+                try {
+                    button.click();
+                    if (this.DEBUG) {
+                        console.log('[Bob-rpa] Child: login submit');
+                    }
+                    return setTimeout(() => {
+                            return resolve();
+                    }, this.speedClick);
+                } catch (err) {
+                    console.error('[Bob-rpa] Child: login fail submit', button);
+                    return reject();
+                }
+            }, this.speedClick);
+        });
+    }
+
+    loginAction(data: LoginData): Promise<undefined>  {
         console.error('[Bob-rpa] Child: no loginAction configuration');
-        if (data) {
-            console.log('data', this.hiddePass(data));
+        if (data && this.DEBUG) {
+            console.log('[Bob-rpa] Child: loginAction data', this.hiddePass(data));
         }
+        return Promise.reject();
     }
 }
