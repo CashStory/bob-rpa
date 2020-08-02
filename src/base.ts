@@ -417,12 +417,14 @@ export class BobRpa {
                     console.log('[Bob-rpa] Child: askLogin', this.hiddePass(data));
                 }
                 this.loginAction(data).then(() => {
-                    if (this.htmlElem && this.htmlElem.getAttribute("class")) {
-                        this.htmlElem.removeAttribute("class");
-                    }
-                    if (this.isLoginWrapperPresent()) {
-                        this.switchCSLoader('off');
-                    }
+                    setTimeout(() => {
+                        if (this.htmlElem && this.htmlElem.getAttribute("class")) {
+                            this.htmlElem.removeAttribute("class");
+                        }
+                        if (this.isLoginWrapperPresent()) {
+                            this.switchCSLoader('off');
+                        }
+                    }, this.speedLogin);
                     if (this.DEBUG) {
                         console.log('[Bob-rpa] Child: askLogin Done \n\n\n\n');
                     }
