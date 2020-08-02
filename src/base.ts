@@ -418,11 +418,11 @@ export class BobRpa {
                 }
                 this.loginAction(data).then(() => {
                     setTimeout(() => {
-                        if (this.htmlElem && this.htmlElem.getAttribute("class")) {
-                            this.htmlElem.removeAttribute("class");
-                        }
                         if (this.isLoginWrapperPresent()) {
                             this.switchCSLoader('off');
+                            if (this.htmlElem && this.htmlElem.getAttribute("class")) {
+                                this.htmlElem.removeAttribute("class");
+                            }
                         }
                     }, this.speedLogin);
                     if (this.DEBUG) {
@@ -467,6 +467,9 @@ export class BobRpa {
                         console.log('[Bob-rpa] Child: fetchIntercept 401 found');
                     }
                     if (bob.htmlElem && !bob.htmlElem.getAttribute("class")) {
+                        if (bob.DEBUG) {
+                            console.log('[Bob-rpa] Child: missing_login checkLogin');
+                        }
                         bob.htmlElem.setAttribute("class", "missing_login");
                         bob.checkLogin();
                     }
