@@ -1,3 +1,8 @@
 .footer {
     background-color: #3edb7c;
 }
+
+img#logo {
+    background-color: white !important;
+    background-image: url("./logo-full@2x.png") !important;
+}

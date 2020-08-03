@@ -22,7 +22,7 @@ class ToucanRpa extends BobRpa {
         localStorage.setItem('user', '');
         localStorage.setItem('userId', '');
         localStorage.setItem('currentUser', '');
-        window.location.href = "/logout";
+        window.location.href = "/";
     }
 
     loginAction(data: LoginData): Promise<undefined> {
