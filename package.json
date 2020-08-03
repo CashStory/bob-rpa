@@ -1,6 +1,6 @@
 {
   "name": "bob_rpa",
-  "version": "1.2.1-0",
+  "version": "1.2.1",
   "description": "allow iframe chat with bob workspace",
   "keywords": [
     "typescript"
