@@ -3,3 +3,8 @@ tc-splash {
     background-color: white !important;
     background-image: url("./new-spash-toucan.jpg") !important;
 }
+
+.toucan-overlay {
+    background-color: #3edb7c !important;
+    background: none;
+}
