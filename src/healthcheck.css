@@ -5,4 +5,5 @@
 img#logo {
     background-color: white !important;
     content: url("./logo-full@2x.png") !important;
+    width: auto !important;
 }
