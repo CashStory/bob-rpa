@@ -8,8 +8,7 @@ class wikijsRpa extends BobRpa {
         if (this.DEBUG) {
             console.log('[Bob-rpa] Child: isLoginWrapperPresent');
         }
-        if (document.getElementsByClassName("login")
-            && document.getElementsByClassName("login").length > 0) {
+        if (window.location.href.indexOf('login') > -1) {
             return true;
         }
         return false;
