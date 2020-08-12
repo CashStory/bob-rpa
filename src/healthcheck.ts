@@ -21,6 +21,11 @@ class HealthcheckRpa extends BobRpa {
         window.location.href = "/";
     }
 
+    getForm(): HTMLElement | null {
+        const formElem: HTMLElement | null = document.getElementById('login-form');
+        return formElem || document.body;
+    }
+
     loginAction(data: LoginData): Promise<undefined> {
         const loginInput = this.getFormInputElem('email');
         const pwdInput = this.getFormInputElem('password');

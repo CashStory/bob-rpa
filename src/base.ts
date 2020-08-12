@@ -299,17 +299,15 @@ export class BobRpa {
         }
     }
 
+    getForm(): HTMLElement | null {
+        const formElem: HTMLElement | null = document.getElementsByTagName('form')[0];
+        return formElem || document;
+    }
+
     getFormElems(tag: string): HTMLElement[] {
-        try {
-            const formElem: HTMLElement | null = document.getElementsByTagName('form')[0];
-            if (formElem && formElem.getElementsByTagName(tag)) {
-                return Array.prototype.slice.call(formElem.getElementsByTagName(tag));
-            }
-        } catch (err) {
-            console.error('[Bob-rpa] Child: getFormElems fail', tag);
-            if (document.getElementsByTagName(tag)) {
-                return Array.prototype.slice.call(document.getElementsByTagName(tag));
-            }
+        const formElem: HTMLElement | null = this.getForm();
+        if (formElem && formElem.getElementsByTagName(tag)) {
+            return Array.prototype.slice.call(formElem.getElementsByTagName(tag));
         }
         console.error('[Bob-rpa] Child: getFormElems not found', tag);
         return [];
