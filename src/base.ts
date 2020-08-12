@@ -5,6 +5,7 @@ require('./base.css');
 const html_base = require('./base.html');
 const pkg = require('../package.json');
 
+
 export interface LoginData {
     host?: string;
     port?: string;
@@ -30,7 +31,6 @@ export class BobRpa {
     speedLogin = 1500;
     iFrameDetected = false;
     DEBUG = false;
-    loginFormClass = 'login-form';
     cssElem: HTMLStyleElement | null = null;
     htmlBaseElem: HTMLDivElement | null = null;
     htmlElem: HTMLDivElement | null = null;
@@ -300,10 +300,18 @@ export class BobRpa {
     }
 
     getFormElems(tag: string): HTMLElement[] {
-        const formElem: HTMLElement | null = document.getElementById(this.loginFormClass);
-        if (formElem && formElem.getElementsByTagName(tag)) {
-            return Array.prototype.slice.call(formElem.getElementsByTagName(tag));
+        try {
+            const formElem: HTMLElement | null = document.getElementsByTagName('form')[0];
+            if (formElem && formElem.getElementsByTagName(tag)) {
+                return Array.prototype.slice.call(formElem.getElementsByTagName(tag));
+            }
+        } catch (err) {
+            console.error('[Bob-rpa] Child: getFormElems fail', tag);
+            if (document.getElementsByTagName(tag)) {
+                return Array.prototype.slice.call(document.getElementsByTagName(tag));
+            }
         }
+        console.error('[Bob-rpa] Child: getFormElems not found', tag);
         return [];
     }
 

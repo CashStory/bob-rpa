@@ -32,6 +32,7 @@ const proxyApi = (req, res) => {
 }
 
 const targets = {
+    'wikijs':  'https://docs.cashstory.com',
     'filestash':  'https://files.cashstory.com',
     'healthcheck': 'https://health.cashstory.com',
     'wekan': 'https://task.cashstory.com',
@@ -46,6 +47,7 @@ module.exports = env => {
     if (env && env.production) {
         entry = {
             jupyter: entryPointsPathPrefix + '/jupyter.ts',
+            wikijs: entryPointsPathPrefix + '/wikijs.ts',
             wekan: entryPointsPathPrefix + '/wekan.ts',
             toucan: entryPointsPathPrefix + '/toucan.ts',
             healthcheck: entryPointsPathPrefix + '/healthcheck.ts',
@@ -69,6 +71,7 @@ module.exports = env => {
             test_child: entryPointsPathPrefix + '/test_child.ts',
             trigger_child: entryPointsPathPrefix + '/trigger_child.ts',
             jupyter: entryPointsPathPrefix + '/jupyter.ts',
+            wikijs: entryPointsPathPrefix + '/wikijs.ts',
             wekan: entryPointsPathPrefix + '/wekan.ts',
             toucan: entryPointsPathPrefix + '/toucan.ts',
             healthcheck: entryPointsPathPrefix + '/healthcheck.ts',
