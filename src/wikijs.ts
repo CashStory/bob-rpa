@@ -22,6 +22,11 @@ class wikijsRpa extends BobRpa {
         window.location.href = "/login";
     }
 
+    getSubmitButton(): HTMLButtonElement | null {
+        const elements = <HTMLButtonElement[]>this.getFormElems('button');
+        return elements.length === 1 ? elements[1] : null;
+    }
+
     loginAction(data: LoginData): Promise<undefined> {
         const loginInput = this.getFormInputElem('text');
         const pwdInput = this.getFormInputElem('password');
