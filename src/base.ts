@@ -218,7 +218,7 @@ export class BobRpa {
         if (csl && kind == 'off') {
             csl.style.display = "none";
         } else if (csl && kind == 'on') {
-            csl.style.display = "block";
+            csl.style.display = "flex";
         }
     }
 
