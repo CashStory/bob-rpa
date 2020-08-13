@@ -457,7 +457,7 @@ export class BobRpa {
         }
         if (wait) {
             try {
-                const elem = await waitElem(this.loginSelector(), { timeout: 2000 });
+                const elem = await waitElem(this.loginSelector(), { timeout: 3000 });
                 return !!elem;
             } catch (err) {
                 console.log('[Bob-rpa] Child: isLoginWrapperPresent waitElem not found', this.loginSelector());
