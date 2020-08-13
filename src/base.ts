@@ -214,7 +214,7 @@ export class BobRpa {
         if (this.DEBUG) {
             console.log('[Bob-rpa] Child: switchCSLoader', kind);
         }
-        const csl = document.getElementById("cs_loader_wrap");
+        const csl = <HTMLElement>document.querySelector("#cs_loader_wrap");
         if (csl && kind == 'off') {
             csl.style.display = "none";
         } else if (csl && kind == 'on') {
@@ -313,44 +313,48 @@ export class BobRpa {
     }
 
     getForm(): HTMLElement | null {
-        const formElem: HTMLElement | null = document.getElementsByTagName('form')[0];
-        return formElem || document;
+        const formElem: HTMLElement | null = document.querySelector('form');
+        return formElem || document.body;
     }
 
     getFormElems(tag: string): HTMLElement[] {
         const formElem: HTMLElement | null = this.getForm();
-        if (formElem && formElem.getElementsByTagName(tag)) {
-            return Array.prototype.slice.call(formElem.getElementsByTagName(tag));
+        if (formElem && formElem.querySelectorAll(tag)) {
+            return Array.prototype.slice.call(formElem.querySelectorAll(tag));
         }
         console.error('[Bob-rpa] Child: getFormElems not found', tag);
         return [];
     }
 
     getSubmitButton(): HTMLButtonElement | null {
-        const elements = <HTMLButtonElement[]>this.getFormElems('button');
-        return elements.length === 1 ? elements[0] : null;
+        const formElem: HTMLElement | null = this.getForm();
+        if (formElem) {
+            return formElem.querySelector('button');
+        }
+        return null;
     }
 
     getFormInputElem(type: string): HTMLInputElement | null {
         let elemSelected: HTMLInputElement | null = null;
         const elements: HTMLInputElement[] = <HTMLInputElement[]>this.getFormElems('input');
-        elements.forEach((elem) => {
+        elements.some((elem) => {
             if (elem.type === type) {
                 elemSelected = elem;
+                return true;
             }
         });
         return elemSelected;
     }
 
     findButton(searchText: string): HTMLButtonElement | null {
-        const aTags: HTMLCollectionOf<HTMLButtonElement> = document.getElementsByTagName('button');
+        const aTags: HTMLButtonElement[] = Array.prototype.slice.call(document.querySelectorAll('button'));
         let found: HTMLButtonElement | null = null;
-        for (let i = 0; i < aTags.length; i++) {
-            if (aTags[i].textContent == searchText) {
-                found = aTags[i];
-                break;
+        aTags.some((element) => {
+            if (element.textContent == searchText) {
+                found = element;
+                return true;
             }
-        }
+        });
         return found;
     }
 

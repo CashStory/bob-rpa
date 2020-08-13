@@ -1,4 +1,4 @@
-import { BobRpa, LoginData, waitElem } from './base';
+import { BobRpa, LoginData } from './base';
 require('./filestash.css');
 
 

@@ -18,8 +18,11 @@ class wikijsRpa extends BobRpa {
     }
 
     getSubmitButton(): HTMLButtonElement | null {
-        const elements = <HTMLButtonElement[]>this.getFormElems('button');
-        return elements.length === 1 ? elements[1] : null;
+        const formElem: HTMLElement | null = this.getForm();
+        if (formElem) {
+            return formElem.querySelector('button.v-btn');
+        }
+        return null;
     }
 
     loginAction(data: LoginData): Promise<undefined> {
