@@ -4,14 +4,8 @@ require('./jupyter.css');
 
 class JupyterRpa extends BobRpa {
 
-    isLoginWrapperPresent(): boolean {
-        if (this.DEBUG) {
-            console.log('[Bob-rpa] Child: isLoginWrapperPresent');
-        }
-        if (document.getElementById('login-main')) {
-            return true;
-        }
-        return false;
+    loginSelector(): string {
+        return '#login-main';
     }
 
     logoutAction() {

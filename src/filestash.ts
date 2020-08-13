@@ -1,18 +1,11 @@
-import { BobRpa, LoginData } from './base';
+import { BobRpa, LoginData, waitElem } from './base';
 require('./filestash.css');
 
 
 class FilestashRpa extends BobRpa {
 
-    isLoginWrapperPresent(): boolean {
-        if (this.DEBUG) {
-            console.log('[Bob-rpa] Child: isLoginWrapperPresent');
-        }
-        if (document.getElementsByClassName("component_page_connect")
-            && document.getElementsByClassName("component_page_connect").length > 0) {
-            return true;
-        }
-        return false;
+    loginSelector(): string {
+        return '.component_page_connect';
     }
 
     logoutAction() {

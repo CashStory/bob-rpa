@@ -1,10 +1,11 @@
 import { connectToParent } from 'penpal/lib';
 import { CallSender, Connection } from 'penpal/lib/types';
 import fetchIntercept from 'fetch-intercept';
+import waitElement from '@1natsu/wait-element';
+
 require('./base.css');
 const html_base = require('./base.html');
 const pkg = require('../package.json');
-
 
 export interface LoginData {
     host?: string;
@@ -25,6 +26,7 @@ declare global {
 }
 export const docReady = new Promise((resolve) => document.addEventListener('DOMContentLoaded', resolve));
 
+export const waitElem = waitElement;
 export class BobRpa {
     version = pkg.version;
     speedClick = 100;
@@ -43,7 +45,7 @@ export class BobRpa {
     htmlBase = html_base;
     connexion: Connection<CallSender> | null = null;
 
-    watchFunctions: Array<() => void> = [];
+    watchFunctions: Array<() => Promise<void>> = [];
     watchFunctionsWork: boolean;
     mutationConfig = {
         characterData: true,
@@ -51,9 +53,11 @@ export class BobRpa {
         childList: true,
         subtree: true
     };
+    fetchUnregister: () => void;
 
     constructor(html_plus = '') {
         this.htmlPlus = html_plus;
+        this.fetchUnregister = () => { return null;};
         this.watchFunctionsWork = false;
         docReady.then(() => this.initAll());
     }
@@ -173,6 +177,11 @@ export class BobRpa {
                     setTimeout(() => {
                         this.watchMutation();
                     }, this.speedClick);
+                }).catch(() => {
+                    if (this.DEBUG) {
+                        console.log('[Bob-rpa] Child: initAutoLogin NO LOGIN');
+                    }
+                    this.switchCSLoader('off');
                 });
             }
         }).catch(() => {
@@ -182,18 +191,21 @@ export class BobRpa {
             this.switchCSLoader('off');
         });
     }
-    watchMutation(): void {
+    async watchMutation(): Promise<void> {
         if (this.DEBUG) {
             console.log('[Bob-rpa] Child: MutationObserver');
         }
         if (!this.watchFunctionsWork) {
             this.watchFunctionsWork = true;
-            this.watchFunctions.forEach((element) => {
+            for (const fn of this.watchFunctions) {
                 if (this.DEBUG) {
-                    console.log('[Bob-rpa] Child: watchFunctions', element);
+                    console.log('[Bob-rpa] Child: watchFunction', fn);
                 }
-                element();
-            });
+                await fn();
+                if (this.DEBUG) {
+                    console.log('[Bob-rpa] Child: watchFunction Done', fn);
+                }
+            }
             this.watchFunctionsWork = false;
         }
     }
@@ -210,7 +222,7 @@ export class BobRpa {
         }
     }
 
-    setCSCSS(): void  {
+    async setCSCSS(): Promise<void>  {
         if (this.DEBUG) {
             console.log('[Bob-rpa] Child: setCSCSS');
         }
@@ -224,7 +236,7 @@ export class BobRpa {
             }
         }
     }
-    setCSBaseHTML(): void {
+    async setCSBaseHTML(): Promise<void>  {
         if (this.DEBUG) {
             console.log('[Bob-rpa] Child: setCSBaseHTML');
         }
@@ -239,7 +251,7 @@ export class BobRpa {
         }
     }
 
-    setCSHTML(): void {
+    async setCSHTML(): Promise<void> {
         if (this.DEBUG) {
             console.log('[Bob-rpa] Child: setCSHTML');
         }
@@ -254,8 +266,9 @@ export class BobRpa {
         }
     }
 
-    checkLogin(): void {
-        if (!this.isLoginWrapperPresent()) {
+    async checkLogin(wait = false): Promise<void> {
+        const loginPresent = await this.isLoginWrapperPresent(wait);
+        if (!loginPresent) {
             if (this.DEBUG) {
                 console.log('[Bob-rpa] Child: mutation but not login wraper present', document.location.href);
             }
@@ -269,7 +282,7 @@ export class BobRpa {
         }
     }
 
-    addAnalytics(): void {
+    async addAnalytics(): Promise<void> {
         if (this.DEBUG) {
             console.log('[Bob-rpa] Child: addAnalytics !');
         }
@@ -278,24 +291,24 @@ export class BobRpa {
             if (this.DEBUG) {
                 console.log('[Bob-rpa] Child: url change !!');
             }
-            this.parent.urlChangeEvent(this.oldHref);
+            return await this.parent.urlChangeEvent(this.oldHref);
         }
+        return Promise.resolve();
     }
 
-    applyZoom(): void {
+    async applyZoom(): Promise<void> {
         if (this.DEBUG) {
             console.log('[Bob-rpa] Child: applyZoom !');
         }
         if (this.parent) {
-            this.parent.getZoomPercentage().then((zoom) => {
-                const newZoom = `${zoom}%`;
-                if (this.DEBUG) {
-                    console.log('[Bob-rpa] Child: applyZoom newZoom', newZoom, 'oldZoom', document.body.style.zoom);
-                }
-                if ('zoom' in document.body.style && newZoom !== document.body.style.zoom) {
-                    document.body.style.zoom = newZoom;
-                }
-            });
+            const zoom = await this.parent.getZoomPercentage();
+            const newZoom = `${zoom}%`;
+            if (this.DEBUG) {
+                console.log('[Bob-rpa] Child: applyZoom newZoom', newZoom, 'oldZoom', document.body.style.zoom);
+            }
+            if ('zoom' in document.body.style && newZoom !== document.body.style.zoom) {
+                document.body.style.zoom = newZoom;
+            }
         }
     }
 
@@ -370,84 +383,92 @@ export class BobRpa {
     //     document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     // }
 
-    cleanLogin(): void {
+    async cleanLogin(): Promise<void> {
         if (this.parent) {
-            this.parent.getName().then((name: string) => {
-                if (this.DEBUG) {
-                    console.log('[Bob-rpa] Child: current name', name);
-                }
-                const currentName: string| null = localStorage.getItem('cs_child_name');
-                if (!currentName || name !== currentName) {
-                    this.logoutAction();
-                }
-                localStorage.setItem('cs_child_name', name)
-            });
+            const name: string = await this.parent.getName();
+            if (this.DEBUG) {
+                console.log('[Bob-rpa] Child: current name', name);
+            }
+            const currentName: string| null = localStorage.getItem('cs_child_name');
+            if (!currentName || name !== currentName) {
+                this.logoutAction();
+            }
+            localStorage.setItem('cs_child_name', name);
         }
     }
 
-    initAutoLogin(): Promise<LoginData | null>  {
+    async initAutoLogin(): Promise<LoginData | null>  {
         if (this.parent) {
-            return this.parent.needLogin().then((data: LoginData) => {
-                if (!data) {
-                    if (this.DEBUG) {
-                        console.log('[Bob-rpa] Child: needLogin no data');
-                    }
-                    this.switchCSLoader('off');
-                    return null;
-                } else {
-                    if (this.DEBUG) {
-                        console.log('[Bob-rpa] Child: needLogin confirmed');
-                    }
-                    this.cleanLogin();
-                    this.loginInitAction();
-                    this.watchFunctions.push(() => this.checkLogin());
+            const login: LoginData = await this.parent.needLogin();
+            if (!login) {
+                return Promise.reject();
+            } else {
+                if (this.DEBUG) {
+                    console.log('[Bob-rpa] Child: needLogin confirmed');
                 }
-                return data;
-            });
+                await this.cleanLogin();
+                this.loginInitAction();
+                this.watchFunctions.push(() => this.checkLogin(true));
+            }
+            return login;
         } else {
             return Promise.reject();
         }
     }
 
-    askLogin(): void {
-        if (this.parent && this.isLoginWrapperPresent()) {
-            this.parent.needLogin().then((data: LoginData) => {
-                if (!data) {
-                    if (this.DEBUG) {
-                        console.log('[Bob-rpa] Child: askLogin no login from parent');
-                    }
-                    this.switchCSLoader('off');
-                    return;
-                }
-                if (this.DEBUG) {
-                    console.log('[Bob-rpa] Child: askLogin', this.hiddePass(data));
-                }
-                this.loginAction(data).then(() => {
-                    setTimeout(() => {
-                        if (this.isLoginWrapperPresent()) {
-                            this.switchCSLoader('off');
-                            if (this.htmlElem && this.htmlElem.getAttribute("class")) {
-                                this.htmlElem.removeAttribute("class");
-                            }
+    async askLogin(): Promise<void> {
+        if (this.parent) {
+            const login: LoginData = await this.parent.needLogin();
+            if (!login) {
+                return Promise.reject();
+            }
+            if (this.DEBUG) {
+                console.log('[Bob-rpa] Child: askLogin', this.hiddePass(login));
+            }  
+            try {
+                await this.loginAction(login);
+                setTimeout(async () => {
+                    const loginPresent = await this.isLoginWrapperPresent(false);
+                    if (!loginPresent) {
+                        this.switchCSLoader('off');
+                        if (this.htmlElem && this.htmlElem.getAttribute("class")) {
+                            this.htmlElem.removeAttribute("class");
                         }
-                    }, this.speedLogin);
+                    }
                     if (this.DEBUG) {
                         console.log('[Bob-rpa] Child: askLogin Done \n\n\n\n');
                     }
-                }).catch((err) => {
-                    if (this.DEBUG) {
-                        console.error('[Bob-rpa] Child: askLogin error', err, '\n\n\n\n');
-                    }
-                });
-            });
+                }, this.speedLogin);
+            } catch (err) {
+                if (this.DEBUG) {
+                    console.error('[Bob-rpa] Child: askLogin error', err, '\n\n\n\n');
+                }
+            }
         }
     }
 
-    isLoginWrapperPresent(): boolean {
+    async isLoginWrapperPresent(wait: boolean): Promise<boolean> {
         if (this.DEBUG) {
-            console.error('[Bob-rpa] Child: no loginAction configuration');
+            console.log('[Bob-rpa] Child: isLoginWrapperPresent');
+        }
+        if (wait) {
+            try {
+                const elem = await waitElem(this.loginSelector(), { timeout: 2000 });
+                return !!elem;
+            } catch (err) {
+                console.log('[Bob-rpa] Child: isLoginWrapperPresent waitElem not found', this.loginSelector());
+                return false;
+            }
+        } else {
+            if (document.querySelector(this.loginSelector())) {
+                return true;
+            }
         }
         return false;
+    }
+
+    loginSelector(): string {
+        return '';
     }
 
     logoutAction(): void  {
@@ -460,7 +481,7 @@ export class BobRpa {
         }
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const bob = this;
-        fetchIntercept.register({
+        this.fetchUnregister = fetchIntercept.register({
             request: function (url, config) {
                 return [url, config];
             },
@@ -477,7 +498,7 @@ export class BobRpa {
                             console.log('[Bob-rpa] Child: missing_login checkLogin');
                         }
                         bob.htmlElem.setAttribute("class", "missing_login");
-                        bob.checkLogin();
+                        bob.checkLogin(true);
                     }
                 }
                 return response;

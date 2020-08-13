@@ -4,15 +4,8 @@ require('./wekan.css');
 
 class WekanRpa extends BobRpa {
 
-    isLoginWrapperPresent(): boolean {
-        if (this.DEBUG) {
-            console.log('[Bob-rpa] Child: isLoginWrapperPresent');
-        }
-        if (document.getElementsByClassName("auth-layout")
-            && document.getElementsByClassName("auth-layout").length > 0) {
-            return true;
-        }
-        return false;
+    loginSelector(): string {
+        return '.auth-layout';
     }
 
     logoutAction() {

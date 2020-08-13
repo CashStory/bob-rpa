@@ -3,14 +3,8 @@ require('./healthcheck.css');
 
 class HealthcheckRpa extends BobRpa {
 
-    isLoginWrapperPresent(): boolean {
-        if (this.DEBUG) {
-            console.log('[Bob-rpa] Child: isLoginWrapperPresent');
-        }
-        if (document.getElementById("login-form")) {
-            return true;
-        }
-        return false;
+    loginSelector(): string {
+        return '#login-form';
     }
 
     logoutAction() {

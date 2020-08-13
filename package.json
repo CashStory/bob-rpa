@@ -76,6 +76,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "@1natsu/wait-element": "^2.2.0",
     "fetch-intercept": "^2.3.1",
     "penpal": "^5.1.1",
     "whatwg-fetch": "^3.2.0"

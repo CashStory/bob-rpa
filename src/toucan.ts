@@ -2,15 +2,9 @@ import { BobRpa, LoginData } from './base';
 require('./toucan.css');
 
 class ToucanRpa extends BobRpa {
-    isLoginWrapperPresent(): boolean {
-        if (this.DEBUG) {
-            console.log('[Bob-rpa] Child: isLoginWrapperPresent');
-        }
-        if (document.getElementsByClassName("login-wrapper")
-            && document.getElementsByClassName("login-wrapper").length > 0) {
-            return true;
-        }
-        return false;
+
+    loginSelector(): string {
+        return '.login-wrapper';
     }
 
     logoutAction() {

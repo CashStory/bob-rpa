@@ -97,9 +97,10 @@ module.exports = env => {
         ];
     }
     return {
-        mode: env && env.production ? 'production' : 'dev',
+        mode: env && env.production ? 'production' : 'development',
         watch: env && env.production ? !env.production:  false,
         devServer: {
+            open: true,
             inline: false,
             writeToDisk: true,
             publicPath: '/',

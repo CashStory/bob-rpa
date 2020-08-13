@@ -4,14 +4,9 @@ import { BobRpa, LoginData } from './base';
 require('./wikijs.css');
 
 class wikijsRpa extends BobRpa {
-    isLoginWrapperPresent(): boolean {
-        if (this.DEBUG) {
-            console.log('[Bob-rpa] Child: isLoginWrapperPresent');
-        }
-        if (window.location.href.indexOf('login') > -1) {
-            return true;
-        }
-        return false;
+
+    loginSelector(): string {
+        return '.login';
     }
 
     logoutAction() {
