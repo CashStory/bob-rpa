@@ -46,6 +46,7 @@ module.exports = env => {
     let plugins = [];
     if (env && env.production) {
         entry = {
+            base: entryPointsPathPrefix + '/base.ts',
             jupyter: entryPointsPathPrefix + '/jupyter.ts',
             wikijs: entryPointsPathPrefix + '/wikijs.ts',
             wekan: entryPointsPathPrefix + '/wekan.ts',
@@ -71,6 +72,7 @@ module.exports = env => {
             test_child: entryPointsPathPrefix + '/test_child.ts',
             trigger_child: entryPointsPathPrefix + '/trigger_child.ts',
             jupyter: entryPointsPathPrefix + '/jupyter.ts',
+            base: entryPointsPathPrefix + '/base.ts',
             wikijs: entryPointsPathPrefix + '/wikijs.ts',
             wekan: entryPointsPathPrefix + '/wekan.ts',
             toucan: entryPointsPathPrefix + '/toucan.ts',

@@ -471,14 +471,6 @@ export class BobRpa {
         return false;
     }
 
-    loginSelector(): string {
-        return '';
-    }
-
-    logoutAction(): void  {
-        console.error('[Bob-rpa] Child: no logoutAction configuration');
-    }
-
     loginInitAction(): void  {
         if (this.DEBUG) {
             console.log('[Bob-rpa] Child: add fetchIntercept');
@@ -532,11 +524,33 @@ export class BobRpa {
         });
     }
 
-    loginAction(data: LoginData): Promise<undefined>  {
-        console.error('[Bob-rpa] Child: no loginAction configuration');
-        if (data && this.DEBUG) {
-            console.log('[Bob-rpa] Child: loginAction data', this.hiddePass(data));
+    loginSelector(): string {
+        return '.login';
+    }
+
+    logoutAction(): void  {
+        if (this.DEBUG) {
+            console.log('[Bob-rpa] Child: logoutAction');
         }
+        window.location.href = "/logout";
+    }
+
+    loginAction(data: LoginData): Promise<undefined>  {
+        const loginInput = this.getFormInputElem('email');
+        const pwdInput = this.getFormInputElem('password');
+        const buttonConnect = this.getSubmitButton();
+        if (buttonConnect && loginInput && pwdInput) {
+            if (this.DEBUG) {
+                console.log('[Bob-rpa] Child: login detected');
+            }
+            this.setNativeValue(loginInput, data.login);
+            this.setNativeValue(pwdInput, data.pwd);
+            if (this.DEBUG) {
+                console.log('[Bob-rpa] Child: login filled');
+            }
+            return this.validateLogin(buttonConnect);
+        }
+        console.error('[Bob-rpa] Child: fail to get, buttonConnect, loginInput or pwdInput', buttonConnect, loginInput, pwdInput);
         return Promise.reject();
     }
 }
