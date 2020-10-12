@@ -8,9 +8,6 @@ class ToucanRpa extends BobRpa {
     }
 
     logoutAction() {
-        if (this.DEBUG) {
-            console.log('[Bob-rpa] Child: logoutAction');
-        }
         localStorage.setItem('token', '');
         localStorage.setItem('embed-token', '');
         localStorage.setItem('user', '');

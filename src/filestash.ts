@@ -6,14 +6,16 @@ class FilestashRpa extends BobRpa {
 
     speedClick = 200;
 
+    constructor(html_plus: string) {
+        super(html_plus);
+        this.switchCSLoader('off');
+    }
+
     loginSelector(): string {
         return '.component_page_connect';
     }
 
     logoutAction() {
-        if (this.DEBUG) {
-            console.log('[Bob-rpa] Child: logoutAction');
-        }
         window.location.href = "/logout";
     }
 

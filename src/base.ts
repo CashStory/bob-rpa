@@ -395,6 +395,9 @@ export class BobRpa {
             }
             const currentName: string| null = localStorage.getItem('cs_child_name');
             if (!currentName || name !== currentName) {
+                if (this.DEBUG) {
+                    console.log('[Bob-rpa] Child: logoutAction', name, currentName);
+                }
                 this.logoutAction();
             }
             localStorage.setItem('cs_child_name', name);
@@ -529,9 +532,6 @@ export class BobRpa {
     }
 
     logoutAction(): void  {
-        if (this.DEBUG) {
-            console.log('[Bob-rpa] Child: logoutAction');
-        }
         window.location.href = "/logout";
     }
 

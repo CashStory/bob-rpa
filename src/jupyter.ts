@@ -9,9 +9,6 @@ class JupyterRpa extends BobRpa {
     }
 
     logoutAction() {
-        if (this.DEBUG) {
-            console.log('[Bob-rpa] Child: logoutAction');
-        }
         localStorage.setItem('jupyterhub-hub-login', '');
         localStorage.setItem('jupyterhub-session-id', '');
         localStorage.setItem('jupyterhub-user-bobcashstory', '');

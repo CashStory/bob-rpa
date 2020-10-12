@@ -8,9 +8,6 @@ class HealthcheckRpa extends BobRpa {
     }
 
     logoutAction() {
-        if (this.DEBUG) {
-            console.log('[Bob-rpa] Child: logoutAction');
-        }
         this.deleteCookie('sessionid');
         window.location.href = "/";
     }

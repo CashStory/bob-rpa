@@ -10,9 +10,6 @@ class wikijsRpa extends BobRpa {
     }
 
     logoutAction() {
-        if (this.DEBUG) {
-            console.log('[Bob-rpa] Child: logoutAction');
-        }
         this.deleteCookie('jwt');
         window.location.href = "/login";
     }
