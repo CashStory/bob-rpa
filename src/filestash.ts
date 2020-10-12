@@ -4,6 +4,8 @@ require('./filestash.css');
 
 class FilestashRpa extends BobRpa {
 
+    speedClick = 200;
+
     loginSelector(): string {
         return '.component_page_connect';
     }
