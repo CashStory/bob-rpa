@@ -3,5 +3,6 @@ name = "cz_conventional_commits"
 version = "1.5.3"
 tag_format = "$version"
 version_files = [
-    "package.json"
+    "package.json:version"
+    "package-lock.json:version"
     ]

@@ -478,13 +478,13 @@ export class BobRpa {
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const bob = this;
         this.fetchUnregister = fetchIntercept.register({
-            request: function (url, config) {
+            request: function (url: string, config: any) {
                 return [url, config];
             },
-            requestError: function (error) {
+            requestError: function (error: any) {
                 return Promise.reject(error);
             },
-            response: function (response) {
+            response: function (response: any) {
                 if (response.status == 401) {
                     if (bob.DEBUG) {
                         console.log('[Bob-rpa] Child: fetchIntercept 401 found');
@@ -499,7 +499,7 @@ export class BobRpa {
                 }
                 return response;
             },
-            responseError: function (error) {
+            responseError: function (error: any) {
                 return Promise.reject(error);
             }
         });
