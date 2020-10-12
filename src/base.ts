@@ -394,7 +394,7 @@ export class BobRpa {
                 console.log('[Bob-rpa] Child: current name', name);
             }
             const currentName: string| null = localStorage.getItem('cs_child_name');
-            if (!currentName || name !== currentName) {
+            if (currentName && name !== currentName) {
                 if (this.DEBUG) {
                     console.log('[Bob-rpa] Child: logoutAction', name, currentName);
                 }
