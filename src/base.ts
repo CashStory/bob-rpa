@@ -64,7 +64,7 @@ export class BobRpa {
 
     initAll(): void {
         
-        this.DEBUG = window.rpaDebug ? window.rpaDebug : localStorage.getItem("rpaDebug") || false;
+        this.DEBUG = window.rpaDebug ? window.rpaDebug : Boolean(localStorage.getItem("rpaDebug"));
         if (this.DEBUG) {
             console.log('[Bob-rpa] Child: init');
         }
