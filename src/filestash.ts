@@ -6,7 +6,7 @@ class FilestashRpa extends BobRpa {
 
     speedClick = 200;
 
-    constructor(html_plus: string) {
+    constructor(html_plus = '') {
         super(html_plus);
         this.switchCSLoader('off');
     }
