@@ -99,6 +99,11 @@ export class BobRpa {
                 }
                 this.switchCSLoader('off');
             });
+            window.addEventListener("DOMContentLoaded", () => {
+                setTimeout(()=> {
+                    this.switchCSLoader('off');
+                }, 5000)
+            });
         }
     }
 
