@@ -95,14 +95,17 @@ export class BobRpa {
         } else {
             window.addEventListener("load", () => {
                 if (this.DEBUG) {
-                    console.log('[Bob-rpa] Child: NO iframe detected');
+                    console.log('[Bob-rpa] Child: NO iframe detected, load');
                 }
                 this.switchCSLoader('off');
             });
             window.addEventListener("DOMContentLoaded", () => {
                 setTimeout(()=> {
+                    if (this.DEBUG) {
+                        console.log('[Bob-rpa] Child: NO iframe detected, DOMContentLoaded');
+                    }
                     this.switchCSLoader('off');
-                }, 5000)
+                }, 3000)
             });
         }
     }
